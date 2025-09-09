@@ -1,0 +1,294 @@
+{
+  "placeholderImages": [
+    {
+      "id": "article1",
+      "description": "A person sitting at a computer with a phishing hook icon.",
+      "imageUrl": "https://images.unsplash.com/photo-1719404362503-24d06934cb2c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwaGlzaGluZyUyMHNjYW18ZW58MHx8fHwxNzY4OTA0MDc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "phishing scam"
+    },
+    {
+      "id": "article2",
+      "description": "A lock with complex password characters.",
+      "imageUrl": "https://images.unsplash.com/photo-1634804306598-f2efe3ead034?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxwYXNzd29yZCUyMHNlY3VyaXR5fGVufDB8fHx8MTc2ODkwNDA3N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "password security"
+    },
+    {
+      "id": "article3",
+      "description": "A phone displaying a 2FA code next to a laptop.",
+      "imageUrl": "https://images.unsplash.com/photo-1601119479271-21ca92049c81?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxhdXRoZW50aWNhdGlvbiUyMGNvZGV8ZW58MHx8fHwxNzY4OTA0MDc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "authentication code"
+    },
+    {
+      "id": "article4",
+      "description": "A person using a laptop in a coffee shop.",
+      "imageUrl": "https://images.unsplash.com/photo-1609984321379-ff0f05848bfe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwdWJsaWMlMjB3aWZpfGVufDB8fHx8MTc2ODkwNDA3N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "public wifi"
+    },
+    {
+      "id": "article5",
+      "description": "A Wi-Fi router with a shield icon in front of it.",
+      "imageUrl": "https://images.unsplash.com/photo-1728971825338-be9230fd4029?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxzZWN1cmUlMjB3aWZpfGVufDB8fHx8MTc2ODkwNDA3N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "secure wifi"
+    },
+    {
+      "id": "article6",
+      "description": "A magnifying glass over a URL link.",
+      "imageUrl": "https://images.unsplash.com/photo-1599507593498-273a5f6b34b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx1cmwlMjBzY2FufGVufDB8fHx8MTcxODc0Njk2NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "verify link"
+    },
+    {
+      "id": "article7",
+      "description": "An icon of a VPN tunnel protecting a laptop.",
+      "imageUrl": "https://images.unsplash.com/photo-1738644092439-341eac80b94f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8VlBOJTIwdHVubmVsfGVufDB8fHx8MTc2ODkwNDA3N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "VPN tunnel"
+    },
+    {
+      "id": "article8",
+      "description": "A computer screen with a skull and crossbones, demanding ransom.",
+      "imageUrl": "https://images.unsplash.com/photo-1636131434360-a2e6a41994e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjeWJlciUyMHJhbnNvbXdhcmV8ZW58MHx8fHwxNzY4OTA0MDc4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cyber ransomware"
+    },
+    {
+      "id": "article9",
+      "description": "Two people talking, with one whispering to the other.",
+      "imageUrl": "https://images.unsplash.com/photo-1563986768609-322da13575f3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzb2NpYWwlMjBlbmdpbmVlcmluZ3xlbnwwfHx8fDE3Njg5MDQwNzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "social engineering"
+    },
+    {
+      "id": "article10",
+      "description": "An update icon on a computer screen.",
+      "imageUrl": "https://images.unsplash.com/photo-1581094794329-c8112a89af12?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzb2Z0d2FyZSUyMHVwZGF0ZXxlbnwwfHx8fDE3Njg5MDY4MTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "software update"
+    },
+    {
+      "id": "article11",
+      "description": "A secure vault or safe for data backups.",
+      "imageUrl": "https://images.unsplash.com/photo-1719937206255-cc337bccfc7d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxkYXRhJTIwYmFja3VwfGVufDB8fHx8MTc2ODkwNjgxM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "data backup"
+    },
+    {
+      "id": "article12",
+      "description": "A smartphone with a lock icon on the screen.",
+      "imageUrl": "https://images.unsplash.com/photo-1736410223296-4537159eefe4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtb2JpbGUlMjBzZWN1cml0eXxlbnwwfHx8fDE3Njg5MDg1NzF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "mobile security"
+    },
+    {
+      "id": "article13",
+      "description": "A shield protecting a person from digital threats.",
+      "imageUrl": "https://images.unsplash.com/photo-1563206767-5b18f218e8de?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxkaWdpdGFsJTIwc2VsZiUyMGRlZmVuc2V8ZW58MHx8fHwxNzY4OTA4NTcyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "digital self defense"
+    },
+    {
+      "id": "article14",
+      "description": "A person looking at their phone with a SIM card icon nearby.",
+      "imageUrl": "https://images.unsplash.com/photo-1614212119932-a5674092ee02?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxzaW0lMjBjYXJkJTIwc2VjdXJpdHl8ZW58MHx8fHwxNzE4NzQ2OTY0fDA&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "sim security"
+    },
+    {
+      "id": "article15",
+      "description": "Digital footprints on a circuit board.",
+      "imageUrl": "https://images.unsplash.com/photo-1555949963-ff98b6a8397a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxkaWdpdGFsJTIwZm9vdHByaW50fGVufDB8fHx8MTcxODc0Njk2NHww&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "digital footprint"
+    },
+    {
+      "id": "article16",
+      "description": "A phone charging at a public USB port with a skull icon.",
+      "imageUrl": "https://images.unsplash.com/photo-1610480356515-5353cf483033?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx1c2IlMjBwb3J0JTIwc2VjdXJpdHl8ZW58MHx8fHwxNzE4NzQ2OTY0fDA&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "usb security"
+    },
+    {
+      "id": "article17",
+      "description": "A URL being dissected into its component parts under a magnifying glass.",
+      "imageUrl": "https://images.unsplash.com/photo-1599507593498-273a5f6b34b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx1cmwlMjBzY2FufGVufDB8fHx8MTcxODc0Njk2NHww&ixlib-rb-4.0.3&q=80&w=1080",
+      "imageHint": "url scan"
+    },
+    {
+      "id": "article18",
+      "description": "Social media icons with padlocks on them.",
+      "imageUrl": "https://images.unsplash.com/photo-1611162617474-5b21e879e113?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzb2NpYWwlMjBtZWRpYSUyMHNlY3VyaXR5fGVufDB8fHx8MTcxODc0Njk2NHww&ixlib=rb-4.0.3&q=80&w=1080",
+      "imageHint": "social media"
+    },
+    {
+      "id": "news1",
+      "description": "Graph showing an upward trend with a world map in the background.",
+      "imageUrl": "https://images.unsplash.com/photo-1529101091764-c3526daf38fe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjeWJlciUyMGF0dGFja3xlbnwwfHx8fDE3Njg5MDQwNzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cyber attack"
+    },
+    {
+      "id": "news2",
+      "description": "Code on a screen with a red warning sign over it.",
+      "imageUrl": "https://images.unsplash.com/photo-1584188335984-7781d3194e03?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb2RlJTIwdnVsbmVyYWJpbGl0eXxlbnwwfHx8fDE3Njg5MDQwNzd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "code vulnerability"
+    },
+    {
+      "id": "news3",
+      "description": "An abstract image of an AI brain with binary code.",
+      "imageUrl": "https://images.unsplash.com/photo-1580077910645-a6fd54032e15?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxBSSUyMG1hbHdhcmV8ZW58MHx8fHwxNzY4OTA0MDc3fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "AI malware"
+    },
+    {
+      "id": "news4",
+      "description": "Handcuffs on a keyboard.",
+      "imageUrl": "https://images.unsplash.com/photo-1674049405160-9b800f5645f5?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjeWJlciUyMGNyaW1lfGVufDB8fHx8MTc2ODkwNDA3N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cyber crime"
+    },
+    {
+      "id": "news5",
+      "description": "A broken lock icon over a database symbol.",
+      "imageUrl": "https://images.unsplash.com/photo-1572666341285-c8cb9790ca50?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxkYXRhJTIwYnJlYWNofGVufDB8fHx8MTc2ODkwNDA3N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "data breach"
+    },
+    {
+      "id": "news6",
+      "description": "Two people talking with a malicious icon in a speech bubble.",
+      "imageUrl": "https://images.unsplash.com/photo-1742160224390-4092483b3ba7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxzb2NpYWwlMjBlbmdpbmVlcmluZ3xlbnwwfHx8fDE3Njg5MDQwNzh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "social engineering"
+    },
+    {
+      "id": "news7",
+      "imageUrl": "https://images.unsplash.com/photo-1610034499386-e70758847b99?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8aW90JTIwc2VjdXJpdHl8ZW58MHx8fHwxNzY4OTA2ODExfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "iot security"
+    },
+    {
+      "id": "news8",
+      "imageUrl": "https://images.unsplash.com/photo-1728904570517-a64dd0d8b2c6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxtb2JpbGUlMjBtYWx3YXJlfGVufDB8fHx8MTc2ODkwNjgxMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "mobile malware"
+    },
+    {
+      "id": "news9",
+      "imageUrl": "https://images.unsplash.com/photo-1667372283536-a832e74401c2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjbG91ZCUyMHNlY3VyaXR5fGVufDB8fHx8MTc2ODkwNjgxMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cloud security"
+    },
+    {
+      "id": "news10",
+      "imageUrl": "https://images.unsplash.com/photo-1629965947624-6381615bf531?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxuYXRpb24lMjBzdGF0ZXxlbnwwfHx8fDE3Njg5MDY4MTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "nation state"
+    },
+    {
+      "id": "news11",
+      "imageUrl": "https://images.unsplash.com/photo-1633265486064-086b219458ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxkYXRhJTIwcHJpdmFjeXxlbnwwfHx8fDE3Njg5MDY4MTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "data privacy"
+    },
+    {
+      "id": "news12",
+      "imageUrl": "https://images.unsplash.com/photo-1740477959006-798042a324aa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxlbmNyeXB0aW9uJTIwd2Vha25lc3N8ZW58MHx8fHwxNzY4OTA2ODExfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "encryption weakness"
+    },
+    {
+      "id": "news13",
+      "imageUrl": "https://images.unsplash.com/photo-1634638026221-4c1c4cf9f881?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxzdXBwbHklMjBjaGFpbnxlbnwwfHx8fDE3Njg5MDY4MTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "supply chain"
+    },
+    {
+      "id": "news14",
+      "imageUrl": "https://images.unsplash.com/photo-1758599668932-484f54cdf48f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHx6ZXJvJTIwZGF5fGVufDB8fHx8MTc2ODkwNjgxM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "zero day"
+    },
+    {
+      "id": "news15",
+      "imageUrl": "https://images.unsplash.com/photo-1682365114794-14b870355d21?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxoZWFsdGhjYXJlJTIwYnJlYWNofGVufDB8fHx8MTc2ODkwNjgxMnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "healthcare breach"
+    },
+    {
+      "id": "news16",
+      "imageUrl": "https://images.unsplash.com/photo-1563296299-cd5525eae75d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxmaW5hbmNpYWwlMjBzY2FtfGVufDB8fHx8MTc2ODkwNjgxMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "financial scam"
+    },
+    {
+      "id": "news17",
+      "imageUrl": "https://images.unsplash.com/photo-1718634805453-b2d719e69bdc?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxjcml0aWNhbCUyMGluZnJhc3RydWN0dXJlfGVufDB8fHx8MTc2ODkwNjgxMXww&ixlib-rb-4.1.0&q=80&w=1080",
+      "imageHint": "critical infrastructure"
+    },
+    {
+      "id": "news18",
+      "description": "A person in a suit looking over another's shoulder at a laptop.",
+      "imageUrl": "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxpbnNpZGVyJTIwdGhyZWF0fGVufDB8fHx8MTc2ODkxMDU0NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "insider threat"
+    },
+    {
+      "id": "news19",
+      "imageUrl": "https://images.unsplash.com/photo-1722937117724-4044158343df?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxwaGlzaGluZyUyMGNhbXBhaWdufGVufDB8fHx8MTc2ODkwNjgxMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "phishing campaign"
+    },
+    {
+      "id": "news20",
+      "imageUrl": "https://images.unsplash.com/photo-1709110401582-9b39e60e3f7a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxzZWN1cml0eSUyMHBhdGNofGVufDB8fHx8MTc2ODkwNjgxMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "security patch"
+    },
+    {
+      "id": "tip1",
+      "imageUrl": "https://images.unsplash.com/photo-1603539279542-e7cf76a92801?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxlbWFpbCUyMGluYm94fGVufDB8fHx8MTc2ODkxMDU0NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "email inbox"
+    },
+    {
+      "id": "tip2",
+      "imageUrl": "https://images.unsplash.com/photo-1762340275855-ae8f4c2c144e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxhcHAlMjBzZXR0aW5nc3xlbnwwfHx8fDE3Njg3OTg0ODl8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "app settings"
+    },
+    {
+      "id": "tip3",
+      "imageUrl": "https://images.unsplash.com/photo-1710732652617-264d6f860546?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw3fHxyZXN0YXVyYW50JTIwbWVudXxlbnwwfHx8fDE3Njg4NTU5MjJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "restaurant menu"
+    },
+    {
+      "id": "tip4",
+      "imageUrl": "https://images.unsplash.com/photo-1703354521539-177dcce12b4d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx1c2IlMjBkcml2ZXxlbnwwfHx8fDE3Njg5MTA1NDR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "usb drive"
+    },
+    {
+      "id": "tip5",
+      "imageUrl": "https://images.unsplash.com/photo-1600238454024-bc8c1e49caba?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3aWZpJTIwc3ltYm9sfGVufDB8fHx8MTc2ODkxMDU0NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "wifi symbol"
+    },
+    {
+      "id": "tip6",
+      "imageUrl": "https://images.unsplash.com/photo-1762111196664-bd58b2a0937b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxub3RpZmljYXRpb24lMjBiZWxsfGVufDB8fHx8MTc2ODkxMDU0NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "notification bell"
+    },
+    {
+      "id": "tip7",
+      "imageUrl": "https://images.unsplash.com/photo-1600723367219-274aae4e6599?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzbWFydHBob25lJTIwcmVjeWNsZXxlbnwwfHx8fDE3Njg5MTA1NDR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "smartphone recycle"
+    },
+    {
+      "id": "tip8",
+      "imageUrl": "https://images.unsplash.com/photo-1509017174183-0b7e0278f1ec?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxtb2JpbGUlMjBwYXltZW50fGVufDB8fHx8MTc2ODgwMDQ0OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "mobile payment"
+    },
+    {
+      "id": "tip9",
+      "imageUrl": "https://images.unsplash.com/photo-1595079835357-a94a13cab10c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxxciUyMGNvZGV8ZW58MHx8fHwxNzY4ODcyMjQyfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "qr code"
+    },
+    {
+      "id": "tip10",
+      "imageUrl": "https://images.unsplash.com/photo-1525182008055-f88b95ff7980?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxwaG9uZSUyMGNhbGx8ZW58MHx8fHwxNzY4ODEyMjgxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "phone call"
+    },
+    {
+      "id": "tip11",
+      "imageUrl": "https://images.unsplash.com/photo-1758983308742-f4ba1f8c8cb4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxwcml2YWN5JTIwbG9ja3xlbnwwfHx8fDE3Njg5MTA1NDR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "privacy lock"
+    },
+    {
+      "id": "tip12",
+      "imageUrl": "https://images.unsplash.com/photo-1613243555988-441166d4d6fd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwyfHxjcmVkaXQlMjBjYXJkfGVufDB8fHx8MTc2ODg2NzkzNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "credit card"
+    },
+    {
+      "id": "tip13",
+      "imageUrl": "https://images.unsplash.com/photo-1653289755854-a41949e96282?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxjb250YWN0cyUyMGxpc3R8ZW58MHx8fHwxNzY4OTEwNTQ0fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "contacts list"
+    },
+    {
+      "id": "tip14",
+      "imageUrl": "https://images.unsplash.com/photo-1603940516962-4976f0d44a19?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxiYW5rJTIwbm90aWZpY2F0aW9ufGVufDB8fHx8MTc2ODkxMDU0NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "bank notification"
+    },
+    {
+      "id": "tip15",
+      "imageUrl": "https://images.unsplash.com/photo-1676835981079-7810565db333?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGhvdG8lMjBnYWxsZXJ5fGVufDB8fHx8MTc2ODkxMDU0NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "photo gallery"
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+tasks:
+  - name: Install Dependencies & Start Server
+    init: npm install
+    command: npm run dev
+
+ports:
+  # Expose the Next.js app port
+  - port: 9002
+    onOpen: open-preview
+    name: CyberWise App
+    description: The running CyberWise application.
+  # Expose the Genkit dev UI port (optional)
+  - port: 4000
+    onOpen: ignore
+    name: Genkit Dev UI
+    description: Genkit developer UI for flows.
+
+# For more information on environment variables, see: https://www.gitpod.io/docs/configure/environment-variables
+# You will need to set your GEMINI_API_KEY for the AI features to work.
+# Open a terminal in Gitpod and run:
+# gp env GEMINI_API_KEY=YOUR_API_KEY_HERE
+# Then, restart the workspace.
