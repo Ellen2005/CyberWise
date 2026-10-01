@@ -27,16 +27,27 @@ import {
   HeartHandshake,
   LayoutDashboard,
   Github,
-  Bookmark,
   ScanLine,
   DatabaseZap,
   Wrench,
+  Trophy,
+  Compass,
+  GraduationCap,
+  Bot,
+  Target,
+  CalendarCheck2,
+  ScanSearch,
+  ShieldAlert,
+  HelpCircle,
+  LifeBuoy,
 } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { UserNav } from '@/components/user-nav';
 import SavedArticlesNavItem from '@/components/saved-articles-nav-item';
+import { ThemeProvider } from '@/components/theme-provider';
+import { AppShellHeader } from '@/components/app-shell-header';
+import { AuthSessionSync } from '@/components/auth-session-sync';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const spaceGrotesk = Space_Grotesk({
@@ -46,7 +57,7 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: 'CyberWise',
-  description: 'Your personal cybersecurity companion.',
+  description: 'Learn cybersecurity by doing. Stories, challenges, labs, and AI mentorship for everyone.',
 };
 
 export default function RootLayout({
@@ -55,7 +66,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={cn(
           inter.variable,
@@ -63,7 +74,9 @@ export default function RootLayout({
           'font-body antialiased'
         )}
       >
+        <ThemeProvider>
         <FirebaseClientProvider>
+          <AuthSessionSync />
           <SidebarProvider>
             <Sidebar
               variant="sidebar"
@@ -85,7 +98,6 @@ export default function RootLayout({
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton
-                      href="/"
                       asChild
                       tooltip="Dashboard"
                       className="justify-start"
@@ -96,6 +108,167 @@ export default function RootLayout({
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
+
+                  <SidebarGroup>
+                    <SidebarGroupLabel>Learn</SidebarGroupLabel>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Learning Paths"
+                        className="justify-start"
+                      >
+                        <Link href="/learn">
+                          <GraduationCap />
+                          <span>Learning Paths</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Challenges"
+                        className="justify-start"
+                      >
+                        <Link href="/challenges">
+                          <Target />
+                          <span>Challenges</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Daily Challenge"
+                        className="justify-start"
+                      >
+                        <Link href="/daily">
+                          <CalendarCheck2 />
+                          <span>Daily</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Phishing Investigation"
+                        className="justify-start"
+                      >
+                        <Link href="/simulators/phishing">
+                          <ScanSearch />
+                          <span>Phishing Lab</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Scam Awareness"
+                        className="justify-start"
+                      >
+                        <Link href="/simulators/scam">
+                          <ShieldAlert />
+                          <span>Scam Lab</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="What Would You Do"
+                        className="justify-start"
+                      >
+                        <Link href="/simulators/wwyd">
+                          <HelpCircle />
+                          <span>What Would You Do</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Been Scammed Help"
+                        className="justify-start"
+                      >
+                        <Link href="/help/been-scammed">
+                          <LifeBuoy />
+                          <span>Get Help</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Cyber Stories"
+                        className="justify-start"
+                      >
+                        <Link href="/stories">
+                          <Compass />
+                          <span>Cyber Stories</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="AI Cyber Mentor"
+                        className="justify-start"
+                      >
+                        <Link href="/mentor">
+                          <Bot />
+                          <span>AI Mentor</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Leaderboards"
+                        className="justify-start"
+                      >
+                        <Link href="/leaderboards">
+                          <Trophy />
+                          <span>Leaderboards</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Admin Console"
+                        className="justify-start"
+                      >
+                        <Link href="/admin">
+                          <ShieldCheck />
+                          <span>Admin</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SavedArticlesNavItem />
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Awareness Hub"
+                        className="justify-start"
+                      >
+                        <Link href="/awareness">
+                          <BookOpen />
+                          <span>Awareness Hub</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="News Feed"
+                        className="justify-start"
+                      >
+                        <Link href="/news">
+                          <Newspaper />
+                          <span>News Feed</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  </SidebarGroup>
 
                   <SidebarGroup>
                     <SidebarGroupLabel>Tools</SidebarGroupLabel>
@@ -123,7 +296,7 @@ export default function RootLayout({
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
-                     <SidebarMenuItem>
+                    <SidebarMenuItem>
                       <SidebarMenuButton
                         asChild
                         tooltip="Security Troubleshooter"
@@ -183,35 +356,6 @@ export default function RootLayout({
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
-                  </SidebarGroup>
-
-                  <SidebarGroup>
-                    <SidebarGroupLabel>Learn</SidebarGroupLabel>
-                    <SavedArticlesNavItem />
-                    <SidebarMenuItem>
-                      <SidebarMenuButton
-                        asChild
-                        tooltip="Awareness Hub"
-                        className="justify-start"
-                      >
-                        <Link href="/awareness">
-                          <BookOpen />
-                          <span>Awareness Hub</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                    <SidebarMenuItem>
-                      <SidebarMenuButton
-                        asChild
-                        tooltip="News Feed"
-                        className="justify-start"
-                      >
-                        <Link href="/news">
-                          <Newspaper />
-                          <span>News Feed</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
                     <SidebarMenuItem>
                       <SidebarMenuButton
                         asChild
@@ -234,13 +378,11 @@ export default function RootLayout({
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton
-                      href="https://github.com/firebase/studio"
                       asChild
                       tooltip="GitHub"
-                      target="_blank"
                       className="justify-start"
                     >
-                      <Link href="https://github.com/firebase/studio">
+                      <Link href="https://github.com/Ellen2005/CyberWise" target="_blank">
                         <Github />
                         <span>Source Code</span>
                       </Link>
@@ -249,9 +391,13 @@ export default function RootLayout({
                 </SidebarMenu>
               </SidebarFooter>
             </Sidebar>
-            <SidebarInset>{children}</SidebarInset>
+            <SidebarInset>
+              <AppShellHeader />
+              {children}
+            </SidebarInset>
           </SidebarProvider>
         </FirebaseClientProvider>
+        </ThemeProvider>
         <Toaster />
       </body>
     </html>

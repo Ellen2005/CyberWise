@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Newspaper } from "lucide-react";
 import Image from "next/image";
-import { placeholderImages } from "@/lib/placeholder-images.json";
+import { PlaceHolderImages } from "@/lib/placeholder-images";
 import { generateCyberNews, NewsItem } from "@/ai/flows/cybersecurity-news-generator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
@@ -169,7 +169,7 @@ export default function NewsPage() {
       ) : (
         <div className="space-y-6">
           {newsItems.map((item, index) => {
-            const image = placeholderImages.find(p => p.id === item.imageId);
+            const image = PlaceHolderImages.find(p => p.id === item.imageId);
             return (
               <Card key={index} className="flex flex-col md:flex-row overflow-hidden hover:border-primary/80 transition-all duration-300">
                 {image && (

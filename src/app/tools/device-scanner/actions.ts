@@ -1,10 +1,11 @@
 "use server";
 
 import { troubleshootDevice } from "@/ai/flows/device-security-audit-flow";
+import { guardActionRateLimit } from "@/lib/security/action-rate-limit";
 import { z } from 'zod';
 
 const TroubleshootDeviceInputSchema = z.object({
-    concern: z.string().min(10, {message: "Please describe your concern in more detail."}),
+    concern: z.string().min(10, {message: "Please describe your concern in more detail."}).max(2000),
     deviceType: z.enum(['iPhone', 'Android', 'Windows', 'Mac']),
 });
 
@@ -41,6 +42,12 @@ export async function getTroubleshootingResult(
           fields: formData,
           issues: parsed.error.issues.map((issue) => issue.message),
       }
+  }
+
+  try {
+    await guardActionRateLimit("device-scanner", 10, 60_000);
+  } catch (e: any) {
+    return { message: e.message || "Too many requests. Please wait and try again." };
   }
 
   try {

@@ -14,7 +14,7 @@ export function useUser() {
       return;
     }
 
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
+    const unsubscribe = onAuthStateChanged(auth, (user: any) => {
       setUser(user);
       setLoading(false);
     });

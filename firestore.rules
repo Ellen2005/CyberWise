@@ -2,13 +2,217 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    match /users/{userId} {
-      allow read;
-      allow write: if request.auth != null && request.auth.uid == userId;
+
+    // ============================================
+    // Helper functions
+    // ============================================
+    function isSignedIn() {
+      return request.auth != null;
     }
 
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isAdmin() {
+      return isSignedIn() &&
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'admin';
+    }
+
+    function isPublicProfile(userId) {
+      return get(/databases/$(database)/documents/users/$(userId)).data.profileVisibility == 'public';
+    }
+
+    // ============================================
+    // Users
+    // ============================================
+    match /users/{userId} {
+      // Users can read their own profile. Public profiles are readable by anyone.
+      allow get: if isOwner(userId) || isPublicProfile(userId);
+      allow list: if isAdmin();
+
+      // Users can create/update their own profile, but only specific fields.
+      allow create: if isOwner(userId) &&
+        request.resource.data.keys().hasOnly([
+          'displayName', 'email', 'photoURL', 'badges', 'role',
+          'xp', 'level', 'rank', 'streak', 'createdAt', 'onboardingCompleted',
+          'learningPath', 'skills', 'profileVisibility', 'careerGoal', 'learningGoal',
+          'experienceLevel', 'interests', 'weeklyGoal', 'settings'
+        ]);
+
+      allow update: if isOwner(userId) &&
+        request.resource.data.diff(resource.data).affectedKeys()
+          .hasOnly([
+            'displayName', 'photoURL', 'badges', 'xp', 'level', 'rank', 'rankName', 'rankIcon',
+            'streak', 'lastActiveDate', 'updatedAt', 'totalXp',
+            'onboardingCompleted', 'learningPath', 'learningPathIds', 'skills',
+            'profileVisibility', 'careerGoal', 'learningGoal', 'experienceLevel',
+            'interests', 'weeklyGoal', 'settings',
+            'completedChallengeIds', 'completedLessonIds', 'completedStoryIds', 'completedLabIds',
+            'bio', 'hasUsedLinux', 'hasDoneCTF', 'hasProgrammed', 'weeklyGoalMinutes'
+          ]);
+
+      allow delete: if isAdmin();
+    }
+
+    // ============================================
+    // User subcollections
+    // ============================================
     match /users/{userId}/savedArticles/{articleId} {
-      allow get, list, create, update, delete: if request.auth.uid == userId;
+      allow get, list, create, update, delete: if isOwner(userId);
+    }
+
+    match /users/{userId}/progress/{itemId} {
+      allow get, list, create, update, delete: if isOwner(userId);
+    }
+
+    match /users/{userId}/attempts/{attemptId} {
+      allow get, list, create, update, delete: if isOwner(userId);
+    }
+
+    match /users/{userId}/achievements/{achievementId} {
+      allow get, list, create, update, delete: if isOwner(userId);
+    }
+
+    match /users/{userId}/notifications/{notificationId} {
+      allow get, list, create, update, delete: if isOwner(userId);
+    }
+
+    match /users/{userId}/aiConversations/{conversationId} {
+      allow get, list, create, update, delete: if isOwner(userId);
+    }
+
+    match /users/{userId}/certificates/{certificateId} {
+      allow get, list: if isOwner(userId) || isAdmin();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ============================================
+    // Content collections (readable by all signed-in users)
+    // ============================================
+    match /lessons/{lessonId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /stories/{storyId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /stories/{storyId}/chapters/{chapterId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /challenges/{challengeId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /challenges/{challengeId}/hints/{hintId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /challengeCategories/{categoryId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /labs/{labId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /skills/{skillId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /learningPaths/{pathId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /careers/{careerId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /quizzes/{quizId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /projects/{projectId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /knowledgeBase/{conceptId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /badges/{badgeId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    match /achievements/{achievementId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ============================================
+    // Leaderboards (public read)
+    // ============================================
+    match /leaderboards/{boardId} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ============================================
+    // Site config (public read; admin write — e.g. training programs copy)
+    // ============================================
+    match /config/{docId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    // ============================================
+    // Audit logs (admin only)
+    // ============================================
+    match /auditLogs/{logId} {
+      allow get, list: if isAdmin();
+      allow create: if isSignedIn();
+      allow update, delete: if isAdmin();
+    }
+
+    // ============================================
+    // AI-generated content (admin review workflow)
+    // ============================================
+    match /aiContent/{contentId} {
+      allow get, list: if isSignedIn();
+      allow create: if isSignedIn();
+      allow update, delete: if isAdmin();
+    }
+
+    // ============================================
+    // User feedback / reports
+    // ============================================
+    match /feedback/{feedbackId} {
+      allow create: if isSignedIn();
+      allow get, list, update, delete: if isAdmin();
+    }
+
+    // ============================================
+    // Daily challenges
+    // ============================================
+    match /dailyChallenges/{date} {
+      allow get, list: if isSignedIn();
+      allow create, update, delete: if isAdmin();
     }
   }
 }

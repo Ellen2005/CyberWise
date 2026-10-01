@@ -1,10 +1,14 @@
 "use server";
 
 import { scanContent } from "@/ai/flows/legitimacy-scanner";
+import { guardActionRateLimit } from "@/lib/security/action-rate-limit";
 import { z } from "zod";
 
 const scannerSchema = z.object({
-  content: z.string().min(10, { message: "Please paste at least 10 characters to scan." }),
+  content: z
+    .string()
+    .min(10, { message: "Please paste at least 10 characters to scan." })
+    .max(5000, { message: "Keep scanned content under 5000 characters." }),
 });
 
 export type ScanResult = Awaited<ReturnType<typeof scanContent>>;
@@ -33,6 +37,12 @@ export async function getScanResult(
       fields,
       issues: parsed.error.issues.map((issue) => issue.message),
     };
+  }
+
+  try {
+    await guardActionRateLimit("legit-scanner", 10, 60_000);
+  } catch (e: any) {
+    return { message: e.message || "Too many requests. Please wait and try again.", fields: parsed.data };
   }
 
   try {

@@ -1,6 +1,7 @@
 "use server";
 
 import { checkForBreaches, CheckForBreachesOutput } from "@/ai/flows/breach-checker-flow";
+import { guardActionRateLimit } from "@/lib/security/action-rate-limit";
 import { z } from "zod";
 
 const breachCheckSchema = z.object({
@@ -31,6 +32,12 @@ export async function getBreachCheckResult(
       fields,
       issues: parsed.error.issues.map((issue) => issue.message),
     };
+  }
+
+  try {
+    await guardActionRateLimit("breach-checker", 10, 60_000);
+  } catch (e: any) {
+    return { message: e.message || "Too many requests. Please wait and try again.", fields: parsed.data };
   }
 
   try {

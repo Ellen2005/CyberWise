@@ -23,7 +23,7 @@ export default function SavedArticlesPage() {
   const { data: savedSlugs, loading: articlesLoading } = useCollection(savedArticlesQuery);
 
   const savedArticles = savedSlugs
-    ? articles.filter(article => savedSlugs.some(slugDoc => slugDoc.slug === article.slug))
+    ? articles.filter(article => savedSlugs.some((slugDoc: any) => (slugDoc as any).slug === article.slug))
     : [];
     
   const isLoading = userLoading || articlesLoading;

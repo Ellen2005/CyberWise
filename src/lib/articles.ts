@@ -1,4 +1,7 @@
-import { placeholderImages } from './placeholder-images.json';
+import placeholderData from './placeholder-images.json';
+
+const placeholderImages: { id: string; imageUrl: string; imageHint: string }[] =
+  (placeholderData as any).placeholderImages ?? [];
 
 type Article = {
   slug: string;

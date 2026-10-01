@@ -1,11 +1,12 @@
 "use server";
 
 import { generateCybersecurityAdvice } from "@/ai/flows/cybersecurity-advice-generator";
+import { guardActionRateLimit } from "@/lib/security/action-rate-limit";
 import { z } from "zod";
 
 const adviceSchema = z.object({
-  digitalHabits: z.string().min(10, { message: "Please describe your digital habits in more detail." }),
-  potentialVulnerabilities: z.string().min(10, { message: "Please describe your potential vulnerabilities in more detail." }),
+  digitalHabits: z.string().min(10, { message: "Please describe your digital habits in more detail." }).max(2000),
+  potentialVulnerabilities: z.string().min(10, { message: "Please describe your potential vulnerabilities in more detail." }).max(2000),
 });
 
 export type FormState = {
@@ -32,6 +33,12 @@ export async function getAdvice(
       fields,
       issues: parsed.error.issues.map((issue) => issue.message),
     };
+  }
+
+  try {
+    await guardActionRateLimit("advice-generator", 10, 60_000);
+  } catch (e: any) {
+    return { message: e.message || "Too many requests. Please wait and try again.", fields: parsed.data };
   }
 
   try {

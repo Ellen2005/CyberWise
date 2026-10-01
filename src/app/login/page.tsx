@@ -57,7 +57,7 @@ export default function LoginPage() {
     if (!auth) return;
     setLoading(true);
     const provider = new GoogleAuthProvider();
-    await signInWithRedirect(auth, provider).catch(error => {
+    await signInWithRedirect(auth, provider).catch((error: any) => {
       setLoading(false);
       toast({
         variant: 'destructive',
@@ -127,7 +127,7 @@ export default function LoginPage() {
     if (!auth || !firestore) return;
 
     getRedirectResult(auth)
-      .then(async (result) => {
+      .then(async (result: any) => {
         if (result && result.user) {
           const user = result.user;
           const userDocRef = doc(firestore, 'users', user.uid);
@@ -149,7 +149,7 @@ export default function LoginPage() {
           setLoading(false);
         }
       })
-      .catch((error) => {
+      .catch((error: any) => {
         if (error.code !== 'auth/no-redirect-operation') {
           console.error('Sign-in redirect error', error);
           toast({
