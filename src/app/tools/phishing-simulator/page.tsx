@@ -51,7 +51,7 @@ export default function PhishingSimulatorPage() {
       setScore(newScore);
       if (newScore === emails.length) {
         toast({
-            title: "Badge Unlocked! 🏅",
+            title: "Badge Unlocked!",
             description: "You've earned the 'Phishing Detective' badge for a perfect score!",
         });
         if (user && firestore) {

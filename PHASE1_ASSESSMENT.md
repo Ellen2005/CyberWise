@@ -22,36 +22,36 @@
 ### Folder Structure (current)
 ```
 src/
-├── ai/                    # Genkit AI layer
-│   ├── genkit.ts          # Genkit init (Gemini 2.5 Flash)
-│   ├── dev.ts             # Dev entry for Genkit CLI
-│   ├── ai-password-suggestion.ts
-│   └── flows/
-│       ├── legitimacy-scanner.ts
-│       ├── breach-checker-flow.ts      # ⚠️ DEAD CODE — never used
-│       ├── cybersecurity-advice-generator.ts
-│       ├── cybersecurity-news-generator.ts
-│       └── device-security-audit-flow.ts
-├── app/                   # Next.js App Router pages
-│   ├── layout.tsx         # Root layout with sidebar navigation
-│   ├── page.tsx           # Dashboard (feature card grid)
-│   ├── awareness/         # Awareness Hub (18 articles + 15 tips)
-│   ├── login/             # Auth page (Google + Email/Password)
-│   ├── news/              # AI-generated news feed
-│   ├── profile/           # User profile + badges + security score
-│   ├── saved/             # Saved articles
-│   └── tools/             # 8 tools (7 pages + actions)
-├── components/            # UI components (shadcn + custom)
-├── firebase/              # Firebase client setup + hooks
-├── hooks/                 # use-mobile, use-toast
-└── lib/                   # articles.ts, phishing-emails.ts, placeholder-images
+├── ai/ # Genkit AI layer
+│ ├── genkit.ts # Genkit init (Gemini 2.5 Flash)
+│ ├── dev.ts # Dev entry for Genkit CLI
+│ ├── ai-password-suggestion.ts
+│ └── flows/
+│ ├── legitimacy-scanner.ts
+│ ├── breach-checker-flow.ts # DEAD CODE — never used
+│ ├── cybersecurity-advice-generator.ts
+│ ├── cybersecurity-news-generator.ts
+│ └── device-security-audit-flow.ts
+├── app/ # Next.js App Router pages
+│ ├── layout.tsx # Root layout with sidebar navigation
+│ ├── page.tsx # Dashboard (feature card grid)
+│ ├── awareness/ # Awareness Hub (18 articles + 15 tips)
+│ ├── login/ # Auth page (Google + Email/Password)
+│ ├── news/ # AI-generated news feed
+│ ├── profile/ # User profile + badges + security score
+│ ├── saved/ # Saved articles
+│ └── tools/ # 8 tools (7 pages + actions)
+├── components/ # UI components (shadcn + custom)
+├── firebase/ # Firebase client setup + hooks
+├── hooks/ # use-mobile, use-toast
+└── lib/ # articles.ts, phishing-emails.ts, placeholder-images
 ```
 
 ---
 
 ## 2. Current Features (Working)
 
-### ✅ Fully Functional
+### Fully Functional
 1. **Dashboard** (`/`) — Grid of feature cards linking to all tools.
 2. **Awareness Hub** (`/awareness`) — 18 in-depth articles + 15 "Quick Tips" with static content, images, categories. Static generation for article detail pages.
 3. **Phishing Simulator** (`/tools/phishing-simulator`) — 13 realistic emails (7 phishing, 6 legitimate), shuffled, scored, with explanations. Awards "Phishing Detective" badge on perfect score (persisted to Firestore).
@@ -67,7 +67,7 @@ src/
 13. **Saved Articles** (`/saved`) — Firestore-backed bookmarking with save/unsave toggle, empty state, skeleton loading.
 14. **Breach Checker** (`/tools/breach-checker`) — Opens HaveIBeenPwned.com in a new tab (privacy-preserving redirect; does NOT check the email itself).
 
-### ⚠️ Partially Functional / Questionable
+### Partially Functional / Questionable
 - **Breach Checker** — The AI flow `breach-checker-flow.ts` exists but is **never used**. The component simply opens `haveibeenpwned.com` in a new tab. The AI flow generates *fictional* breaches, which would be misleading if wired up.
 - **News Feed** — Content is AI-generated *fictional* news, labeled "AI-generated summary. Full article not available." This is acceptable for a demo but not real news.
 - **Security Score** — Client-side only, not persisted to the user profile.
@@ -76,17 +76,17 @@ src/
 
 ## 3. Existing Problems & Bugs
 
-### 🔴 Critical
+### Critical
 1. **Hardcoded Firebase API keys** in `src/firebase/config.ts` — committed to source control. While Firebase API keys are not secret per se, they should be in environment variables, and the project ID `studio-911075528-53737` is a Firebase Studio template leftover, not a CyberWise-branded project.
 2. **`next.config.ts` disables TypeScript and ESLint error checking during builds** (`ignoreBuildErrors: true`, `ignoreDuringBuilds: true`). This means the app can ship with type errors and lint violations undetected.
 3. **Firestore security rules are dangerously permissive:**
-   - `match /users/{userId} { allow read; ... }` — **anyone** (even unauthenticated) can read **all** user profiles (names, emails, photos).
-   - No field-level validation on writes — a user can write arbitrary fields to their own profile.
-   - No rules for future collections (challenges, attempts, etc.).
+ - `match /users/{userId} { allow read; ... }` — **anyone** (even unauthenticated) can read **all** user profiles (names, emails, photos).
+ - No field-level validation on writes — a user can write arbitrary fields to their own profile.
+ - No rules for future collections (challenges, attempts, etc.).
 4. **No rate limiting** on AI Server Actions — anyone can spam the Gemini API and exhaust quota/costs.
 5. **No route protection middleware** — `/profile`, `/saved` handle unauthenticated users client-side only; there is no server-side redirect or protection.
 
-### 🟠 High
+### High
 6. **No tests at all** — zero unit, integration, or e2e tests.
 7. **No `.env.example`** — developers don't know `GEMINI_API_KEY` is required.
 8. **Package name is `"nextn"`** — not `"cyberwise"`.
@@ -95,7 +95,7 @@ src/
 11. **No error boundaries / `error.tsx` / `not-found.tsx` / `loading.tsx`** — poor UX on failures.
 12. **No audit logging** — no record of user actions, admin actions, or security events.
 
-### 🟡 Medium
+### Medium
 13. **Dead code:** `breach-checker-flow.ts` is defined but never imported/used.
 14. **Unused imports:** `layout.tsx` imports `Button` and `Bookmark` but never uses them.
 15. **`FirebaseErrorListener` throws errors in dev mode** — could crash the dev server on permission errors.
@@ -111,20 +111,20 @@ src/
 
 | Vision Feature | Status |
 |---------------|--------|
-| 1. Cybersecurity Basics learning modules (structured courses/lessons) | ❌ Not present — only static articles |
-| 2. Cyber Stories (interactive mystery narratives) | ❌ Not present |
-| 3. Daily Cyber Challenge | ❌ Not present |
-| 4. CTF System (flags, points, difficulty, hints, attempts, leaderboards, categories, history, achievements, XP) | ❌ Not present |
-| 5. Safe Web Security Labs (XSS, SQLi, IDOR, CSRF, etc. in Docker sandboxes) | ❌ Not present |
-| 6. AI Cyber Mentor (conversational, hint-based teaching) | ❌ Not present — only one-shot AI tools |
-| 7. Adaptive Learning (track topics, performance, recommend path) | ❌ Not present |
-| 8. Skill Tree (categories, prerequisites, unlock progression) | ❌ Not present |
-| 9. Gamification (XP, levels, badges, streaks, leaderboards, ranks, daily/weekly challenges, milestones, certificates) | 🟡 Partial — only 1 badge (Phishing Detective) |
-| 10. Real-World Simulations (phishing incident, company breach investigation) | ❌ Not present |
-| 11. Security Career Paths (SOC Analyst, Pentester, etc.) | ❌ Not present |
-| 12. User Dashboard (level, XP, streak, daily challenge, weak areas, learning path) | ❌ Not present — current "dashboard" is just a feature grid |
-| 13. Admin Dashboard (manage challenges, users, courses, analytics) | ❌ Not present |
-| 14. AI Challenge Generation (validated, sandboxed) | ❌ Not present — architecture not prepared for it |
+| 1. Cybersecurity Basics learning modules (structured courses/lessons) | Not present — only static articles |
+| 2. Cyber Stories (interactive mystery narratives) | Not present |
+| 3. Daily Cyber Challenge | Not present |
+| 4. CTF System (flags, points, difficulty, hints, attempts, leaderboards, categories, history, achievements, XP) | Not present |
+| 5. Safe Web Security Labs (XSS, SQLi, IDOR, CSRF, etc. in Docker sandboxes) | Not present |
+| 6. AI Cyber Mentor (conversational, hint-based teaching) | Not present — only one-shot AI tools |
+| 7. Adaptive Learning (track topics, performance, recommend path) | Not present |
+| 8. Skill Tree (categories, prerequisites, unlock progression) | Not present |
+| 9. Gamification (XP, levels, badges, streaks, leaderboards, ranks, daily/weekly challenges, milestones, certificates) | Partial — only 1 badge (Phishing Detective) |
+| 10. Real-World Simulations (phishing incident, company breach investigation) | Not present |
+| 11. Security Career Paths (SOC Analyst, Pentester, etc.) | Not present |
+| 12. User Dashboard (level, XP, streak, daily challenge, weak areas, learning path) | Not present — current "dashboard" is just a feature grid |
+| 13. Admin Dashboard (manage challenges, users, courses, analytics) | Not present |
+| 14. AI Challenge Generation (validated, sandboxed) | Not present — architecture not prepared for it |
 
 ---
 
@@ -132,18 +132,18 @@ src/
 
 | # | Issue | Severity |
 |---|-------|----------|
-| 1 | Hardcoded Firebase config in source | 🔴 Critical |
-| 2 | Firestore rules allow public read of all user profiles | 🔴 Critical |
-| 3 | Build ignores TS/ESLint errors | 🔴 Critical |
-| 4 | No rate limiting on AI endpoints | 🟠 High |
-| 5 | No RBAC / roles / admin concept | 🟠 High |
-| 6 | No route protection middleware | 🟠 High |
-| 7 | No input sanitization pattern (dangerouslySetInnerHTML) | 🟠 High |
-| 8 | No audit logging | 🟠 High |
-| 9 | No CSRF-specific handling (relies on Next.js defaults) | 🟡 Medium |
-| 10 | No secrets management / env validation | 🟡 Medium |
-| 11 | No dependency vulnerability scanning in CI | 🟡 Medium |
-| 12 | No security headers configuration (CSP, HSTS, etc.) | 🟡 Medium |
+| 1 | Hardcoded Firebase config in source | Critical |
+| 2 | Firestore rules allow public read of all user profiles | Critical |
+| 3 | Build ignores TS/ESLint errors | Critical |
+| 4 | No rate limiting on AI endpoints | High |
+| 5 | No RBAC / roles / admin concept | High |
+| 6 | No route protection middleware | High |
+| 7 | No input sanitization pattern (dangerouslySetInnerHTML) | High |
+| 8 | No audit logging | High |
+| 9 | No CSRF-specific handling (relies on Next.js defaults) | Medium |
+| 10 | No secrets management / env validation | Medium |
+| 11 | No dependency vulnerability scanning in CI | Medium |
+| 12 | No security headers configuration (CSP, HSTS, etc.) | Medium |
 
 ---
 
@@ -189,37 +189,37 @@ src/
 ### Recommended Folder Structure (target)
 ```
 src/
-├── app/                    # App Router pages (routes only)
-│   ├── (marketing)/        # Landing, about
-│   ├── (app)/              # Authenticated app shell
-│   │   ├── dashboard/
-│   │   ├── learn/
-│   │   ├── ctf/
-│   │   ├── stories/
-│   │   ├── labs/
-│   │   ├── mentor/
-│   │   ├── profile/
-│   │   └── admin/
-│   └── api/                # (if needed) REST endpoints
-├── components/             # Shared UI components
-│   └── ui/                 # shadcn primitives
-├── features/               # Feature modules (domain-driven)
-│   ├── learning/
-│   ├── ctf/
-│   ├── stories/
-│   ├── labs/
-│   ├── mentor/
-│   ├── gamification/
-│   └── admin/
-├── lib/                    # Utilities, constants, types
-│   ├── db/                 # Firestore repositories (typed)
-│   ├── auth/               # Auth helpers, RBAC
-│   ├── validation/         # zod schemas
-│   └── security/           # rate limiting, sanitization
-├── server/                 # Server-only code (actions, services)
-├── ai/                     # Genkit flows (existing, expand)
-├── hooks/                  # Custom React hooks
-└── types/                  # Shared TypeScript types
+├── app/ # App Router pages (routes only)
+│ ├── (marketing)/ # Landing, about
+│ ├── (app)/ # Authenticated app shell
+│ │ ├── dashboard/
+│ │ ├── learn/
+│ │ ├── ctf/
+│ │ ├── stories/
+│ │ ├── labs/
+│ │ ├── mentor/
+│ │ ├── profile/
+│ │ └── admin/
+│ └── api/ # (if needed) REST endpoints
+├── components/ # Shared UI components
+│ └── ui/ # shadcn primitives
+├── features/ # Feature modules (domain-driven)
+│ ├── learning/
+│ ├── ctf/
+│ ├── stories/
+│ ├── labs/
+│ ├── mentor/
+│ ├── gamification/
+│ └── admin/
+├── lib/ # Utilities, constants, types
+│ ├── db/ # Firestore repositories (typed)
+│ ├── auth/ # Auth helpers, RBAC
+│ ├── validation/ # zod schemas
+│ └── security/ # rate limiting, sanitization
+├── server/ # Server-only code (actions, services)
+├── ai/ # Genkit flows (existing, expand)
+├── hooks/ # Custom React hooks
+└── types/ # Shared TypeScript types
 ```
 
 ---

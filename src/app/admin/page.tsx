@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ShieldCheck, Users, Flag, Bot, GraduationCap, LayoutDashboard, Loader2 } from 'lucide-react';
+import { ShieldCheck, Users, Flag, Bot, GraduationCap, LayoutDashboard, Loader2, Flame } from 'lucide-react';
 import { useUser, useFirestore, useDoc, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, doc, getDoc, setDoc, updateDoc, deleteDoc, serverTimestamp, query, orderBy, limit } from 'firebase/firestore';
 import { seedLessons } from '@/lib/seed/lessons';
@@ -75,7 +75,7 @@ function UsersTab({ firestore }: { firestore: any }) {
                 <span className="font-medium">{u.displayName ?? 'Learner'} <span className="text-muted-foreground">· {u.email}</span></span>
                 <span className="flex items-center gap-2">
                   <Badge variant="secondary">{u.role ?? 'user'}</Badge>
-                  <span className="text-muted-foreground">{u.xp ?? 0} XP · Lv {u.level ?? 1} · 🔥{u.streak ?? 0}</span>
+                  <span className="flex items-center gap-1 text-muted-foreground">{u.xp ?? 0} XP · Lv {u.level ?? 1} · <Flame className="h-3.5 w-3.5 text-orange-400" aria-label="day streak" />{u.streak ?? 0}</span>
                 </span>
               </li>
             ))}

@@ -346,20 +346,20 @@ export const seedHints: Record<string, ChallengeHint[]> = {
 };
 
 export const CHALLENGE_TYPE_META: Record<ChallengeType, { label: string; icon: string; color: string }> = {
-  'phishing': { label: 'Phishing', icon: '🐟', color: 'text-orange-400' },
-  'log-analysis': { label: 'Log Analysis', icon: '📋', color: 'text-blue-400' },
-  'osint': { label: 'OSINT', icon: '🔎', color: 'text-purple-400' },
-  'crypto': { label: 'Cryptography', icon: '🔐', color: 'text-yellow-400' },
-  'web': { label: 'Web Security', icon: '🌐', color: 'text-emerald-400' },
-  'forensics': { label: 'Forensics', icon: '🧪', color: 'text-red-400' },
-  'network': { label: 'Network', icon: '🕸️', color: 'text-cyan-400' },
-  'stego': { label: 'Steganography', icon: '🖼️', color: 'text-pink-400' },
-  'reverse-engineering': { label: 'Reverse Eng.', icon: '🔧', color: 'text-gray-400' },
-  'linux': { label: 'Linux', icon: '🐧', color: 'text-amber-400' },
-  'windows': { label: 'Windows', icon: '🪟', color: 'text-sky-400' },
-  'misc': { label: 'Misc', icon: '🧩', color: 'text-lime-400' },
-  'secure-coding': { label: 'Secure Coding', icon: '💻', color: 'text-emerald-300' },
-  'investigation': { label: 'Investigation', icon: '🕵️', color: 'text-indigo-400' },
+  'phishing': { label: 'Phishing', icon: 'Fish', color: 'text-orange-400' },
+  'log-analysis': { label: 'Log Analysis', icon: 'ClipboardList', color: 'text-blue-400' },
+  'osint': { label: 'OSINT', icon: 'Search', color: 'text-purple-400' },
+  'crypto': { label: 'Cryptography', icon: 'KeyRound', color: 'text-yellow-400' },
+  'web': { label: 'Web Security', icon: 'Globe', color: 'text-emerald-400' },
+  'forensics': { label: 'Forensics', icon: 'FlaskConical', color: 'text-red-400' },
+  'network': { label: 'Network', icon: 'Network', color: 'text-cyan-400' },
+  'stego': { label: 'Steganography', icon: 'Eye', color: 'text-pink-400' },
+  'reverse-engineering': { label: 'Reverse Eng.', icon: 'Wrench', color: 'text-gray-400' },
+  'linux': { label: 'Linux', icon: 'Terminal', color: 'text-amber-400' },
+  'windows': { label: 'Windows', icon: 'AppWindow', color: 'text-sky-400' },
+  'misc': { label: 'Misc', icon: 'Puzzle', color: 'text-lime-400' },
+  'secure-coding': { label: 'Secure Coding', icon: 'Code', color: 'text-emerald-300' },
+  'investigation': { label: 'Investigation', icon: 'Radar', color: 'text-indigo-400' },
 };
 
 export const DIFFICULTY_META: Record<string, { label: string; color: string; points: number }> = {

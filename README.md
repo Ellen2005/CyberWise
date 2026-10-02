@@ -1,72 +1,64 @@
-# CyberWise - Your Personal Cybersecurity Companion
+# CyberWise
 
-CyberWise is a high-performance web application built to be your all-in-one guide to digital safety. It combines AI-powered tools, interactive simulators, and a rich library of educational content.
+CyberWise is a beginner-friendly cybersecurity awareness and learning platform. It helps students, young people, and non-technical users recognize online threats (phishing, scams, spam, cyberbullying, social engineering), learn what to do about them, and build safe habits through interactive simulators, short lessons, stories, and daily challenges.
 
-## 🚀 Technical Stack (The "Square 1" Explanation)
+## Tech stack
 
-CyberWise is built on a modern, reactive stack designed for speed, security, and scalability:
+- **Framework**: Next.js 15 (App Router) with React Server Actions
+- **Language**: TypeScript
+- **UI**: Tailwind CSS and shadcn/ui components
+- **Backend**: Firebase Authentication and Cloud Firestore
+- **AI**: Google Gemini via Genkit (optional; the app works without an API key using built-in offline guidance)
+- **Tests**: Vitest (`npm test`)
 
-*   **Frontend Framework**: [Next.js 15](https://nextjs.org/) (App Router). Uses **Server Actions** instead of traditional REST API endpoints for secure, server-side logic.
-*   **Language**: [TypeScript](https://www.typescriptlang.org/) for type-safe, robust code.
-*   **UI & Styling**: [Tailwind CSS](https://tailwindcss.com/) for layout and [ShadCN UI](https://ui.shadcn.com/) for beautiful, accessible components.
-*   **Backend as a Service**: [Firebase](https://firebase.google.com/).
-    *   **Authentication**: Secure login via Google and Email/Password.
-    *   **Firestore**: NoSQL Real-time database for user profiles and saved content.
-*   **Generative AI**: [Google AI & Genkit](https://ai.google.dev/genkit).
-    *   Utilizes **Gemini 2.5 Flash** for lightning-fast security analysis and content generation.
+## Getting started
 
-## 🧠 Application Architecture
+1. Install dependencies:
 
-### 1. Data Model (Firestore)
-The database structure is defined in `docs/backend.json`:
-*   `/users/{userId}`: Stores `UserProfile` (name, email, earned badges).
-*   `/users/{userId}/savedArticles/{articleId}`: Stores a user's library of saved guides.
+   ```bash
+   npm install
+   ```
 
-### 2. AI Flows (`src/ai/flows/`)
-CyberWise doesn't just "chat"; it uses structured AI Flows:
-*   **Troubleshooter**: Analyzes user-described problems and returns device-specific instructions.
-*   **News Generator**: Aggregates and summarizes fictionalized current events in cybersecurity.
-*   **Legit Scanner**: Dissects text/URLs to find phishing "red flags."
+2. Configure environment variables. Copy `.env.example` to `.env.local` and fill in the values:
 
-### 3. Interactive Learning
-*   **Phishing Simulator**: A gamified engine (`src/lib/phishing-emails.ts`) that tests your ability to spot malicious communication.
-*   **Security Score**: A client-side checklist (`src/components/security-score-checklist.tsx`) that calculates your personal safety rating.
+   ```bash
+   cp .env.example .env.local
+   ```
 
-## 🛠️ Deployment Instructions
+   Required for full functionality:
+   - `NEXT_PUBLIC_FIREBASE_*` — from the Firebase console (Project settings > General > Your apps)
+   - `GEMINI_API_KEY` — from Google AI Studio (only needed for AI tools and the AI mentor; everything else works without it)
 
-### 1. Deploy to Vercel (Recommended)
-1.  **Push your code to GitHub.**
-2.  **Import to Vercel**: Connect your GitHub and select the repository.
-3.  **Project Settings**:
-    *   **Framework Preset**: Next.js (detected automatically).
-    *   **Node.js Version**: 20.x or higher.
-4.  **Environment Variables**: Add `GEMINI_API_KEY` with your Google AI API key.
-5.  **Firebase Configuration**: 
-    *   Go to [Firebase Console](https://console.firebase.google.com/) > Auth > Settings > Authorized Domains.
-    *   Add your Vercel URL (e.g., `your-app.vercel.app`).
+3. Run the development server:
 
-### 2. Deploy to Railway or Render
-1.  Connect your GitHub to the platform.
-2.  **Environment Variables**: Add `GEMINI_API_KEY`.
-3.  **Build Command**: `npm run build`.
-4.  **Start Command**: `npm start`.
+   ```bash
+   npm run dev
+   ```
 
-## 💻 Local Development
+   Open [http://localhost:3000](http://localhost:3000).
 
-1.  **Install Dependencies:**
-    ```bash
-    npm install
-    ```
-2.  **Set Up Environment Variables:**
-    Create a `.env` file in the root and add:
-    ```
-    GEMINI_API_KEY=YOUR_API_KEY_HERE
-    ```
-3.  **Run Development Server:**
-    ```bash
-    npm run dev
-    ```
-    Open [http://localhost:9002](http://localhost:9002) to view the app.
+4. Deploy Firestore rules and enable sign-in providers (Email/Password, Google) in the Firebase console. Add your deployed domain under Authentication > Settings > Authorized domains.
 
----
-*Built with ❤️ for digital safety.*
+## Useful commands
+
+| Command           | Purpose                              |
+| ----------------- | ------------------------------------ |
+| `npm run dev`     | Start the development server         |
+| `npm run build`   | Create a production build            |
+| `npm start`       | Serve the production build           |
+| `npm test`        | Run the Vitest unit test suite       |
+| `npm run typecheck` | Type-check the project (informational; `next.config.ts` currently skips type validation during builds due to incomplete Firebase packaging typings) |
+
+## Deployment (Vercel)
+
+1. Push to GitHub and import the repository in Vercel (Framework Preset: Next.js, defaults otherwise).
+2. Add the environment variables listed above.
+3. Deploy, then add the Vercel domain to Firebase Authentication > Authorized domains.
+
+## Project structure
+
+- `src/app/` — routes: dashboard, learn paths, simulators, stories, challenges, mentor, admin console
+- `src/components/` — shared UI, learning widgets, icon mapping
+- `src/lib/` — gamification engine, seed content, recommendations, security utilities
+- `src/ai/` — Genkit flows (legitimacy scanner, advice generator, mentor, news)
+- `firestore.rules` — Firestore security rules (deploy with `firebase deploy --only firestore:rules`)

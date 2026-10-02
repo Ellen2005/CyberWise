@@ -15,6 +15,7 @@ import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { NamedIcon } from '@/components/icon-map';
 
 export default function ChallengeDetailPage() {
   const params = useParams<{ slug: string }>();
@@ -67,7 +68,7 @@ export default function ChallengeDetailPage() {
           timeSpentSeconds: 0,
         });
         toast({
-          title: `+${result.xpEarned} XP! 🎉`,
+          title: `+${result.xpEarned} XP!`,
           description:
             result.newBadges.length > 0
               ? `Badges unlocked: ${result.newBadges.map((b) => b).join(', ')}`
@@ -113,7 +114,7 @@ export default function ChallengeDetailPage() {
 
       <div className="flex flex-col md:flex-row md:items-start justify-between gap-4">
         <div className="flex items-start gap-4">
-          <span className="text-4xl">{typeMeta.icon}</span>
+          <NamedIcon name={typeMeta.icon} className={cn('h-9 w-9', typeMeta.color)} />
           <div>
             <div className="flex items-center gap-2 mb-2">
               <h1 className="font-headline text-3xl md:text-4xl font-bold tracking-tight">{challenge.title}</h1>

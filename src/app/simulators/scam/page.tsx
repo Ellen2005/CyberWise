@@ -71,7 +71,7 @@ export default function ScamSimulatorPage() {
           ) : (
             <div className="space-y-3">
               {s.redFlags.map((r) => (
-                <Alert key={r.id}><AlertTitle>{r.label} {picked.includes(r.id) ? '— spotted ✓' : '— missed'}</AlertTitle><AlertDescription>{r.explanation}</AlertDescription></Alert>
+                <Alert key={r.id}><AlertTitle>{r.label} {picked.includes(r.id) ? '— spotted' : '— missed'}</AlertTitle><AlertDescription>{r.explanation}</AlertDescription></Alert>
               ))}
               <Alert><AlertTitle>Manipulation tactics</AlertTitle><AlertDescription>{s.tactics.join(' · ')}</AlertDescription></Alert>
               <Alert><AlertTitle>Never share</AlertTitle><AlertDescription>{s.neverShare.join(' · ')}</AlertDescription></Alert>

@@ -13,6 +13,7 @@ import { seedHints } from '@/lib/seed/challenges';
 import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
 import { cn } from '@/lib/utils';
+import { NamedIcon } from '@/components/icon-map';
 import type { ChallengeType, Difficulty } from '@/types';
 
 export default function ChallengesPage() {
@@ -132,7 +133,7 @@ export default function ChallengesPage() {
                 <Card className="flex flex-col w-full group overflow-hidden hover:border-primary/80 hover:shadow-lg transition-all duration-300">
                   <CardHeader>
                     <div className="flex items-center justify-between">
-                      <span className="text-2xl">{typeMeta.icon}</span>
+                      <NamedIcon name={typeMeta.icon} className={cn('h-6 w-6', typeMeta.color)} />
                       {isSolved ? (
                         <Badge className="bg-green-500/15 text-green-400 border-green-500/30">
                           <CheckCircle2 className="mr-1 h-3 w-3" /> Solved

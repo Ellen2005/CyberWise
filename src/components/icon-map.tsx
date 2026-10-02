@@ -1,0 +1,90 @@
+import {
+  AppWindow,
+  Award,
+  BookMarked,
+  BookOpen,
+  ClipboardList,
+  Code,
+  Crosshair,
+  Crown,
+  Eye,
+  Fish,
+  Flag,
+  Flame,
+  FlaskConical,
+  Gem,
+  Globe,
+  GraduationCap,
+  KeyRound,
+  Library,
+  Lock,
+  Medal,
+  Network,
+  Puzzle,
+  Radar,
+  Rocket,
+  Search,
+  Shield,
+  Siren,
+  Sparkles,
+  Star,
+  Sun,
+  Swords,
+  Target,
+  Terminal,
+  Trophy,
+  Wrench,
+  Zap,
+  type LucideIcon,
+} from 'lucide-react';
+
+const ICONS: Record<string, LucideIcon> = {
+  AppWindow,
+  Award,
+  BookMarked,
+  BookOpen,
+  ClipboardList,
+  Code,
+  Crosshair,
+  Crown,
+  Eye,
+  Fish,
+  Flag,
+  Flame,
+  FlaskConical,
+  Gem,
+  Globe,
+  GraduationCap,
+  KeyRound,
+  Library,
+  Lock,
+  Medal,
+  Network,
+  Puzzle,
+  Radar,
+  Rocket,
+  Search,
+  Shield,
+  Siren,
+  Sparkles,
+  Star,
+  Sun,
+  Swords,
+  Target,
+  Terminal,
+  Trophy,
+  Wrench,
+  Zap,
+};
+
+type IconProps = {
+  name: string;
+  className?: string;
+  fallback?: LucideIcon;
+};
+
+/** Render a stored icon name (ranks, badges, challenge types) as a Lucide icon. */
+export function NamedIcon({ name, className, fallback = Shield }: IconProps) {
+  const Icon = ICONS[name] ?? fallback;
+  return <Icon className={className} aria-hidden="true" />;
+}

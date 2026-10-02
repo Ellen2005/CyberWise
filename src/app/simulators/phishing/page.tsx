@@ -154,7 +154,7 @@ export default function PhishingInvestigationPage() {
               </Alert>
               {scenario.clues.map((c) => (
                 <Alert key={c.id}>
-                  <AlertTitle>{c.label} {pickedClues.includes(c.id) ? '— you spotted it ✓' : '— you missed it'}</AlertTitle>
+                  <AlertTitle>{c.label} {pickedClues.includes(c.id) ? '— you spotted it' : '— you missed it'}</AlertTitle>
                   <AlertDescription>{c.detail} Why it matters: {c.whyItMatters}</AlertDescription>
                 </Alert>
               ))}

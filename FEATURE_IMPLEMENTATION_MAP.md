@@ -123,15 +123,15 @@ Every completed action (lesson, quiz, story, challenge, investigation) must trig
 
 ## MVP Definition (what we ship first)
 
-1. ✅ Foundation hardening (A1–A6)
-2. ✅ User profile + gamification engine (B1–B2)
-3. ✅ Onboarding (B3)
-4. ✅ Personalized dashboard (B4)
-5. ✅ Daily challenge (C1–C3)
-6. ✅ Beginner lessons + quizzes (D1–D2)
-7. ✅ First Cyber Story (E1–E2)
-8. ✅ Search + Knowledge base (I4, J2)
-9. ✅ Settings page (J1)
-10. ✅ Error/Loading/NotFound states (J4)
+1. Foundation hardening (A1–A6)
+2. User profile + gamification engine (B1–B2)
+3. Onboarding (B3)
+4. Personalized dashboard (B4)
+5. Daily challenge (C1–C3)
+6. Beginner lessons + quizzes (D1–D2)
+7. First Cyber Story (E1–E2)
+8. Search + Knowledge base (I4, J2)
+9. Settings page (J1)
+10. Error/Loading/NotFound states (J4)
 
 Post-MVP (next iteration): CTF platform, Labs, AI Mentor, Career center, Admin panel.

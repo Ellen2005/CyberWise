@@ -11,6 +11,7 @@ import { Flame, Star, User as UserIcon, Award } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { levelFromXp, xpToNextLevel, BADGES } from '@/lib/gamification/engine';
+import { NamedIcon } from '@/components/icon-map';
 import { useMemo } from 'react';
 
 export default function ProfilePage() {
@@ -92,8 +93,8 @@ export default function ProfilePage() {
             <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {badgeMeta.map((b) => (
                 <div key={b.id} className="rounded-lg border p-4">
-                  <p className="text-2xl">{b.icon}</p>
-                  <p className="mt-1 font-semibold">{b.name}</p>
+                  <NamedIcon name={b.icon} className="h-8 w-8 text-primary" />
+                  <p className="mt-2 font-semibold">{b.name}</p>
                   <p className="text-xs text-muted-foreground">{b.description}</p>
                 </div>
               ))}
