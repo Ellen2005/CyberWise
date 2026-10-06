@@ -33,7 +33,7 @@
     {
       "id": "article6",
       "description": "A magnifying glass over a URL link.",
-      "imageUrl": "https://images.unsplash.com/photo-1599507593498-273a5f6b34b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx1cmwlMjBzY2FufGVufDB8fHx8MTcxODc0Njk2NHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://picsum.photos/seed/cyberwise-url/1080/720",
       "imageHint": "verify link"
     },
     {
@@ -45,7 +45,7 @@
     {
       "id": "article8",
       "description": "A computer screen with a skull and crossbones, demanding ransom.",
-      "imageUrl": "https://images.unsplash.com/photo-1636131434360-a2e6a41994e3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjeWJlciUyMHJhbnNvbXdhcmV8ZW58MHx8fHwxNzY4OTA0MDc4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageUrl": "https://picsum.photos/seed/cyberwise-ransom/1080/720",
       "imageHint": "cyber ransomware"
     },
     {
@@ -99,7 +99,7 @@
     {
       "id": "article17",
       "description": "A URL being dissected into its component parts under a magnifying glass.",
-      "imageUrl": "https://images.unsplash.com/photo-1599507593498-273a5f6b34b6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHx1cmwlMjBzY2FufGVufDB8fHx8MTcxODc0Njk2NHww&ixlib-rb-4.0.3&q=80&w=1080",
+      "imageUrl": "https://picsum.photos/seed/cyberwise-url/1080/720",
       "imageHint": "url scan"
     },
     {
