@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -18,6 +18,16 @@ export default function SpotTheScamPage() {
   const [tapped, setTapped] = useState<string[]>([]);
   const [calledLegit, setCalledLegit] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [timed, setTimed] = useState(false);
+  const [secondsLeft, setSecondsLeft] = useState(60);
+  const [best, setBest] = useState<Record<string, number>>(() => {
+    try {
+      if (typeof localStorage === 'undefined') return {};
+      return JSON.parse(localStorage.getItem('spot-best') ?? '{}');
+    } catch {
+      return {};
+    }
+  });
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
@@ -43,9 +53,29 @@ export default function SpotTheScamPage() {
       ? 100
       : 0;
 
+  // Timed mode: 60 seconds per message, then auto-submit.
+  useEffect(() => {
+    if (!timed || submitted) return;
+    if (secondsLeft <= 0) {
+      submit();
+      return;
+    }
+    const t = setTimeout(() => setSecondsLeft((s) => s - 1), 1000);
+    return () => clearTimeout(t);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timed, submitted, secondsLeft]);
+
   const submit = async () => {
+    if (submitted) return;
     setSubmitted(true);
     const good = score >= 60;
+    setBest((b) => {
+      const next = { ...b, [item.id]: Math.max(b[item.id] ?? 0, score) };
+      try {
+        localStorage.setItem('spot-best', JSON.stringify(next));
+      } catch { /* private mode */ }
+      return next;
+    });
     if (user && firestore) {
       try {
         const r = await recordCompletion(firestore, user.uid, {
@@ -63,6 +93,7 @@ export default function SpotTheScamPage() {
 
   const reset = (n: number) => {
     setIndex(n); setTapped([]); setCalledLegit(false); setSubmitted(false);
+    setSecondsLeft(60);
   };
 
   return (
@@ -84,6 +115,21 @@ export default function SpotTheScamPage() {
             {i + 1}. {s.kind}
           </Button>
         ))}
+      </div>
+
+      <div className="flex flex-wrap items-center gap-2">
+        <Button
+          size="sm"
+          variant={timed ? 'default' : 'outline'}
+          onClick={() => { setTimed((v) => !v); setSecondsLeft(60); }}
+          className="min-h-[36px]"
+          aria-pressed={timed}
+        >
+          <Timer className="mr-1 h-4 w-4" />{timed ? `Timed: ${secondsLeft}s left` : 'Timed mode: 60s'}
+        </Button>
+        {best[item.id] !== undefined && (
+          <span className="text-xs text-muted-foreground">Best on this message: {best[item.id]}%</span>
+        )}
       </div>
 
       <Card>
@@ -120,7 +166,7 @@ export default function SpotTheScamPage() {
           </div>
 
           <p className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Timer className="h-4 w-4" /> No timer pressure here — accuracy first. Tapped: {tapped.length}
+            <Timer className="h-4 w-4" /> {timed ? `${secondsLeft}s left — accuracy still beats speed.` : 'No timer pressure here — accuracy first.'} Tapped: {tapped.length}
           </p>
 
           {!submitted ? (

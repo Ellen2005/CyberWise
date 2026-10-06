@@ -11,7 +11,7 @@ import {
 import { getDailyChallenge, WEEKDAY_FOCUS } from '@/lib/daily-challenge';
 import { seedLessons } from '@/lib/seed/lessons';
 import { useUser, useFirestore, useDoc, useCollection, useMemoFirebase } from '@/firebase';
-import { doc, collection } from 'firebase/firestore';
+import { doc, collection, query, orderBy, limit } from 'firebase/firestore';
 import { levelFromXp, xpToNextLevel } from '@/lib/gamification/engine';
 import { recommendNext, summarizePerformance } from '@/lib/learning/recommendations';
 import { ProgressInsights } from '@/components/progress-insights';
@@ -42,6 +42,12 @@ export default function Dashboard() {
     [user, firestore]
   );
   const { data: attempts } = useCollection(attemptsRef as any);
+  const riskRef = useMemoFirebase(
+    () => (user && firestore ? query(collection(firestore, 'users', user.uid, 'riskChecks'), orderBy('createdAt', 'desc'), limit(5)) : null),
+    [user, firestore]
+  );
+  const { data: riskChecks } = useCollection(riskRef as any);
+  const latestRisk: any = ((riskChecks as any[]) ?? [])[0] ?? null;
   const perf = useMemo(
     () => summarizePerformance(((attempts as any[]) ?? []) as any),
     [attempts]
@@ -79,13 +85,23 @@ export default function Dashboard() {
       </div>
 
       {user && (
-        <Card className="border-primary/30">
-          <CardHeader><CardTitle className="font-headline">Know your cyber risk</CardTitle><CardDescription>11 honest questions. Get your risk profile and a personal learning path.</CardDescription></CardHeader>
-          <CardContent className="flex flex-col gap-2 sm:flex-row">
-            <Button asChild className="min-h-[44px]"><Link href="/risk-check">Take the Risk Check</Link></Button>
-            <Button asChild variant="outline" className="min-h-[44px]"><Link href="/scenarios">Or jump into a scenario</Link></Button>
-          </CardContent>
-        </Card>
+        latestRisk ? (
+          <Card className="border-primary/30">
+            <CardHeader><CardTitle className="font-headline">Your risk: {latestRisk.overall}% · weakest: {latestRisk.weakest}</CardTitle><CardDescription>Last checked {latestRisk.createdAt?.toDate ? latestRisk.createdAt.toDate().toLocaleDateString() : 'recently'}. Retake to measure change.</CardDescription></CardHeader>
+            <CardContent className="flex flex-col gap-2 sm:flex-row">
+              <Button asChild className="min-h-[44px]"><Link href="/risk-check">Retake Risk Check</Link></Button>
+              <Button asChild variant="outline" className="min-h-[44px]"><Link href="/plans">Continue my plan</Link></Button>
+            </CardContent>
+          </Card>
+        ) : (
+          <Card className="border-primary/30">
+            <CardHeader><CardTitle className="font-headline">Know your cyber risk</CardTitle><CardDescription>11 honest questions. Get your risk profile and a learning path.</CardDescription></CardHeader>
+            <CardContent className="flex flex-col gap-2 sm:flex-row">
+              <Button asChild className="min-h-[44px]"><Link href="/risk-check">Take the Risk Check</Link></Button>
+              <Button asChild variant="outline" className="min-h-[44px]"><Link href="/scenarios">Or jump into a scenario</Link></Button>
+            </CardContent>
+          </Card>
+        )
       )}
 
       {!user && (
@@ -113,7 +129,7 @@ export default function Dashboard() {
           <CardContent>
             <p className="text-2xl font-bold">{xp} XP</p>
             <Progress value={prog.progress} className="mt-2" />
-            <p className="mt-1 text-xs text-muted-foreground">{prog.remaining} XP to level {level + 1} · {p?.rankName ?? 'Novice Guardian'}</p>
+            <p className="mt-1 text-xs text-muted-foreground">{prog.remaining} XP to level {level + 1} · {p?.rankName ?? 'Cyber Beginner'}</p>
           </CardContent>
         </Card>
         <Card>

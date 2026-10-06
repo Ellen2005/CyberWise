@@ -71,7 +71,7 @@ export default function ProfilePage() {
         <div className="flex-1">
           <h1 className="font-headline text-3xl font-bold md:text-4xl">{user.displayName}</h1>
           <p className="text-muted-foreground">{user.email}</p>
-          <p className="mt-1 text-sm">{p?.rankName ?? 'Novice Guardian'} · Level {level} · <span className="inline-flex items-center gap-1"><Flame className="h-4 w-4 text-orange-400" />{p?.streak ?? 0}-day streak</span></p>
+          <p className="mt-1 text-sm">{p?.rankName ?? 'Cyber Beginner'} · Level {level} · <span className="inline-flex items-center gap-1"><Flame className="h-4 w-4 text-orange-400" />{p?.streak ?? 0}-day streak</span></p>
         </div>
         <Button asChild variant="outline"><Link href="/daily">Today&apos;s challenge</Link></Button>
       </div>

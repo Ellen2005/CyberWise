@@ -12,13 +12,13 @@ export const XP_PER_LEVEL = 100;
 export const MAX_LEVEL = 100;
 
 export const RANKS: Rank[] = [
-  { id: 'novice', name: 'Novice Guardian', minXP: 0, icon: 'Shield' },
-  { id: 'apprentice', name: 'Apprentice Defender', minXP: 500, icon: 'Swords' },
-  { id: 'analyst', name: 'Security Analyst', minXP: 1500, icon: 'Search' },
-  { id: 'specialist', name: 'Security Specialist', minXP: 3500, icon: 'Target' },
-  { id: 'expert', name: 'Security Expert', minXP: 7000, icon: 'Gem' },
-  { id: 'master', name: 'CyberGuard Master', minXP: 12000, icon: 'Trophy' },
-  { id: 'legend', name: 'Legend of CyberWise', minXP: 20000, icon: 'Crown' },
+  { id: 'novice', name: 'Cyber Beginner', minXP: 0, icon: 'Shield' },
+  { id: 'apprentice', name: 'Scam Spotter', minXP: 500, icon: 'Swords' },
+  { id: 'analyst', name: 'Phishing Detective', minXP: 1500, icon: 'Search' },
+  { id: 'specialist', name: 'Security Defender', minXP: 3500, icon: 'Target' },
+  { id: 'expert', name: 'Cyber Expert', minXP: 7000, icon: 'Gem' },
+  { id: 'master', name: 'CyberWise Master', minXP: 12000, icon: 'Trophy' },
+  { id: 'legend', name: 'CyberWise Legend', minXP: 20000, icon: 'Crown' },
 ];
 
 export const BADGES: Badge[] = [

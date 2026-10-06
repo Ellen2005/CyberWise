@@ -42,6 +42,7 @@ import {
   LifeBuoy,
   MessagesSquare,
   ScanEye,
+  CalendarRange,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
@@ -158,6 +159,18 @@ export default function RootLayout({
                         <Link href="/spot-the-scam">
                           <ScanEye />
                           <span>Spot the Scam</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Guided Plans"
+                        className="justify-start"
+                      >
+                        <Link href="/plans">
+                          <CalendarRange />
+                          <span>Plans</span>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
