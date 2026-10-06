@@ -33,7 +33,7 @@ function localAnswer(input: string): string {
 
 export default function MentorPage() {
   const [messages, setMessages] = useState<Msg[]>([
-    { role: 'mentor', text: 'Hi! I am your CyberWise mentor. Ask me in plain language — e.g. “What is phishing?” or “I clicked a strange link, what now?” I guide with hints; I never help with attacks.' },
+    { role: 'mentor', text: 'Hi! I am your WiseTap mentor. Ask me in plain language — e.g. “What is phishing?” or “I clicked a strange link, what now?” I guide with hints; I never help with attacks.' },
   ]);
   const [input, setInput] = useState('');
   const [busy, setBusy] = useState(false);

@@ -1,0 +1,270 @@
+// Digital Safety Lab: facilitator-led youth sessions. Situation-based, never
+// technical lectures. Each session pairs a live activity with app practice.
+
+export type AgeBand = '7-10' | '11-13' | '14-18';
+
+export type YouthSession = {
+  id: string;
+  slug: string;
+  title: string;
+  ages: AgeBand[];
+  minutes: number;
+  goal: string;
+  steps: { title: string; detail: string; minutes: number }[];
+  appHref: string;
+  appCta: string;
+  materials: string[];
+};
+
+export const POWERS = [
+  { id: 'stop', name: 'STOP', desc: "Don't react immediately. Scammers rush you — pause beats pressure." },
+  { id: 'think', name: 'THINK', desc: 'Why am I receiving this? Who benefits if I act fast?' },
+  { id: 'check', name: 'CHECK', desc: 'Who sent it? Where does the link really lead? Verify elsewhere.' },
+  { id: 'protect', name: 'PROTECT', desc: 'Strong unique passwords, the second lock (MFA), and private profiles.' },
+  { id: 'tell', name: 'TELL', desc: 'If something goes wrong, tell someone you trust. Fast reporting limits damage.' },
+];
+
+export const youthSessions: YouthSession[] = [
+  {
+    id: 'ys-click-it',
+    slug: 'would-you-click-it',
+    title: 'Would You Click It?',
+    ages: ['7-10', '11-13', '14-18'],
+    minutes: 30,
+    goal: 'Let learners make the mistake first, then reveal the clues they should have noticed.',
+    steps: [
+      { title: 'Show the message', detail: 'Display a fictional WhatsApp prize message ("You won 50,000 FCFA, tap to claim"). No explanation yet.', minutes: 5 },
+      { title: 'Vote: CLICK / DON’T CLICK / NOT SURE', detail: 'Everyone commits to an answer — hands, cards, or a shout. Count the clicks.', minutes: 5 },
+      { title: 'Reveal the clues', detail: 'Walk through urgency, unknown sender, shortened link, and prize-you-never-entered. Ask who spotted each one.', minutes: 10 },
+      { title: 'Practice round', detail: 'Learners open Spot the Scam on their phones and inspect one message each.', minutes: 10 },
+    ],
+    appHref: '/spot-the-scam',
+    appCta: 'Practice: Spot the Scam',
+    materials: ['Printed or projected fictional messages', 'CLICK / DON’T CLICK voting cards'],
+  },
+  {
+    id: 'ys-scammer-mind',
+    slug: 'how-would-a-scammer-trick-you',
+    title: 'How Would a Scammer Trick You?',
+    ages: ['11-13', '14-18'],
+    minutes: 35,
+    goal: 'Teach social engineering from the defensive side: attackers hack people, not just computers.',
+    steps: [
+      { title: 'Meet fictional David, 13', detail: 'David loves football, wants free game credits, follows a famous player, sometimes uses his mother’s phone. Emphasize: David is invented; we never target real people.', minutes: 5 },
+      { title: 'Brainstorm lures', detail: 'In groups, learners invent messages that might trick David (free credits, fake player giveaway). Collect ideas on a board.', minutes: 10 },
+      { title: 'Name the tricks', detail: 'For each idea, label the psychology: urgency, authority, greed, trust, curiosity. That vocabulary IS the lesson — this is what "social engineering" means.', minutes: 10 },
+      { title: 'Flip to defense', detail: 'For every trick, the group states the defense (verify elsewhere, never pay to receive, tell an adult). Close with the rule: we study tricks to recognize them, never to use them.', minutes: 10 },
+    ],
+    appHref: '/simulators/social-engineering',
+    appCta: 'Practice: manipulation tactics',
+    materials: ['Whiteboard for the trick list', 'Printed David profile card'],
+  },
+  {
+    id: 'ys-password-game',
+    slug: 'password-attack-game',
+    title: 'Which Password Falls First?',
+    ages: ['7-10', '11-13', '14-18'],
+    minutes: 30,
+    goal: 'Make password strength a game: attack the weak ones, then learn passphrases and the second lock.',
+    steps: [
+      { title: 'Rank the passwords', detail: 'Show examples (12345678, a name+year, a football club, a passphrase). Teams order them weakest to strongest and defend their ranking.', minutes: 10 },
+      { title: 'Attacker round', detail: 'Facilitator plays attacker: guesses the weak ones first, shows how "add 123!" fools humans but not guessing software.', minutes: 10 },
+      { title: 'Second lock', detail: 'Introduce MFA as "password + second lock". For younger kids the takeaway is one line; older groups enable it on one real account.', minutes: 10 },
+    ],
+    appHref: '/learn/password-security',
+    appCta: 'Learn: password security',
+    materials: ['Password ranking cards', 'One phone to demo an authenticator app (14-18)'],
+  },
+  {
+    id: 'ys-account-taken',
+    slug: 'someone-has-your-account',
+    title: 'Someone Has Your Account',
+    ages: ['11-13', '14-18'],
+    minutes: 30,
+    goal: 'Teach the real recovery sequence: STOP, SECURE, RECOVER, WARN, REPORT.',
+    steps: [
+      { title: 'The wake-up call', detail: '"You wake up and your Instagram/WhatsApp is no longer yours." Ask: what is your first move? Collect answers without judging.', minutes: 5 },
+      { title: 'Build the sequence together', detail: 'Order the steps as a group: don’t panic → change password if possible → secure the email → enable MFA → log out unknown devices → tell a parent/guardian → report → warn friends.', minutes: 15 },
+      { title: 'Rehearse it', detail: 'Pairs quiz each other on the sequence from memory. Knowing it cold is the whole point — panic erases unpracticed plans.', minutes: 10 },
+    ],
+    appHref: '/help/been-scammed',
+    appCta: 'Review: response checklists',
+    materials: ['Sequence cards to order (printed steps)'],
+  },
+  {
+    id: 'ys-screenshot',
+    slug: 'screenshot-you-shouldnt-send',
+    title: 'The Screenshot You Shouldn’t Have Sent',
+    ages: ['11-13', '14-18'],
+    minutes: 30,
+    goal: 'Show how much one picture reveals: digital footprints without teaching surveillance.',
+    steps: [
+      { title: 'Examine the fictional screenshot', detail: 'A made-up post containing name, school, birthday, phone, location, uniform, username. Groups list everything a stranger could learn.', minutes: 10 },
+      { title: 'The one question', detail: 'Introduce the lifelong habit: "Before I post, what could a stranger learn about me from this?" Apply it to two of their own recent posts (mentally — nobody shares real ones).', minutes: 10 },
+      { title: 'Lockdown round', detail: 'Everyone checks one privacy setting on their own phone (profile visibility, location tags, follower review).', minutes: 10 },
+    ],
+    appHref: '/simulators/spam',
+    appCta: 'Practice: privacy and spam',
+    materials: ['Fictional screenshot poster (invented person, invented details)'],
+  },
+  {
+    id: 'ys-online-friends',
+    slug: 'online-friends-vs-real-friends',
+    title: 'Online Friends vs Real Friends',
+    ages: ['7-10', '11-13'],
+    minutes: 30,
+    goal: 'Teach impersonation, secrecy requests, and the tell-a-trusted-adult rule.',
+    steps: [
+      { title: 'The new gaming friend', detail: '"Someone nice in a game asks for your WhatsApp after two weeks. They say they are 13 too." Vote: share or not? Why?', minutes: 10 },
+      { title: 'Spot the warning signs', detail: 'Introduce each escalation: secrecy ("don’t tell"), moving to private chat, requests for photos or info, wanting to meet. One rule covers all: STOP and tell a trusted adult.', minutes: 10 },
+      { title: 'Trusted adult map', detail: 'Every learner names (privately, on paper) two adults they would tell. A plan with names beats a plan in theory.', minutes: 10 },
+    ],
+    appHref: '/stories/the-group-chat-pile-on',
+    appCta: 'Story: when chats turn cruel',
+    materials: ['Paper for the private trusted-adult list (learners keep it)'],
+  },
+  {
+    id: 'ys-fake-real',
+    slug: 'fake-or-real-sprint',
+    title: 'Fake or Real? Team Sprint',
+    ages: ['11-13', '14-18'],
+    minutes: 30,
+    goal: 'A fast competition: real vs fake announcements, 30 seconds each.',
+    steps: [
+      { title: 'Set the timer', detail: 'Teams get real school-style notices mixed with fakes (urgency, strange links, password requests, too-good offers). 30 seconds per item.', minutes: 5 },
+      { title: 'Sprint rounds', detail: 'Show, decide, score. Speed creates the same pressure scammers use — then discuss how pressure affected accuracy.', minutes: 15 },
+      { title: 'Debrief the misses', detail: 'Every missed fake becomes a taught clue. The team with the best defense explanations (not just score) wins.', minutes: 10 },
+    ],
+    appHref: '/spot-the-scam',
+    appCta: 'Rematch in the app (try timed mode)',
+    materials: ['Timer', 'Score sheet', 'Mixed real/fake cards'],
+  },
+  {
+    id: 'ys-ai-friend',
+    slug: 'ai-is-not-always-your-friend',
+    title: 'AI Is Not Always Your Friend',
+    ages: ['11-13', '14-18'],
+    minutes: 30,
+    goal: 'AI can create convincing things that are not true — verify, don’t forward.',
+    steps: [
+      { title: 'Real or not?', detail: 'Show an AI-generated image, message, and (for older groups) short clip. Vote before revealing.', minutes: 10 },
+      { title: 'The rule', detail: 'Don’t believe something just because you saw it. Verification beats eyes: original source, multiple sources, trusted adult.', minutes: 10 },
+      { title: 'Forwarding pledge', detail: 'Group agreement: "I don’t forward what I haven’t verified." Learners say one thing they will check next time.', minutes: 10 },
+    ],
+    appHref: '/mentor',
+    appCta: 'Ask the mentor about AI tricks',
+    materials: ['Clearly labeled AI-generated examples (always reveal them)'],
+  },
+  {
+    id: 'ys-deepfake',
+    slug: 'can-you-spot-the-deepfake',
+    title: 'Can You Spot the Deepfake?',
+    ages: ['14-18'],
+    minutes: 35,
+    goal: 'Sometimes you cannot tell by looking — that is why verification matters.',
+    steps: [
+      { title: 'The challenge', detail: 'Real vs AI-generated photos, voices, and celebrity statements. Score individual guesses.', minutes: 10 },
+      { title: 'The twist', detail: 'Reveal the misses, then teach the real lesson: there are no 10 guaranteed detection tricks. Looking harder is not the defense — checking the source is.', minutes: 15 },
+      { title: 'Verification drill', detail: 'Take one viral-style claim and verify it live: source, date, other outlets, reverse image search basics.', minutes: 10 },
+    ],
+    appHref: '/simulators/social-engineering',
+    appCta: 'Practice: trust and verification',
+    materials: ['Labeled real/AI pairs (only age-appropriate, non-scary content)'],
+  },
+  {
+    id: 'ys-momo',
+    slug: 'mobile-money-scams',
+    title: 'Mobile Money Scams Up Close',
+    ages: ['11-13', '14-18'],
+    minutes: 35,
+    goal: 'PINs, OTPs, fake receipts, and fake support — the money rules that prevent real losses.',
+    steps: [
+      { title: 'Three messages', detail: 'Show: "100,000 FCFA received, send back 50,000", "account blocked, send PIN", and a fake payment screenshot. Groups find what is wrong in each.', minutes: 15 },
+      { title: 'The money rules', detail: 'Never share PINs/OTPs. Screenshots prove nothing — check your own balance. Real support never asks for codes. Urgency means verify, not pay.', minutes: 10 },
+      { title: 'Role-play the refusal', detail: 'Pairs practice saying no to a pushy "agent" out loud. Refusal is a muscle.', minutes: 10 },
+    ],
+    appHref: '/scenarios/mobile-money-reward-scam',
+    appCta: 'Play: the MoMo reward trap',
+    materials: ['Printed fictional MoMo messages', 'Calculator for "fee ladder" math'],
+  },
+  {
+    id: 'ys-usb',
+    slug: 'you-found-a-usb-drive',
+    title: 'You Found a USB Drive…',
+    ages: ['7-10', '11-13', '14-18'],
+    minutes: 20,
+    goal: 'Curiosity is not a security strategy: unknown devices and files stay unplugged.',
+    steps: [
+      { title: 'The prop', detail: 'Place a USB drive on the table. "Would you plug it into the school computer?" Vote before any teaching.', minutes: 5 },
+      { title: 'Follow the chain', detail: 'Trace it together: unknown drive → strange file → malware → stolen photos, passwords, and access. One yes at the start enables everything after.', minutes: 10 },
+      { title: 'The rule', detail: 'Unknown drives go to a teacher, never a computer. Same rule covers strange downloads and email attachments.', minutes: 5 },
+    ],
+    appHref: '/learn/malware-and-ransomware',
+    appCta: 'Learn: what malware is',
+    materials: ['A USB drive as a prop (any old one, never plugged in)'],
+  },
+  {
+    id: 'ys-escape-room',
+    slug: 'cyber-escape-room',
+    title: 'Cyber Escape Room: The Hacked Club Account',
+    ages: ['11-13', '14-18'],
+    minutes: 45,
+    goal: 'Teams solve a fictional account takeover from evidence, then prescribe the recovery.',
+    steps: [
+      { title: 'The story', detail: '"The school tech club’s Instagram was hacked last night." Teams receive an evidence envelope: suspicious DM, password hint, fake login page printout, screenshot, odd email, MFA alert.', minutes: 5 },
+      { title: 'Investigate (25 min)', detail: 'Teams reconstruct what happened: which message started it, what the victim clicked, what the attacker gained. Points per correct finding.', minutes: 25 },
+      { title: 'Respond', detail: 'Each team presents: what happened + the victim’s next 5 moves (secure email, change passwords, MFA, warn friends, report). Best response plan wins.', minutes: 15 },
+    ],
+    appHref: '/challenges/acme-breach-investigation',
+    appCta: 'Solo version: breach investigation',
+    materials: ['Printed evidence envelopes per team', 'Score sheet', 'Timer'],
+  },
+  {
+    id: 'ys-after-mistake',
+    slug: 'i-clicked-it-now-what',
+    title: 'I Clicked It. Now What?',
+    ages: ['7-10', '11-13', '14-18'],
+    minutes: 25,
+    goal: 'Mistakes happen — hiding them causes the damage. Reporting fast limits it.',
+    steps: [
+      { title: 'Normalize it', detail: 'Ask who has ever clicked something weird (hands up — including the facilitator). The lesson: everyone clicks; winners report.', minutes: 5 },
+      { title: 'The calm sequence', detail: 'Don’t panic → stop entering info → close it → change exposed passwords → tell a trusted adult → check accounts → report.', minutes: 10 },
+      { title: 'Pledge round', detail: 'Each learner finishes the sentence: "If I click something bad, I will…" No shame, no punishment — ever. That promise is the whole session.', minutes: 10 },
+    ],
+    appHref: '/help/been-scammed',
+    appCta: 'See: calm response checklists',
+    materials: ['None — this session is honesty and memory'],
+  },
+  {
+    id: 'ys-bullying',
+    slug: 'words-travel-further',
+    title: 'Words Travel Further Than You Think',
+    ages: ['7-10', '11-13', '14-18'],
+    minutes: 30,
+    goal: 'Digital responsibility: forwarding is participating; retaliation escalates.',
+    steps: [
+      { title: 'The mirror test', detail: '"If you wouldn’t say it to their face, should you send it to 500 people?" Discuss what happens after send: screenshots, permanence, spread.', minutes: 10 },
+      { title: 'The safe chain', detail: 'Don’t reply angrily → save evidence → block → report → tell a trusted adult. Practice saying it back.', minutes: 10 },
+      { title: 'Upstander pledges', detail: 'What to do when someone ELSE is targeted: check on them privately, don’t forward, report. Every group names one upstander action.', minutes: 10 },
+    ],
+    appHref: '/simulators/bullying',
+    appCta: 'Practice: bullying response',
+    materials: ['Scenario cards (fictional group-chat situations)'],
+  },
+  {
+    id: 'ys-five-powers',
+    slug: 'five-safety-powers',
+    title: 'The 5 Safety Powers',
+    ages: ['7-10', '11-13', '14-18'],
+    minutes: 20,
+    goal: 'Send every learner home with five words they will remember: STOP, THINK, CHECK, PROTECT, TELL.',
+    steps: [
+      { title: 'Teach the five', detail: 'One minute each with a gesture: STOP (raised hand), THINK (tap temple), CHECK (magnifier hands), PROTECT (lock arms), TELL (point to a friend).', minutes: 10 },
+      { title: 'Speed drill', detail: 'Call out situations; learners shout the matching power. Fast, loud, fun — memory loves all three.', minutes: 5 },
+      { title: 'Take-home', detail: 'Point everyone to the Powers poster on WiseTap and one scenario to try at home tonight.', minutes: 5 },
+    ],
+    appHref: '/powers',
+    appCta: 'See: the 5 Powers poster',
+    materials: ['Printed 5 Powers poster (or the WiseTap page on a screen)'],
+  },
+];

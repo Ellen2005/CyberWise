@@ -1,6 +1,6 @@
-# CyberWise
+# WiseTap
 
-CyberWise is a beginner-friendly cybersecurity awareness and learning platform. It helps students, young people, and non-technical users recognize online threats (phishing, scams, spam, cyberbullying, social engineering), learn what to do about them, and build safe habits through interactive simulators, short lessons, stories, and daily challenges.
+WiseTap (a CyberWise learning project) helps ordinary people recognize danger online, make good decisions, and know what to do when something goes wrong. It teaches digital safety through real-life situations — not technical lectures: interactive scenarios, spot-the-scam games, short lessons, stories, guided plans, facilitator-led youth sessions, and emergency checklists for students, young people, and non-technical users.
 
 ## Tech stack
 

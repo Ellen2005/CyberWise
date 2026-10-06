@@ -30,7 +30,7 @@ export default function BreachChecker() {
                 <CardHeader>
                     <CardTitle>Check for Breaches with "Have I Been Pwned?"</CardTitle>
                     <CardDescription>
-                        To ensure your privacy and provide the most accurate results, CyberWise integrates with the official "Have I Been Pwned?" website—the most trusted service for breach tracking.
+                        To ensure your privacy and provide the most accurate results, WiseTap integrates with the official "Have I Been Pwned?" website—the most trusted service for breach tracking.
                     </CardDescription>
                 </CardHeader>
                 <CardContent className="space-y-4">
@@ -50,7 +50,7 @@ export default function BreachChecker() {
                         <Search className="h-4 w-4" />
                         <AlertTitle>How this works</AlertTitle>
                         <AlertDescription>
-                            When you click the button below, you will be taken to the official "Have I Been Pwned?" website in a new tab. For your security, you will need to enter your email address on their site yourself. CyberWise does not handle or see the email you check.
+                            When you click the button below, you will be taken to the official "Have I Been Pwned?" website in a new tab. For your security, you will need to enter your email address on their site yourself. WiseTap does not handle or see the email you check.
                         </AlertDescription>
                     </Alert>
                 </CardContent>

@@ -43,7 +43,7 @@ export function FeedbackForm({ contentType = 'platform', contentId = '' }: { con
       });
       setSent(true);
       setMessage('');
-      toast({ title: 'Thanks!', description: 'Your report was sent to the CyberWise team.' });
+      toast({ title: 'Thanks!', description: 'Your report was sent to the WiseTap team.' });
     } catch {
       toast({ variant: 'destructive', title: 'Could not send', description: 'Check your connection and try again.' });
     } finally {

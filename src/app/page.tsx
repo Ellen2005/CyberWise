@@ -79,7 +79,7 @@ export default function Dashboard() {
     <main className="flex flex-1 flex-col gap-6 p-4 md:p-8">
       <div>
         <h1 className="font-headline text-3xl font-bold tracking-tight md:text-4xl">
-          {user ? `Welcome back, ${user.displayName?.split(' ')[0] ?? 'learner'}` : 'Welcome to CyberWise'}
+          {user ? `Welcome back, ${user.displayName?.split(' ')[0] ?? 'learner'}` : 'Welcome to WiseTap'}
         </h1>
         <p className="text-muted-foreground">Learn it. Spot it. Stop it. — one small step today.</p>
       </div>

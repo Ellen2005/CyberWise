@@ -17,8 +17,8 @@ export const RANKS: Rank[] = [
   { id: 'analyst', name: 'Phishing Detective', minXP: 1500, icon: 'Search' },
   { id: 'specialist', name: 'Security Defender', minXP: 3500, icon: 'Target' },
   { id: 'expert', name: 'Cyber Expert', minXP: 7000, icon: 'Gem' },
-  { id: 'master', name: 'CyberWise Master', minXP: 12000, icon: 'Trophy' },
-  { id: 'legend', name: 'CyberWise Legend', minXP: 20000, icon: 'Crown' },
+  { id: 'master', name: 'WiseTap Master', minXP: 12000, icon: 'Trophy' },
+  { id: 'legend', name: 'WiseTap Legend', minXP: 20000, icon: 'Crown' },
 ];
 
 export const BADGES: Badge[] = [

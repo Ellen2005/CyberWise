@@ -31,8 +31,8 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: 'CyberWise',
-  description: 'Learn it. Spot it. Stop it. Cybersecurity you can actually understand — realistic scenarios, simulators, and practical guidance.',
+  title: 'WiseTap',
+  description: 'Learn it. Spot it. Stop it. WiseTap (a CyberWise learning project) teaches everyday digital safety through realistic scenarios and practical guidance.',
 };
 
 export default function RootLayout({
@@ -65,7 +65,7 @@ export default function RootLayout({
                 >
                   <Logo className="size-8" />
                   <span className="group-data-[collapsible=icon]:hidden">
-                    CyberWise
+                    WiseTap
                   </span>
                 </Link>
               </SidebarHeader>
@@ -76,6 +76,9 @@ export default function RootLayout({
                 <div className="flex items-center justify-center p-2 group-data-[collapsible=icon]:hidden">
                   <UserNav />
                 </div>
+                <p className="px-2 pb-1 text-center text-[11px] text-muted-foreground group-data-[collapsible=icon]:hidden">
+                  WiseTap · A CyberWise Project
+                </p>
                 <SidebarMenu>
                   <SidebarMenuItem>
                     <SidebarMenuButton

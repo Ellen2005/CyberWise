@@ -32,7 +32,7 @@ export default function IncidentReportPage() {
   const [saving, setSaving] = useState(false);
 
   const report = [
-    'CYBER INCIDENT NOTES (prepared with CyberWise — educational aid, not a legal document)',
+    'CYBER INCIDENT NOTES (prepared with WiseTap — educational aid, not a legal document)',
     '',
     `Type: ${kind}`,
     `When: ${when || '(not specified)'}`,
@@ -91,7 +91,7 @@ export default function IncidentReportPage() {
         <FileText className="h-10 w-10 text-primary" />
         <div>
           <h1 className="font-headline text-3xl font-bold md:text-4xl">Incident notes builder</h1>
-          <p className="text-muted-foreground">Organize what happened so reporting is fast and complete. CyberWise is not law enforcement — this prepares you to report well.</p>
+          <p className="text-muted-foreground">Organize what happened so reporting is fast and complete. WiseTap is not law enforcement — this prepares you to report well.</p>
         </div>
       </div>
 

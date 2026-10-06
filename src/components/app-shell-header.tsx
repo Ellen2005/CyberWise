@@ -19,7 +19,7 @@ export function AppShellHeader() {
       <Separator orientation="vertical" className="mr-2 h-6" />
       <Link href="/" className="flex items-center gap-2 font-headline font-semibold text-primary md:hidden">
         <Logo className="size-7" />
-        CyberWise
+        WiseTap
       </Link>
       <div className="ml-auto flex items-center gap-2">
         <ThemeToggle />

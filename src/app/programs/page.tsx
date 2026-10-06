@@ -29,7 +29,7 @@ export default function ProgramsPage() {
         <GraduationCap className="h-10 w-10 text-primary" />
         <div>
           <h1 className="font-headline text-3xl font-bold md:text-4xl">Training programs</h1>
-          <p className="text-muted-foreground">What you can achieve with CyberWise — no job guarantees.</p>
+          <p className="text-muted-foreground">What you can achieve with WiseTap — no job guarantees.</p>
         </div>
       </div>
       <Card>

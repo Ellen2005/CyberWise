@@ -58,7 +58,7 @@ export default function BeenScammedPage() {
             );
           })}
           <p className="text-xs text-muted-foreground">
-            If someone is in immediate danger or serious harm is involved, contact local emergency services or a trusted authority. CyberWise guidance is educational and does not replace professional help.
+            If someone is in immediate danger or serious harm is involved, contact local emergency services or a trusted authority. WiseTap guidance is educational and does not replace professional help.
           </p>
         </CardContent>
       </Card>

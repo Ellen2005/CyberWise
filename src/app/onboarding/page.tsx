@@ -47,7 +47,7 @@ export default function OnboardingPage() {
         { merge: true }
       );
       document.cookie = 'cw-session=1; path=/; max-age=31536000';
-      toast({ title: 'Welcome to CyberWise!', description: 'Your learning path is ready.' });
+      toast({ title: 'Welcome to WiseTap!', description: 'Your learning path is ready.' });
       router.push('/');
     } catch (e) {
       console.error(e);
