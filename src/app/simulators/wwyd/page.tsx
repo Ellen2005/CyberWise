@@ -23,10 +23,12 @@ export default function WWYDPage() {
     if (picked) return;
     setPicked(id);
     const c = s.choices.find((x) => x.id === id);
-    if (c?.verdict === 'safe' && user && firestore) {
+    const safe = c?.verdict === 'safe';
+    if (user && firestore) {
       try {
-        const r = await recordCompletion(firestore, user.uid, { contentType: 'quiz', contentId: s.id, xpAmount: s.xpReward, correct: true });
-        toast({ title: `+${r.xpEarned} XP`, description: 'Safe decision.' });
+        // Record every decision (safe or not) so progress measurement stays honest.
+        const r = await recordCompletion(firestore, user.uid, { contentType: 'quiz', contentId: s.id, xpAmount: safe ? s.xpReward : 0, correct: safe });
+        if (safe) toast({ title: `+${r.xpEarned} XP`, description: 'Safe decision.' });
       } catch { /* silent */ }
     }
   };

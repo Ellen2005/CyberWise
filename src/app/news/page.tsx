@@ -9,6 +9,7 @@ import { generateCyberNews, NewsItem } from "@/ai/flows/cybersecurity-news-gener
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
+import { NewsImpact } from "@/components/news-impact";
 
 type CachedNews = {
   timestamp: number;
@@ -190,8 +191,9 @@ export default function NewsPage() {
                       <span className="font-semibold">{item.source}</span> - <span className="text-muted-foreground">{item.date}</span>
                     </CardDescription>
                   </CardHeader>
-                  <CardContent className="flex-grow">
+                  <CardContent className="flex-grow space-y-3">
                     <p className="text-foreground/80">{item.description}</p>
+                    <NewsImpact title={item.title} description={item.description} />
                   </CardContent>
                   <CardFooter>
                     <p className="text-sm text-primary">AI-generated summary. Full article not available.</p>

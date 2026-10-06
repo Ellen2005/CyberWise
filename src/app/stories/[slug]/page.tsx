@@ -51,12 +51,12 @@ export default function StoryDetailPage() {
       setFinished(true);
       if (user && firestore) {
         try {
-          const perfect = safeCount + (choice?.isSafe ? 0 : 0) >= story.nodes.length;
+          const perfect = safeCount >= story.nodes.length;
           const r = await recordCompletion(firestore, user.uid, {
             contentType: 'story',
             contentId: story.id,
             xpAmount: perfect ? story.xpReward : Math.round(story.xpReward / 2),
-            correct: true,
+            correct: perfect,
           });
           toast({ title: `+${r.xpEarned} XP`, description: perfect ? 'Perfect choices!' : 'Story complete.' });
         } catch {

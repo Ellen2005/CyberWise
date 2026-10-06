@@ -27,13 +27,14 @@ export default function ScamSimulatorPage() {
     setSubmitted(true);
     const real = new Set(s.redFlags.map((r) => r.id));
     const hits = picked.filter((id) => real.has(id)).length;
-    if (hits >= 2) {
-      if (user && firestore) {
-        try {
-          const r = await recordCompletion(firestore, user.uid, { contentType: 'quiz', contentId: s.id, xpAmount: s.xpReward, correct: true });
-          toast({ title: `+${r.xpEarned} XP`, description: 'Red flags spotted.' });
-        } catch { toast({ variant: 'destructive', title: 'Could not save XP', description: 'Try again.' }); }
-      } else toast({ title: 'Well spotted!', description: 'Sign in to save XP.' });
+    const good = hits >= 2;
+    if (user && firestore) {
+      try {
+        const r = await recordCompletion(firestore, user.uid, { contentType: 'quiz', contentId: s.id, xpAmount: good ? s.xpReward : 0, correct: good });
+        if (good) toast({ title: `+${r.xpEarned} XP`, description: 'Red flags spotted.' });
+      } catch { toast({ variant: 'destructive', title: 'Could not save XP', description: 'Try again.' }); }
+    } else if (good) {
+      toast({ title: 'Well spotted!', description: 'Sign in to save XP.' });
     }
   };
 

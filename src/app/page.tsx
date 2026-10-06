@@ -14,6 +14,7 @@ import { useUser, useFirestore, useDoc, useCollection, useMemoFirebase } from '@
 import { doc, collection } from 'firebase/firestore';
 import { levelFromXp, xpToNextLevel } from '@/lib/gamification/engine';
 import { recommendNext, summarizePerformance } from '@/lib/learning/recommendations';
+import { ProgressInsights } from '@/components/progress-insights';
 import { useMemo } from 'react';
 import { Sparkles } from 'lucide-react';
 
@@ -74,8 +75,18 @@ export default function Dashboard() {
         <h1 className="font-headline text-3xl font-bold tracking-tight md:text-4xl">
           {user ? `Welcome back, ${user.displayName?.split(' ')[0] ?? 'learner'}` : 'Welcome to CyberWise'}
         </h1>
-        <p className="text-muted-foreground">Recognize · Investigate · Respond — one small step today.</p>
+        <p className="text-muted-foreground">Learn it. Spot it. Stop it. — one small step today.</p>
       </div>
+
+      {user && (
+        <Card className="border-primary/30">
+          <CardHeader><CardTitle className="font-headline">Know your cyber risk</CardTitle><CardDescription>11 honest questions. Get your risk profile and a personal learning path.</CardDescription></CardHeader>
+          <CardContent className="flex flex-col gap-2 sm:flex-row">
+            <Button asChild className="min-h-[44px]"><Link href="/risk-check">Take the Risk Check</Link></Button>
+            <Button asChild variant="outline" className="min-h-[44px]"><Link href="/scenarios">Or jump into a scenario</Link></Button>
+          </CardContent>
+        </Card>
+      )}
 
       {!user && (
         <Card className="border-primary/30">
@@ -167,6 +178,8 @@ export default function Dashboard() {
           ))}
         </CardContent>
       </Card>
+
+      <ProgressInsights attempts={(((attempts as any[]) ?? []) as any)} />
 
       <div>
         <h2 className="mb-3 font-headline text-xl font-semibold">Practice safety now</h2>

@@ -40,6 +40,8 @@ import {
   ShieldAlert,
   HelpCircle,
   LifeBuoy,
+  MessagesSquare,
+  ScanEye,
 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
@@ -57,7 +59,7 @@ const spaceGrotesk = Space_Grotesk({
 
 export const metadata: Metadata = {
   title: 'CyberWise',
-  description: 'Learn cybersecurity by doing. Stories, challenges, labs, and AI mentorship for everyone.',
+  description: 'Learn it. Spot it. Stop it. Cybersecurity you can actually understand — realistic scenarios, simulators, and practical guidance.',
 };
 
 export default function RootLayout({
@@ -132,6 +134,30 @@ export default function RootLayout({
                         <Link href="/challenges">
                           <Target />
                           <span>Challenges</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Interactive Scenarios"
+                        className="justify-start"
+                      >
+                        <Link href="/scenarios">
+                          <MessagesSquare />
+                          <span>Scenarios</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton
+                        asChild
+                        tooltip="Spot the Scam"
+                        className="justify-start"
+                      >
+                        <Link href="/spot-the-scam">
+                          <ScanEye />
+                          <span>Spot the Scam</span>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>

@@ -36,20 +36,22 @@ export default function PhishingInvestigationPage() {
     const found = pickedClues.filter((id) => correctClueIds.has(id)).length;
     const recall = found / scenario.clues.length;
     const score = (verdictOk ? 0.5 : 0) + recall * 0.5;
-    if (score >= 0.7 && user && firestore) {
+    const passed = score >= 0.7;
+    if (user && firestore) {
       try {
+        // Record every investigation so recognition measurement stays honest.
         const r = await recordCompletion(firestore, user.uid, {
           contentType: 'quiz',
           contentId: scenario.id,
-          xpAmount: scenario.xpReward,
+          xpAmount: passed ? scenario.xpReward : 0,
           skillIds: ['skill-phishing-awareness', 'skill-email-security'],
-          correct: true,
+          correct: passed,
         });
-        toast({ title: `+${r.xpEarned} XP`, description: 'Investigation complete.' });
+        if (passed) toast({ title: `+${r.xpEarned} XP`, description: 'Investigation complete.' });
       } catch {
         toast({ variant: 'destructive', title: 'Could not save XP', description: 'Try again.' });
       }
-    } else if (score >= 0.7) {
+    } else if (passed) {
       toast({ title: 'Well investigated!', description: 'Sign in to save XP.' });
     }
   };

@@ -1,5 +1,6 @@
 import { ScanLine } from "lucide-react";
 import LegitScannerForm from "@/components/legit-scanner-form";
+import { UrlExplainer } from "@/components/url-explainer";
 
 export default function LegitScannerPage() {
   return (
@@ -16,6 +17,7 @@ export default function LegitScannerPage() {
         </div>
       </div>
       <LegitScannerForm />
+      <UrlExplainer />
     </main>
   );
 }

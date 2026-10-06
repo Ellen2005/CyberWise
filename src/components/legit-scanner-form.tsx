@@ -130,6 +130,25 @@ export default function LegitScannerForm() {
                     </div>
                 </div>
             )}
+            {state.result.uncertainty && (
+                <p className="text-sm text-muted-foreground">Limit of this check: {state.result.uncertainty}</p>
+            )}
+            {state.result.dontList && state.result.dontList.length > 0 && (
+                <div>
+                    <h4 className="font-headline text-md mb-2">What you should NOT do:</h4>
+                    <ul className="list-disc space-y-1 pl-5 text-sm">
+                        {state.result.dontList.map((d) => (<li key={d}>{d}</li>))}
+                    </ul>
+                </div>
+            )}
+            {state.result.doList && state.result.doList.length > 0 && (
+                <div>
+                    <h4 className="font-headline text-md mb-2">What you CAN do:</h4>
+                    <ul className="list-disc space-y-1 pl-5 text-sm">
+                        {state.result.doList.map((d) => (<li key={d}>{d}</li>))}
+                    </ul>
+                </div>
+            )}
           </CardContent>
         </Card>
       )}

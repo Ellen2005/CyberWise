@@ -62,6 +62,12 @@ export default function BeenScammedPage() {
           </p>
         </CardContent>
       </Card>
+      <Card>
+        <CardHeader><CardTitle className="font-headline text-lg">Need to report it? Build incident notes</CardTitle><CardDescription>Organize screenshots, numbers, links, and references into notes you can take to a provider or authority.</CardDescription></CardHeader>
+        <CardContent>
+          <Button asChild variant="outline" className="min-h-[44px]"><Link href="/help/incident-report">Open incident notes builder</Link></Button>
+        </CardContent>
+      </Card>
       <FeedbackForm contentType="response-guide" contentId={guide.id} />
     </main>
   );

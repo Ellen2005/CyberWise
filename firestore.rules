@@ -70,6 +70,14 @@ service cloud.firestore {
       allow get, list, create, update, delete: if isOwner(userId);
     }
 
+    match /users/{userId}/riskChecks/{checkId} {
+      allow get, list, create, update, delete: if isOwner(userId);
+    }
+
+    match /users/{userId}/incidentReports/{reportId} {
+      allow get, list, create, update, delete: if isOwner(userId);
+    }
+
     match /users/{userId}/achievements/{achievementId} {
       allow get, list, create, update, delete: if isOwner(userId);
     }

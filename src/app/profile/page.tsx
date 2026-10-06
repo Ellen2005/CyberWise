@@ -12,6 +12,7 @@ import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 import { levelFromXp, xpToNextLevel, BADGES } from '@/lib/gamification/engine';
 import { NamedIcon } from '@/components/icon-map';
+import { ProgressInsights } from '@/components/progress-insights';
 import { useMemo } from 'react';
 
 export default function ProfilePage() {
@@ -83,6 +84,8 @@ export default function ProfilePage() {
         <Card><CardHeader className="pb-2"><CardTitle className="text-sm font-medium">Interests</CardTitle></CardHeader>
           <CardContent><div className="flex flex-wrap gap-2">{((p?.interests as string[]) ?? []).length ? (p.interests as string[]).map((i: string) => <Badge key={i} variant="secondary">{i}</Badge>) : <span className="text-sm text-muted-foreground">Not set — <Link href="/onboarding" className="text-primary underline">personalize</Link></span>}</div></CardContent></Card>
       </div>
+
+      <ProgressInsights attempts={(((attempts as any[]) ?? []) as any)} />
 
       <Card>
         <CardHeader><CardTitle className="flex items-center gap-2"><Award className="h-5 w-5" />Badges ({badgeMeta.length})</CardTitle><CardDescription>Earned across lessons, challenges, stories, and simulators.</CardDescription></CardHeader>
