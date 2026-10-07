@@ -1,4 +1,4 @@
-import type { Metadata } from 'next';
+import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { Inter, Space_Grotesk } from 'next/font/google';
 import { Toaster } from '@/components/ui/toaster';
@@ -24,6 +24,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { LanguageProvider } from '@/components/language-provider';
 import { AppShellHeader } from '@/components/app-shell-header';
 import { AuthSessionSync } from '@/components/auth-session-sync';
+import { PwaRegister } from '@/components/pwa-register';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const spaceGrotesk = Space_Grotesk({
@@ -32,8 +33,21 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: 'WiseTap',
+  title: {
+    default: 'WiseTap',
+    template: '%s · WiseTap',
+  },
   description: 'Learn it. Spot it. Stop it. WiseTap (a CyberWise learning project) teaches everyday digital safety through realistic scenarios and practical guidance.',
+  manifest: '/manifest.webmanifest',
+  appleWebApp: {
+    capable: true,
+    title: 'WiseTap',
+    statusBarStyle: 'default',
+  },
+};
+
+export const viewport: Viewport = {
+  themeColor: '#0E7490',
 };
 
 export default function RootLayout({
@@ -54,6 +68,7 @@ export default function RootLayout({
         <LanguageProvider>
         <FirebaseClientProvider>
           <AuthSessionSync />
+          <PwaRegister />
           <SidebarProvider>
             <Sidebar
               variant="sidebar"
