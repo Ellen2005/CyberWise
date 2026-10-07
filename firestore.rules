@@ -190,6 +190,20 @@ service cloud.firestore {
     }
 
     // ============================================
+    // Community posts (public approved feed; owner sees own; admin moderates)
+    // ============================================
+    match /communityPosts/{postId} {
+      allow get, list: if resource.data.status == 'approved'
+        || (isSignedIn() && request.auth.uid == resource.data.authorId)
+        || isAdmin();
+      allow create: if isSignedIn()
+        && request.resource.data.keys().hasOnly(['authorId', 'displayName', 'kind', 'title', 'body', 'lang', 'status', 'createdAt'])
+        && request.resource.data.authorId == request.auth.uid
+        && request.resource.data.status == 'pending';
+      allow update, delete: if isAdmin();
+    }
+
+    // ============================================
     // Audit logs (admin only)
     // ============================================
     match /auditLogs/{logId} {

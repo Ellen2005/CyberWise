@@ -9,7 +9,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { ShieldCheck, Users, Flag, Bot, GraduationCap, LayoutDashboard, Loader2, Flame } from 'lucide-react';
+import { ShieldCheck, Users, Flag, Bot, GraduationCap, LayoutDashboard, Loader2, Flame, MessagesSquare } from 'lucide-react';
 import { useUser, useFirestore, useDoc, useCollection, useMemoFirebase } from '@/firebase';
 import { collection, doc, getDoc, setDoc, updateDoc, deleteDoc, serverTimestamp, query, orderBy, limit } from 'firebase/firestore';
 import { seedLessons } from '@/lib/seed/lessons';
@@ -142,6 +142,66 @@ function AIContentTab({ firestore }: { firestore: any }) {
   );
 }
 
+function CommunityTab({ firestore }: { firestore: any }) {
+  const q = useMemoFirebase(
+    () => (firestore ? query(collection(firestore, 'communityPosts'), orderBy('createdAt', 'desc'), limit(50)) : null),
+    [firestore]
+  );
+  const { data, loading } = useCollection(q as any);
+  const { toast } = useToast();
+  const items = ((data as any[]) ?? []);
+  const pending = items.filter((p: any) => p.status === 'pending');
+  const decided = items.filter((p: any) => p.status !== 'pending');
+
+  const setStatus = async (id: string, status: 'approved' | 'rejected') => {
+    try {
+      await updateDoc(doc(firestore, 'communityPosts', id), { status });
+      toast({ title: status === 'approved' ? 'Published' : 'Rejected', description: status === 'approved' ? 'The post is now public.' : 'The author will no longer see it pending.' });
+    } catch {
+      toast({ variant: 'destructive', title: 'Update failed', description: 'Check permissions.' });
+    }
+  };
+  const remove = async (id: string) => {
+    try { await deleteDoc(doc(firestore, 'communityPosts', id)); toast({ title: 'Deleted' }); }
+    catch { toast({ variant: 'destructive', title: 'Delete failed' }); }
+  };
+
+  return (
+    <div className="space-y-4">
+      <Card>
+        <CardHeader><CardTitle className="font-headline">Pending review ({pending.length})</CardTitle><CardDescription>Approve helpful, safe posts. Reject anything with personal data, accusations, or attack instructions.</CardDescription></CardHeader>
+        <CardContent className="space-y-3">
+          {loading ? <p className="text-muted-foreground">Loading…</p> : pending.length === 0 ? <p className="text-muted-foreground">Queue is empty.</p> : pending.map((p: any) => (
+            <div key={p.id} className="rounded-md border p-3 text-sm">
+              <p className="flex flex-wrap items-center gap-2"><Badge>{p.kind}</Badge><span className="text-muted-foreground">{p.displayName}</span></p>
+              <p className="mt-1 font-medium">{p.title}</p>
+              <p className="mt-1 whitespace-pre-wrap text-muted-foreground">{p.body}</p>
+              <div className="mt-2 flex gap-2">
+                <Button size="sm" onClick={() => setStatus(p.id, 'approved')}>Approve</Button>
+                <Button size="sm" variant="outline" onClick={() => setStatus(p.id, 'rejected')}>Reject</Button>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader><CardTitle className="font-headline">Decided ({decided.length})</CardTitle></CardHeader>
+        <CardContent className="space-y-3">
+          {decided.slice(0, 20).map((p: any) => (
+            <div key={p.id} className="flex flex-wrap items-center justify-between gap-2 rounded-md border p-3 text-sm">
+              <span><Badge variant="secondary" className="mr-2">{p.status}</Badge>{p.title}</span>
+              <div className="flex gap-2">
+                {p.status === 'rejected' && <Button size="sm" variant="outline" onClick={() => setStatus(p.id, 'approved')}>Approve</Button>}
+                <Button size="sm" variant="destructive" onClick={() => remove(p.id)}>Delete</Button>
+              </div>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 function ProgramsTab({ firestore }: { firestore: any }) {
   const { toast } = useToast();
   const [safety, setSafety] = useState('');
@@ -204,12 +264,14 @@ export default function AdminPage() {
           <TabsTrigger value="users"><Users className="mr-1 h-4 w-4" />Users</TabsTrigger>
           <TabsTrigger value="feedback"><Flag className="mr-1 h-4 w-4" />Reports</TabsTrigger>
           <TabsTrigger value="ai"><Bot className="mr-1 h-4 w-4" />AI review</TabsTrigger>
+          <TabsTrigger value="community"><MessagesSquare className="mr-1 h-4 w-4" />Community</TabsTrigger>
           <TabsTrigger value="programs"><GraduationCap className="mr-1 h-4 w-4" />Programs</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="mt-4"><Overview /></TabsContent>
         <TabsContent value="users" className="mt-4"><UsersTab firestore={firestore} /></TabsContent>
         <TabsContent value="feedback" className="mt-4"><FeedbackTab firestore={firestore} /></TabsContent>
         <TabsContent value="ai" className="mt-4"><AIContentTab firestore={firestore} /></TabsContent>
+        <TabsContent value="community" className="mt-4"><CommunityTab firestore={firestore} /></TabsContent>
         <TabsContent value="programs" className="mt-4"><ProgramsTab firestore={firestore} /></TabsContent>
       </Tabs>
     </main>
