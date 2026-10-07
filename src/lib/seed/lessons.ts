@@ -458,6 +458,64 @@ export const seedLessons: Lesson[] = [
     order: 6,
     published: true,
   },
+  {
+    id: 'lesson-iot-devices',
+    slug: 'everyday-smart-devices',
+    title: 'Everyday Smart Devices: Cameras, Routers, TVs',
+    description: 'Routers, cameras, smart TVs, and meters are computers too — secure them like ones.',
+    category: 'defense',
+    difficulty: 'beginner',
+    estimatedMinutes: 8,
+    xpReward: 35,
+    skillIds: ['skill-fundamentals'],
+    prerequisites: ['lesson-what-is-cybersecurity'],
+    content: [
+      {
+        type: 'text',
+        text: "Your router, home camera, smart TV, and even electricity meter are small computers connected to the internet. Attackers love them because most people never change a single setting after plugging them in.",
+      },
+      {
+        type: 'heading',
+        text: "Change Default Passwords First",
+        level: 2,
+      },
+      {
+        type: 'text',
+        text: "Cameras, routers, and baby monitors ship with passwords like 'admin/admin' printed in the manual — the same manual attackers can download. Changing the admin password (and the Wi-Fi password) on day one defeats mass automated break-ins.",
+      },
+      {
+        type: 'heading',
+        text: "Updates and Separate Networks",
+        level: 2,
+      },
+      {
+        type: 'list',
+        items: [
+          'Install firmware updates when the app or device offers them; unpatched devices stay hackable forever.',
+          'Turn off features you do not use (remote access, cloud upload, voice control).',
+          'If your router allows it, put smart devices on a separate guest Wi-Fi network from your phones and computers.',
+          'Buy from brands that still release updates; abandoned devices become permanent risks.',
+        ],
+      },
+      {
+        type: 'heading',
+        text: "Cameras, Microphones, and Kids",
+        level: 2,
+      },
+      {
+        type: 'text',
+        text: "Think about who can see and hear through each camera and microphone: placement matters, shared accounts matter, and old devices you give away must be factory-reset first. For children, smart toys and connected devices can collect voice and location data — check privacy settings and parental controls together as a family.",
+      },
+      {
+        type: 'callout',
+        variant: 'tip',
+        text: "The 5-minute rule: new device? Change the password, update it, turn off what you don't need. Done.",
+      },
+    ],
+    quizId: 'quiz-iot',
+    order: 7,
+    published: true,
+  },
 ];
 
 export const seedQuizzes: Quiz[] = [
@@ -701,6 +759,52 @@ export const seedQuizzes: Quiz[] = [
         ],
         correctAnswer: 'A',
         explanation: 'Phishing is the #1 infection vector for malware.',
+        points: 20,
+      },
+    ],
+    passingScore: 60,
+    xpReward: 35,
+  },
+  {
+    id: 'quiz-iot',
+    lessonId: 'lesson-iot-devices',
+    title: 'Smart Devices Quiz',
+    questions: [
+      {
+        id: 'q1',
+        type: 'multiple-choice',
+        question: 'You just bought a home camera. What is the FIRST thing to do?',
+        options: [
+          'Plug it in facing the living room',
+          'Change the default admin password',
+          'Share access with the whole family',
+          'Turn off automatic updates',
+        ],
+        correctAnswer: 'B',
+        explanation: 'Default passwords like admin/admin are public knowledge. Changing them first defeats automated break-ins.',
+        points: 20,
+      },
+      {
+        id: 'q2',
+        type: 'true-false',
+        question: 'Putting smart devices on a separate guest Wi-Fi network improves safety.',
+        options: ['True', 'False'],
+        correctAnswer: 'True',
+        explanation: 'Separation means a compromised camera cannot easily reach your phones and computers.',
+        points: 20,
+      },
+      {
+        id: 'q3',
+        type: 'multiple-choice',
+        question: 'Before giving away an old phone or camera, you should…',
+        options: [
+          'Just delete the photos you remember',
+          'Factory-reset it and remove your accounts',
+          'Leave it logged in for the next owner',
+          'Throw it away with the passwords saved',
+        ],
+        correctAnswer: 'B',
+        explanation: 'Only a factory reset plus account removal reliably wipes your data and access.',
         points: 20,
       },
     ],

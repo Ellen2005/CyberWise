@@ -202,6 +202,56 @@ function CommunityTab({ firestore }: { firestore: any }) {
   );
 }
 
+function ReportingTab({ firestore }: { firestore: any }) {
+  const { toast } = useToast();
+  const [lines, setLines] = useState('');
+  const [loaded, setLoaded] = useState(false);
+  const [saving, setSaving] = useState(false);
+  const ref = doc(firestore, 'config', 'reporting');
+
+  const load = async () => {
+    try {
+      const snap = await getDoc(ref);
+      const d: any = snap.exists() ? snap.data() : {};
+      const items: any[] = Array.isArray(d.items) ? d.items : [];
+      setLines(items.map((i) => `${i.name} | ${i.detail}`).join('\n'));
+      setLoaded(true);
+    } catch { toast({ variant: 'destructive', title: 'Load failed', description: 'Check permissions.' }); }
+  };
+  if (!loaded) load();
+
+  const save = async () => {
+    setSaving(true);
+    try {
+      const items = lines
+        .split('\n')
+        .map((l) => l.trim())
+        .filter(Boolean)
+        .map((l) => {
+          const [name, ...rest] = l.split('|');
+          return { name: name.trim(), detail: rest.join('|').trim() };
+        })
+        .filter((i) => i.name && i.detail);
+      await setDoc(ref, { items, updatedAt: serverTimestamp() }, { merge: true });
+      toast({ title: 'Saved', description: `${items.length} reporting resources live.` });
+    } catch { toast({ variant: 'destructive', title: 'Save failed', description: 'Admin only.' }); }
+    finally { setSaving(false); }
+  };
+
+  return (
+    <Card>
+      <CardHeader><CardTitle className="font-headline">Reporting resources</CardTitle><CardDescription>One per line: Name | detail. Verify every contact against official sources before saving — never invent numbers or URLs.</CardDescription></CardHeader>
+      <CardContent className="space-y-3">
+        <div className="space-y-1">
+          <Label htmlFor="rep-lines">Resources</Label>
+          <Textarea id="rep-lines" value={lines} onChange={(e) => setLines(e.target.value)} placeholder="Operator fraud line | Find it on the official site…" className="min-h-[160px] font-mono text-sm" />
+        </div>
+        <Button onClick={save} disabled={saving} className="min-h-[44px]">{saving && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Save resources</Button>
+      </CardContent>
+    </Card>
+  );
+}
+
 function ProgramsTab({ firestore }: { firestore: any }) {
   const { toast } = useToast();
   const [safety, setSafety] = useState('');
@@ -266,6 +316,7 @@ export default function AdminPage() {
           <TabsTrigger value="ai"><Bot className="mr-1 h-4 w-4" />AI review</TabsTrigger>
           <TabsTrigger value="community"><MessagesSquare className="mr-1 h-4 w-4" />Community</TabsTrigger>
           <TabsTrigger value="programs"><GraduationCap className="mr-1 h-4 w-4" />Programs</TabsTrigger>
+          <TabsTrigger value="reporting"><Flag className="mr-1 h-4 w-4" />Reporting</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="mt-4"><Overview /></TabsContent>
         <TabsContent value="users" className="mt-4"><UsersTab firestore={firestore} /></TabsContent>
@@ -273,6 +324,7 @@ export default function AdminPage() {
         <TabsContent value="ai" className="mt-4"><AIContentTab firestore={firestore} /></TabsContent>
         <TabsContent value="community" className="mt-4"><CommunityTab firestore={firestore} /></TabsContent>
         <TabsContent value="programs" className="mt-4"><ProgramsTab firestore={firestore} /></TabsContent>
+        <TabsContent value="reporting" className="mt-4"><ReportingTab firestore={firestore} /></TabsContent>
       </Tabs>
     </main>
   );

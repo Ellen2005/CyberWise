@@ -106,6 +106,22 @@ export const responseGuides: ResponseGuide[] = [
     ],
   },
   {
+    id: 'rg-lost-device',
+    slug: 'lost-or-stolen-phone',
+    title: 'My phone was lost or stolen',
+    whenToUse: 'Your device is gone and it holds your accounts, photos, money apps, and messages.',
+    steps: [
+      { title: 'Act fast, stay calm', detail: 'A prepared sequence beats panic. Work through these in order.' },
+      { title: 'Lock and locate remotely', detail: 'From another device, use Google Find My Device (Android) or iCloud Find (iPhone) to ring, lock, or erase. Do this before anything else.' },
+      { title: 'Block the SIM and mobile money', detail: 'Call your operator to block the SIM (stops OTP interception and SIM abuse) and freeze mobile-money/bank access via their helpline.' },
+      { title: 'Sign out sessions remotely', detail: 'From a computer, sign out of email, WhatsApp companion devices, Facebook, and banking sessions.' },
+      { title: 'Change key passwords', detail: 'Email first, then money and social accounts — from a trusted device.' },
+      { title: 'Warn your circle', detail: 'Tell family and close contacts your number may be misused for scams "from you".' },
+      { title: 'Report if stolen', detail: 'Report theft to local authorities with the IMEI (dial *#06# on any phone to learn how it looks — keep yours written down separately).' },
+      { title: 'Prevent next time', detail: 'Screen lock + biometrics always on, automatic backups on, and know where Find My Device lives before you need it.' },
+    ],
+  },
+  {
     id: 'rg-infected',
     slug: 'device-might-be-infected',
     title: 'I think my device is infected',

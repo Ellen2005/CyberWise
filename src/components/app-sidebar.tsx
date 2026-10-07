@@ -28,6 +28,8 @@ import {
   Target,
   Trophy,
   Users,
+  Megaphone,
+  Flag,
   Wrench,
   ChevronRight,
   type LucideIcon,
@@ -81,6 +83,7 @@ const GROUPS: NavGroup[] = [
       { href: '/simulators/scam', labelKey: 'scamLab', icon: ShieldAlert },
       { href: '/simulators/wwyd', labelKey: 'wwyd', icon: HelpCircle },
       { href: '/help/been-scammed', labelKey: 'getHelp', icon: LifeBuoy },
+      { href: '/report', labelKey: 'report', icon: Flag },
     ],
   },
   {
@@ -105,6 +108,7 @@ const GROUPS: NavGroup[] = [
     items: [
       { href: '/awareness', labelKey: 'awareness', icon: BookOpen },
       { href: '/news', labelKey: 'news', icon: Newspaper },
+      { href: '/campaigns', labelKey: 'campaigns', icon: Megaphone },
       { href: '/admin', labelKey: 'admin', icon: ShieldCheck },
     ],
   },
