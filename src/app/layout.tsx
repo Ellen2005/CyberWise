@@ -21,6 +21,7 @@ import { cn } from '@/lib/utils';
 import { FirebaseClientProvider } from '@/firebase/client-provider';
 import { UserNav } from '@/components/user-nav';
 import { ThemeProvider } from '@/components/theme-provider';
+import { LanguageProvider } from '@/components/language-provider';
 import { AppShellHeader } from '@/components/app-shell-header';
 import { AuthSessionSync } from '@/components/auth-session-sync';
 
@@ -50,6 +51,7 @@ export default function RootLayout({
         )}
       >
         <ThemeProvider>
+        <LanguageProvider>
         <FirebaseClientProvider>
           <AuthSessionSync />
           <SidebarProvider>
@@ -101,6 +103,7 @@ export default function RootLayout({
             </SidebarInset>
           </SidebarProvider>
         </FirebaseClientProvider>
+        </LanguageProvider>
         </ThemeProvider>
         <Toaster />
       </body>

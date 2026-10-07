@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { SidebarTrigger } from '@/components/ui/sidebar';
 import { Separator } from '@/components/ui/separator';
 import { ThemeToggle } from '@/components/theme-toggle';
+import { LanguageToggle } from '@/components/language-provider';
 import { useUser } from '@/firebase';
 import { Button } from '@/components/ui/button';
 import { LogIn } from 'lucide-react';
@@ -22,6 +23,7 @@ export function AppShellHeader() {
         WiseTap
       </Link>
       <div className="ml-auto flex items-center gap-2">
+        <LanguageToggle />
         <ThemeToggle />
         {!loading && !user && (
           <Button asChild size="sm" variant="outline" className="md:hidden">

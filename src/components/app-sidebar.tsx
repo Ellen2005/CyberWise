@@ -45,69 +45,72 @@ import {
   SidebarMenuSubButton,
 } from '@/components/ui/sidebar';
 import SavedArticlesNavItem from '@/components/saved-articles-nav-item';
+import { useLanguage } from '@/components/language-provider';
 import { cn } from '@/lib/utils';
 
-type NavItem = { href: string; label: string; icon: LucideIcon };
-type NavGroup = { label: string; icon: LucideIcon; defaultOpen: boolean; items: NavItem[] };
+type NavKey = keyof import('@/lib/i18n/dict').Dict['nav'];
+type NavItem = { href: string; labelKey: NavKey; icon: LucideIcon };
+type NavGroup = { labelKey: NavKey; icon: LucideIcon; defaultOpen: boolean; items: NavItem[] };
 
 const GROUPS: NavGroup[] = [
   {
-    label: 'Learn',
+    labelKey: 'learn',
     icon: GraduationCap,
     defaultOpen: true,
     items: [
-      { href: '/learn', label: 'Learning Paths', icon: GraduationCap },
-      { href: '/plans', label: 'Guided Plans', icon: CalendarRange },
-      { href: '/scenarios', label: 'Scenarios', icon: MessagesSquare },
-      { href: '/spot-the-scam', label: 'Spot the Scam', icon: ScanEye },
-      { href: '/stories', label: 'Cyber Stories', icon: Compass },
-      { href: '/sessions', label: 'Safety Sessions', icon: Presentation },
-      { href: '/daily', label: 'Daily', icon: CalendarCheck2 },
-      { href: '/mentor', label: 'AI Mentor', icon: Bot },
-      { href: '/leaderboards', label: 'Leaderboards', icon: Trophy },
+      { href: '/learn', labelKey: 'learningPaths', icon: GraduationCap },
+      { href: '/plans', labelKey: 'plans', icon: CalendarRange },
+      { href: '/scenarios', labelKey: 'scenarios', icon: MessagesSquare },
+      { href: '/spot-the-scam', labelKey: 'spotTheScam', icon: ScanEye },
+      { href: '/stories', labelKey: 'stories', icon: Compass },
+      { href: '/sessions', labelKey: 'sessions', icon: Presentation },
+      { href: '/daily', labelKey: 'daily', icon: CalendarCheck2 },
+      { href: '/mentor', labelKey: 'mentor', icon: Bot },
+      { href: '/leaderboards', labelKey: 'leaderboards', icon: Trophy },
     ],
   },
   {
-    label: 'Practice',
+    labelKey: 'practice',
     icon: Target,
     defaultOpen: true,
     items: [
-      { href: '/challenges', label: 'Challenges', icon: Target },
-      { href: '/simulators/phishing', label: 'Phishing Lab', icon: ScanSearch },
-      { href: '/simulators/scam', label: 'Scam Lab', icon: ShieldAlert },
-      { href: '/simulators/wwyd', label: 'What Would You Do', icon: HelpCircle },
-      { href: '/help/been-scammed', label: 'Get Help', icon: LifeBuoy },
+      { href: '/challenges', labelKey: 'challenges', icon: Target },
+      { href: '/simulators/phishing', labelKey: 'phishingLab', icon: ScanSearch },
+      { href: '/simulators/scam', labelKey: 'scamLab', icon: ShieldAlert },
+      { href: '/simulators/wwyd', labelKey: 'wwyd', icon: HelpCircle },
+      { href: '/help/been-scammed', labelKey: 'getHelp', icon: LifeBuoy },
     ],
   },
   {
-    label: 'Tools',
+    labelKey: 'tools',
     icon: Wrench,
     defaultOpen: false,
     items: [
-      { href: '/tools/legit-scanner', label: 'Legit Scanner', icon: ScanLine },
-      { href: '/tools/breach-checker', label: 'Breach Checker', icon: DatabaseZap },
-      { href: '/tools/device-scanner', label: 'Troubleshooter', icon: Wrench },
-      { href: '/tools/advice-generator', label: 'AI Advisor', icon: BrainCircuit },
-      { href: '/tools/password-analyzer', label: 'Password Analyzer', icon: ShieldCheck },
-      { href: '/tools/password-generator', label: 'Password Generator', icon: KeyRound },
-      { href: '/tools/phishing-simulator', label: 'Phishing Simulator', icon: MessageSquareWarning },
-      { href: '/tools/account-recovery', label: 'Account Recovery', icon: HeartHandshake },
+      { href: '/tools/legit-scanner', labelKey: 'legitScanner', icon: ScanLine },
+      { href: '/tools/breach-checker', labelKey: 'breachChecker', icon: DatabaseZap },
+      { href: '/tools/device-scanner', labelKey: 'troubleshooter', icon: Wrench },
+      { href: '/tools/advice-generator', labelKey: 'aiAdvisor', icon: BrainCircuit },
+      { href: '/tools/password-analyzer', labelKey: 'passwordAnalyzer', icon: ShieldCheck },
+      { href: '/tools/password-generator', labelKey: 'passwordGenerator', icon: KeyRound },
+      { href: '/tools/phishing-simulator', labelKey: 'phishingSimulator', icon: MessageSquareWarning },
+      { href: '/tools/account-recovery', labelKey: 'accountRecovery', icon: HeartHandshake },
     ],
   },
   {
-    label: 'Library',
+    labelKey: 'library',
     icon: BookOpen,
     defaultOpen: false,
     items: [
-      { href: '/awareness', label: 'Awareness Hub', icon: BookOpen },
-      { href: '/news', label: 'News Feed', icon: Newspaper },
-      { href: '/admin', label: 'Admin', icon: ShieldCheck },
+      { href: '/awareness', labelKey: 'awareness', icon: BookOpen },
+      { href: '/news', labelKey: 'news', icon: Newspaper },
+      { href: '/admin', labelKey: 'admin', icon: ShieldCheck },
     ],
   },
 ];
 
 function GroupNav({ group }: { group: NavGroup }) {
   const pathname = usePathname();
+  const { t } = useLanguage();
   const GroupIcon = group.icon;
   const isChildActive = group.items.some(
     (item) => pathname === item.href || pathname.startsWith(`${item.href}/`)
@@ -118,12 +121,12 @@ function GroupNav({ group }: { group: NavGroup }) {
       <SidebarMenuItem>
         <CollapsibleTrigger asChild>
           <SidebarMenuButton
-            tooltip={group.label}
+            tooltip={t.nav[group.labelKey]}
             isActive={isChildActive}
             className="justify-start"
           >
             <GroupIcon />
-            <span>{group.label}</span>
+            <span>{t.nav[group.labelKey]}</span>
             <ChevronRight className="ml-auto size-4 transition-transform group-data-[state=open]/collapsible:rotate-90" />
           </SidebarMenuButton>
         </CollapsibleTrigger>
@@ -138,13 +141,13 @@ function GroupNav({ group }: { group: NavGroup }) {
                   <SidebarMenuSubButton asChild isActive={active}>
                     <Link href={item.href}>
                       <ItemIcon className={cn(active && 'text-primary')} />
-                      <span>{item.label}</span>
+                      <span>{t.nav[item.labelKey]}</span>
                     </Link>
                   </SidebarMenuSubButton>
                 </SidebarMenuSubItem>
               );
             })}
-            {group.label === 'Library' && <SavedArticlesNavItem inSubmenu />}
+            {group.labelKey === 'library' && <SavedArticlesNavItem inSubmenu />}
           </SidebarMenuSub>
         </CollapsibleContent>
       </SidebarMenuItem>
@@ -154,6 +157,7 @@ function GroupNav({ group }: { group: NavGroup }) {
 
 export function AppSidebar() {
   const pathname = usePathname();
+  const { t } = useLanguage();
   const dashboardActive = pathname === '/';
 
   return (
@@ -161,18 +165,18 @@ export function AppSidebar() {
       <SidebarMenuItem>
         <SidebarMenuButton
           asChild
-          tooltip="Dashboard"
+          tooltip={t.nav.dashboard}
           isActive={dashboardActive}
           className="justify-start"
         >
           <Link href="/">
             <LayoutDashboard />
-            <span>Dashboard</span>
+            <span>{t.nav.dashboard}</span>
           </Link>
         </SidebarMenuButton>
       </SidebarMenuItem>
       {GROUPS.map((group) => (
-        <GroupNav key={group.label} group={group} />
+        <GroupNav key={group.labelKey} group={group} />
       ))}
     </SidebarMenu>
   );

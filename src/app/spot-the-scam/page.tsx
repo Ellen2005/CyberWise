@@ -12,6 +12,7 @@ import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/components/language-provider';
 
 export default function SpotTheScamPage() {
   const [index, setIndex] = useState(0);
@@ -31,6 +32,7 @@ export default function SpotTheScamPage() {
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
+  const { t } = useLanguage();
 
   const item = spotItems[index];
   const flagIds = useMemo(() => new Set(item.flags.map((f) => f.id)), [item]);
@@ -99,13 +101,13 @@ export default function SpotTheScamPage() {
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-5 p-4 md:p-8">
       <Link href="/" className="flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-primary">
-        <ArrowLeft className="h-4 w-4" /> Dashboard
+        <ArrowLeft className="h-4 w-4" /> {t.nav.dashboard}
       </Link>
       <div className="flex items-center gap-3">
         <ScanEye className="h-10 w-10 text-primary" />
         <div>
-          <h1 className="font-headline text-3xl font-bold md:text-4xl">Spot the Scam</h1>
-          <p className="text-muted-foreground">Tap the suspicious parts. {index + 1}/{spotItems.length} · Wrong taps cost accuracy.</p>
+          <h1 className="font-headline text-3xl font-bold md:text-4xl">{t.spot.title}</h1>
+          <p className="text-muted-foreground">{t.spot.sub} {index + 1}/{spotItems.length} · {t.spot.wrongCost}</p>
         </div>
       </div>
 
@@ -125,10 +127,10 @@ export default function SpotTheScamPage() {
           className="min-h-[36px]"
           aria-pressed={timed}
         >
-          <Timer className="mr-1 h-4 w-4" />{timed ? `Timed: ${secondsLeft}s left` : 'Timed mode: 60s'}
+          <Timer className="mr-1 h-4 w-4" />{timed ? `${t.spot.timedOn}: ${secondsLeft}s ${t.spot.timedLeft}` : t.spot.timedOff}
         </Button>
         {best[item.id] !== undefined && (
-          <span className="text-xs text-muted-foreground">Best on this message: {best[item.id]}%</span>
+          <span className="text-xs text-muted-foreground">{t.spot.best}: {best[item.id]}%</span>
         )}
       </div>
 
@@ -166,51 +168,47 @@ export default function SpotTheScamPage() {
           </div>
 
           <p className="flex items-center gap-2 text-xs text-muted-foreground">
-            <Timer className="h-4 w-4" /> {timed ? `${secondsLeft}s left — accuracy still beats speed.` : 'No timer pressure here — accuracy first.'} Tapped: {tapped.length}
+            <Timer className="h-4 w-4" /> {timed ? `${secondsLeft}s ${t.spot.timedLeft} — ${t.spot.timedHint}` : t.spot.calmHint} {t.spot.tapped}: {tapped.length}
           </p>
 
           {!submitted ? (
             <div className="flex flex-col gap-2 sm:flex-row">
               <Button onClick={submit} disabled={tapped.length === 0 && !calledLegit} className="min-h-[44px]">
-                Check my inspection{tapped.length > 0 ? ` (${found} suspect${found === 1 ? '' : 's'} tapped)` : ''}
+                {t.spot.check}{tapped.length > 0 ? ` (${found} ${t.spot.suspectTapped})` : ''}
               </Button>
               <Button
                 variant={calledLegit ? 'default' : 'outline'}
                 onClick={() => { setCalledLegit((v) => !v); setTapped([]); }}
                 className="min-h-[44px]"
               >
-                Looks legitimate
+                {t.spot.legit}
               </Button>
             </div>
           ) : (
             <div className="space-y-3">
               <div className="flex items-center gap-3">
                 {score >= 60 ? <CheckCircle2 className="h-7 w-7 text-green-500" /> : <XCircle className="h-7 w-7 text-destructive" />}
-                <p className="font-headline text-xl font-bold">Score: {score}%</p>
+                <p className="font-headline text-xl font-bold">{t.spot.score}: {score}%</p>
               </div>
               <Progress value={score} aria-label={`Score ${score} percent`} />
               {!verdictOk && (
                 <Alert variant="destructive">
-                  <AlertTitle>{item.isScam ? 'You missed it — this WAS a scam.' : 'Careful — this one was LEGITIMATE.'}</AlertTitle>
-                  <AlertDescription>
-                    {item.isScam
-                      ? 'Calling scam messages "legitimate" (or finding nothing) is how victims are made. Study the flags below.'
-                      : 'Flagging honest messages trains paranoia, not safety. The skill is telling them apart.'}
-                  </AlertDescription>
+                  <AlertTitle>{item.isScam ? t.spot.wasScam : t.spot.wasLegit}</AlertTitle>
+                  <AlertDescription>{item.isScam ? t.spot.scamMissDesc : t.spot.legitMissDesc}</AlertDescription>
                 </Alert>
               )}
               {item.flags.map((f) => (
                 <Alert key={f.id} className={cn(tapped.includes(f.id) && 'border-green-500/50')}>
-                  <AlertTitle>{f.label} {tapped.includes(f.id) ? '— you spotted it' : '— you missed it'}</AlertTitle>
+                  <AlertTitle>{f.label} {tapped.includes(f.id) ? `— ${t.spot.spotted}` : `— ${t.spot.missed}`}</AlertTitle>
                   <AlertDescription>{f.explanation}</AlertDescription>
                 </Alert>
               ))}
               {falseHits > 0 && (
-                <p className="text-sm text-muted-foreground">{falseHits} tap{falseHits === 1 ? '' : 's'} on innocent parts cost accuracy. Tap only what you can justify.</p>
+                <p className="text-sm text-muted-foreground">{falseHits} {t.spot.falseHits}</p>
               )}
               <div className="flex gap-2">
-                <Button variant="outline" onClick={() => reset(index)} className="min-h-[44px]"><RotateCcw className="mr-2 h-4 w-4" />Retry</Button>
-                {index < spotItems.length - 1 && <Button onClick={() => reset(index + 1)} className="min-h-[44px]">Next message</Button>}
+                <Button variant="outline" onClick={() => reset(index)} className="min-h-[44px]"><RotateCcw className="mr-2 h-4 w-4" />{t.spot.retry}</Button>
+                {index < spotItems.length - 1 && <Button onClick={() => reset(index + 1)} className="min-h-[44px]">{t.spot.nextMsg}</Button>}
               </div>
             </div>
           )}

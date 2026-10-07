@@ -10,10 +10,12 @@ import {
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { Bookmark } from 'lucide-react';
+import { useLanguage } from '@/components/language-provider';
 
 export default function SavedArticlesNavItem({ inSubmenu = false }: { inSubmenu?: boolean }) {
   const { user } = useUser();
   const pathname = usePathname();
+  const { t } = useLanguage();
 
   if (!user) {
     return null;
@@ -25,7 +27,7 @@ export default function SavedArticlesNavItem({ inSubmenu = false }: { inSubmenu?
         <SidebarMenuSubButton asChild isActive={pathname.startsWith('/saved')}>
           <Link href="/saved">
             <Bookmark />
-            <span>Saved Articles</span>
+            <span>{t.nav.saved}</span>
           </Link>
         </SidebarMenuSubButton>
       </SidebarMenuSubItem>
@@ -36,13 +38,13 @@ export default function SavedArticlesNavItem({ inSubmenu = false }: { inSubmenu?
     <SidebarMenuItem>
       <SidebarMenuButton
         asChild
-        tooltip="Saved Articles"
+        tooltip={t.nav.saved}
         className="justify-start"
         isActive={pathname.startsWith('/saved')}
       >
         <Link href="/saved">
           <Bookmark />
-          <span>Saved Articles</span>
+          <span>{t.nav.saved}</span>
         </Link>
       </SidebarMenuButton>
     </SidebarMenuItem>

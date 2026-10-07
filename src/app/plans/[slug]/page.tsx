@@ -12,6 +12,7 @@ import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebas
 import { collection } from 'firebase/firestore';
 import { recordCompletion } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/components/language-provider';
 
 export default function PlanDetailPage() {
   const params = useParams<{ slug: string }>();
@@ -19,6 +20,7 @@ export default function PlanDetailPage() {
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
+  const { t } = useLanguage();
   const [busyDay, setBusyDay] = useState<number | null>(null);
 
   const attemptsRef = useMemoFirebase(
@@ -68,7 +70,7 @@ export default function PlanDetailPage() {
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-5 p-4 md:p-8">
       <Link href="/plans" className="flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-primary">
-        <ArrowLeft className="h-4 w-4" /> All plans
+        <ArrowLeft className="h-4 w-4" /> {t.plans.all}
       </Link>
       <div>
         <p className="text-sm text-muted-foreground">{plan.audience}</p>
@@ -76,7 +78,7 @@ export default function PlanDetailPage() {
         <p className="mt-1 text-muted-foreground">{plan.tagline}</p>
       </div>
       <div>
-        <div className="mb-2 flex justify-between text-xs text-muted-foreground"><span>{done}/7 days</span>{complete && <span>Complete</span>}</div>
+        <div className="mb-2 flex justify-between text-xs text-muted-foreground"><span>{done}/7 {t.plans.days}</span>{complete && <span>{t.plans.completed}</span>}</div>
         <Progress value={(done / 7) * 100} aria-label={`${done} of 7 days complete`} />
       </div>
       <div className="space-y-3">
@@ -88,16 +90,16 @@ export default function PlanDetailPage() {
                 <div className="flex-1">
                   <p className="flex items-center gap-2 font-medium">
                     {isDone ? <CheckCircle2 className="h-5 w-5 text-green-500" /> : <Circle className="h-5 w-5 text-muted-foreground" />}
-                    Day {d.day}: {d.title}
+                    {t.plans.day} {d.day}: {d.title}
                   </p>
                   <CardDescription className="mt-1">{d.desc}</CardDescription>
-                  <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground"><Clock className="h-3 w-3" />{d.minutes} min · +{plan.xpPerDay} XP</p>
+                  <p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground"><Clock className="h-3 w-3" />{d.minutes} {t.common.min} · +{plan.xpPerDay} {t.common.xp}</p>
                 </div>
                 <div className="flex gap-2">
                   <Button asChild variant="outline" className="min-h-[44px]"><Link href={d.href}>{d.cta}</Link></Button>
                   {!isDone && (
                     <Button onClick={() => markDone(d.day)} disabled={busyDay === d.day} className="min-h-[44px]">
-                      {busyDay === d.day && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}Done
+                      {busyDay === d.day && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}{t.plans.doneBtn}
                     </Button>
                   )}
                 </div>
@@ -108,10 +110,10 @@ export default function PlanDetailPage() {
       </div>
       {complete && (
         <Card className="border-green-500/40">
-          <CardHeader><CardTitle className="font-headline">Plan complete</CardTitle><CardDescription>Seven days of discipline. Pick your next plan or take the Risk Check again to measure change.</CardDescription></CardHeader>
+          <CardHeader><CardTitle className="font-headline">{t.plans.planComplete}</CardTitle><CardDescription>{t.plans.completeDesc}</CardDescription></CardHeader>
           <CardContent className="flex flex-col gap-2 sm:flex-row">
-            <Button asChild variant="outline" className="min-h-[44px]"><Link href="/plans">More plans</Link></Button>
-            <Button asChild className="min-h-[44px]"><Link href="/risk-check">Retake Risk Check</Link></Button>
+            <Button asChild variant="outline" className="min-h-[44px]"><Link href="/plans">{t.plans.morePlans}</Link></Button>
+            <Button asChild className="min-h-[44px]"><Link href="/risk-check">{t.plans.retakeRisk}</Link></Button>
           </CardContent>
         </Card>
       )}

@@ -15,9 +15,9 @@ import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
+import { useLanguage } from '@/components/language-provider';
 
 const ALL = [...scenarios, ...scenarios2];
-const STEPS = ['See', 'Think', 'Decide', 'Consequence', 'Learn', 'Protect'] as const;
 
 export default function ScenarioPlayerPage() {
   const params = useParams<{ slug: string }>();
@@ -28,6 +28,8 @@ export default function ScenarioPlayerPage() {
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
+  const { t } = useLanguage();
+  const STEPS = t.player.steps;
 
   if (!scenario) {
     return (
@@ -69,7 +71,7 @@ export default function ScenarioPlayerPage() {
   return (
     <main className="mx-auto flex w-full max-w-2xl flex-1 flex-col gap-5 p-4 md:p-8">
       <Link href="/scenarios" className="flex w-fit items-center gap-2 text-sm text-muted-foreground hover:text-primary">
-        <ArrowLeft className="h-4 w-4" /> All scenarios
+        <ArrowLeft className="h-4 w-4" /> {t.player.allScenarios}
       </Link>
       <div>
         <p className="text-sm text-muted-foreground">{scenario.category} · {scenario.channel}</p>
@@ -78,14 +80,14 @@ export default function ScenarioPlayerPage() {
 
       <div>
         <div className="mb-2 flex justify-between text-xs text-muted-foreground">
-          <span>Step {step + 1} of {STEPS.length}: {STEPS[step]}</span>
+          <span>{t.player.stepOf} {step + 1} {t.player.of} {STEPS.length}: {STEPS[step]}</span>
         </div>
         <Progress value={((step + 1) / STEPS.length) * 100} aria-label={`Step ${step + 1} of ${STEPS.length}`} />
       </div>
 
       {step === 0 && (
         <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><Eye className="h-5 w-5" />See — the situation</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><Eye className="h-5 w-5" />{STEPS[0]}</CardTitle></CardHeader>
           <CardContent className="space-y-3 text-sm">
             <div className="rounded-md bg-muted/50 p-4">
               <p className="font-medium">From: {scenario.sender}</p>
@@ -94,20 +96,20 @@ export default function ScenarioPlayerPage() {
             {scenario.contextNotes?.map((n) => (
               <p key={n} className="text-muted-foreground">Context: {n}</p>
             ))}
-            <Button onClick={() => setStep(1)} className="min-h-[44px] w-full sm:w-auto">I have seen it — what do I think?</Button>
+            <Button onClick={() => setStep(1)} className="min-h-[44px] w-full sm:w-auto">{t.player.seenCta}</Button>
           </CardContent>
         </Card>
       )}
 
       {step === 1 && (
         <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><Brain className="h-5 w-5" />Think — your read</CardTitle>
+          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><Brain className="h-5 w-5" />{STEPS[1]}</CardTitle>
           <CardDescription>{scenario.thinkPrompt}</CardDescription></CardHeader>
           <CardContent className="space-y-3">
             <Textarea placeholder="Type your thinking in your own words (optional, not graded)..." className="min-h-[100px]" aria-label="Your thinking" />
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setStep(0)} className="min-h-[44px]">Back</Button>
-              <Button onClick={() => setStep(2)} className="min-h-[44px]">Continue to decide</Button>
+              <Button variant="outline" onClick={() => setStep(0)} className="min-h-[44px]">{t.player.back}</Button>
+              <Button onClick={() => setStep(2)} className="min-h-[44px]">{t.player.toDecide}</Button>
             </div>
           </CardContent>
         </Card>
@@ -115,7 +117,7 @@ export default function ScenarioPlayerPage() {
 
       {step === 2 && (
         <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><ListChecks className="h-5 w-5" />Decide — what would you do?</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><ListChecks className="h-5 w-5" />{STEPS[2]}</CardTitle></CardHeader>
           <CardContent className="space-y-2">
             {scenario.choices.map((c) => (
               <Button
@@ -128,8 +130,8 @@ export default function ScenarioPlayerPage() {
               </Button>
             ))}
             <div className="flex gap-2 pt-2">
-              <Button variant="outline" onClick={() => setStep(1)} className="min-h-[44px]">Back</Button>
-              <Button disabled={!picked} onClick={() => setStep(3)} className="min-h-[44px]">Live with it</Button>
+              <Button variant="outline" onClick={() => setStep(1)} className="min-h-[44px]">{t.player.back}</Button>
+              <Button disabled={!picked} onClick={() => setStep(3)} className="min-h-[44px]">{t.player.liveWithIt}</Button>
             </div>
           </CardContent>
         </Card>
@@ -137,7 +139,7 @@ export default function ScenarioPlayerPage() {
 
       {step === 3 && choice && (
         <Card className={cn(choice.verdict === 'safe' ? 'border-green-500/60' : 'border-destructive/60')}>
-          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><Zap className="h-5 w-5" />Consequence</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><Zap className="h-5 w-5" />{STEPS[3]}</CardTitle></CardHeader>
           <CardContent className="space-y-3 text-sm">
             <Alert variant={isSafe ? 'default' : 'destructive'}>
               {isSafe ? <CheckCircle2 className="h-4 w-4 text-green-500" /> : <XCircle className="h-4 w-4" />}
@@ -145,21 +147,21 @@ export default function ScenarioPlayerPage() {
               <AlertDescription>{choice.consequence}</AlertDescription>
             </Alert>
             <Alert><AlertDescription>{choice.feedback}</AlertDescription></Alert>
-            <Button onClick={() => setStep(4)} className="min-h-[44px] w-full sm:w-auto">Understood — why did this happen?</Button>
+            <Button onClick={() => setStep(4)} className="min-h-[44px] w-full sm:w-auto">{t.player.understood}</Button>
           </CardContent>
         </Card>
       )}
 
       {step === 4 && (
         <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><BookOpen className="h-5 w-5" />Learn — the red flags</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><BookOpen className="h-5 w-5" />{STEPS[4]}</CardTitle></CardHeader>
           <CardContent className="space-y-3">
             {scenario.redFlags.map((f) => (
               <Alert key={f.label}><AlertTitle>{f.label}</AlertTitle><AlertDescription>{f.explanation}</AlertDescription></Alert>
             ))}
             <div className="flex gap-2">
-              <Button variant="outline" onClick={() => setStep(3)} className="min-h-[44px]">Back</Button>
-              <Button onClick={() => setStep(5)} className="min-h-[44px]">How do I protect myself?</Button>
+              <Button variant="outline" onClick={() => setStep(3)} className="min-h-[44px]">{t.player.back}</Button>
+              <Button onClick={() => setStep(5)} className="min-h-[44px]">{t.player.toProtect}</Button>
             </div>
           </CardContent>
         </Card>
@@ -167,17 +169,17 @@ export default function ScenarioPlayerPage() {
 
       {step === 5 && (
         <Card className="border-green-500/40">
-          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><ShieldCheck className="h-5 w-5" />Protect — next time</CardTitle></CardHeader>
+          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><ShieldCheck className="h-5 w-5" />{STEPS[5]}</CardTitle></CardHeader>
           <CardContent className="space-y-3 text-sm">
             <ul className="list-disc space-y-2 pl-5">
               {scenario.protect.map((p) => (<li key={p}>{p}</li>))}
             </ul>
             {!saved ? (
-              <Button onClick={finish} className="min-h-[44px] w-full sm:w-auto">Finish scenario (+{isSafe ? scenario.xpReward : choice?.verdict === 'risky' ? Math.round(scenario.xpReward / 2) : 0} XP)</Button>
+              <Button onClick={finish} className="min-h-[44px] w-full sm:w-auto">{t.player.finish} (+{isSafe ? scenario.xpReward : choice?.verdict === 'risky' ? Math.round(scenario.xpReward / 2) : 0} {t.common.xp})</Button>
             ) : (
               <div className="flex flex-col gap-2 sm:flex-row">
-                <Button asChild variant="outline" className="min-h-[44px]"><Link href="/scenarios">More scenarios</Link></Button>
-                <Button asChild className="min-h-[44px]"><Link href="/spot-the-scam">Try Spot the Scam</Link></Button>
+                <Button asChild variant="outline" className="min-h-[44px]"><Link href="/scenarios">{t.player.moreScenarios}</Link></Button>
+                <Button asChild className="min-h-[44px]"><Link href="/spot-the-scam">{t.player.trySpot}</Link></Button>
               </div>
             )}
           </CardContent>

@@ -10,12 +10,14 @@ import { scenarios } from '@/lib/content/scenarios';
 import { scenarios2 } from '@/lib/content/scenarios-2';
 import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
+import { useLanguage } from '@/components/language-provider';
 
 const ALL = [...scenarios, ...scenarios2];
 
 export default function ScenariosPage() {
   const { user } = useUser();
   const firestore = useFirestore();
+  const { t } = useLanguage();
   const [search, setSearch] = useState('');
   const [cat, setCat] = useState('all');
 
@@ -46,30 +48,28 @@ export default function ScenariosPage() {
       <div className="flex items-center gap-4">
         <MessagesSquare className="h-10 w-10 text-primary" />
         <div>
-          <h1 className="font-headline text-4xl font-bold tracking-tight">Interactive scenarios</h1>
-          <p className="text-muted-foreground">
-            Real situations from everyday life. See, think, decide — then live the consequence safely and learn why.
-          </p>
+          <h1 className="font-headline text-4xl font-bold tracking-tight">{t.scenariosHub.title}</h1>
+          <p className="text-muted-foreground">{t.scenariosHub.sub}</p>
         </div>
       </div>
 
       <Card>
         <CardContent className="flex flex-col gap-3 p-4 sm:flex-row sm:items-center">
-          <span className="flex items-center gap-2 text-sm font-medium"><Eye className="h-4 w-4" />See</span>
-          <span className="flex items-center gap-2 text-sm font-medium"><Brain className="h-4 w-4" />Think</span>
-          <span className="flex items-center gap-2 text-sm font-medium"><ListChecks className="h-4 w-4" />Decide</span>
-          <span className="text-sm text-muted-foreground">Consequence, Learn, Protect follow every decision.</span>
-          <span className="ml-auto text-sm text-muted-foreground">{done.size}/{ALL.length} completed</span>
+          <span className="flex items-center gap-2 text-sm font-medium"><Eye className="h-4 w-4" />{t.player.steps[0]}</span>
+          <span className="flex items-center gap-2 text-sm font-medium"><Brain className="h-4 w-4" />{t.player.steps[1]}</span>
+          <span className="flex items-center gap-2 text-sm font-medium"><ListChecks className="h-4 w-4" />{t.player.steps[2]}</span>
+          <span className="text-sm text-muted-foreground">{t.scenariosHub.loopNote}</span>
+          <span className="ml-auto text-sm text-muted-foreground">{done.size}/{ALL.length} {t.scenariosHub.completed}</span>
         </CardContent>
       </Card>
 
       <div className="flex flex-col gap-3 sm:flex-row">
         <Input
-          placeholder="Search scenarios..."
+          placeholder={t.scenariosHub.searchPh}
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className="sm:max-w-xs"
-          aria-label="Search scenarios"
+          aria-label={t.scenariosHub.searchPh}
         />
         <div className="flex flex-wrap gap-2">
           {cats.map((c) => (
@@ -87,7 +87,7 @@ export default function ScenariosPage() {
 
       {filtered.length === 0 ? (
         <div className="rounded-lg border-2 border-dashed py-16 text-center text-muted-foreground">
-          No scenarios match. Try a different search.
+          {t.scenariosHub.noMatch}
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -97,7 +97,7 @@ export default function ScenariosPage() {
                 <CardHeader>
                   <div className="flex items-center justify-between gap-2">
                     <Badge variant="secondary">{s.channel}</Badge>
-                    {done.has(s.id) && <CheckCircle2 className="h-5 w-5 text-green-500" aria-label="Completed" />}
+                    {done.has(s.id) && <CheckCircle2 className="h-5 w-5 text-green-500" aria-label={t.scenariosHub.completed} />}
                   </div>
                   <CardTitle className="font-headline text-xl">{s.title}</CardTitle>
                   <CardDescription className="line-clamp-2">{s.category}</CardDescription>
