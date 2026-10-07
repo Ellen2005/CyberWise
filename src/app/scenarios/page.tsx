@@ -8,17 +8,20 @@ import { Input } from '@/components/ui/input';
 import { MessagesSquare, CheckCircle2, Eye, Brain, ListChecks } from 'lucide-react';
 import { scenarios } from '@/lib/content/scenarios';
 import { scenarios2 } from '@/lib/content/scenarios-2';
+import { localizeScenario } from '@/lib/content/localize';
 import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { collection } from 'firebase/firestore';
 import { useLanguage } from '@/components/language-provider';
 
-const ALL = [...scenarios, ...scenarios2];
-
 export default function ScenariosPage() {
   const { user } = useUser();
   const firestore = useFirestore();
-  const { t } = useLanguage();
+  const { t, lang } = useLanguage();
   const [search, setSearch] = useState('');
+  const ALL = useMemo(
+    () => [...scenarios, ...scenarios2].map((s) => localizeScenario(s, lang)),
+    [lang]
+  );
   const [cat, setCat] = useState('all');
 
   const attemptsRef = useMemoFirebase(

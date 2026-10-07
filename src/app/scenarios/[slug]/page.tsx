@@ -11,6 +11,7 @@ import { Progress } from '@/components/ui/progress';
 import { ArrowLeft, Eye, Brain, ListChecks, Zap, BookOpen, ShieldCheck, CheckCircle2, XCircle } from 'lucide-react';
 import { scenarios } from '@/lib/content/scenarios';
 import { scenarios2 } from '@/lib/content/scenarios-2';
+import { localizeScenario } from '@/lib/content/localize';
 import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
@@ -21,14 +22,15 @@ const ALL = [...scenarios, ...scenarios2];
 
 export default function ScenarioPlayerPage() {
   const params = useParams<{ slug: string }>();
-  const scenario = ALL.find((s) => s.slug === params.slug);
+  const { t, lang } = useLanguage();
+  const base = ALL.find((s) => s.slug === params.slug);
+  const scenario = base ? localizeScenario(base, lang) : undefined;
   const [step, setStep] = useState(0);
   const [picked, setPicked] = useState<string | null>(null);
   const [saved, setSaved] = useState(false);
   const { user } = useUser();
   const firestore = useFirestore();
   const { toast } = useToast();
-  const { t } = useLanguage();
   const STEPS = t.player.steps;
 
   if (!scenario) {
