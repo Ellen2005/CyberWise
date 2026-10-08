@@ -17,6 +17,7 @@ import { recordCompletion } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/components/language-provider';
+import { ReadAloud } from '@/components/read-aloud';
 
 const ALL = [...scenarios, ...scenarios2];
 
@@ -89,7 +90,10 @@ export default function ScenarioPlayerPage() {
 
       {step === 0 && (
         <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><Eye className="h-5 w-5" />{STEPS[0]}</CardTitle></CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2 font-headline text-lg"><Eye className="h-5 w-5" />{STEPS[0]}</CardTitle>
+            <ReadAloud text={`From ${scenario.sender}. ${scenario.message}`} lang={lang} label={lang === 'fr' ? 'Écouter' : 'Listen'} />
+          </CardHeader>
           <CardContent className="space-y-3 text-sm">
             <div className="rounded-md bg-muted/50 p-4">
               <p className="font-medium">From: {scenario.sender}</p>

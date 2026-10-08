@@ -28,6 +28,7 @@ import {
   Target,
   Trophy,
   Users,
+  School,
   Megaphone,
   Flag,
   Wrench,
@@ -71,6 +72,7 @@ const GROUPS: NavGroup[] = [
       { href: '/daily', labelKey: 'daily', icon: CalendarCheck2 },
       { href: '/mentor', labelKey: 'mentor', icon: Bot },
       { href: '/leaderboards', labelKey: 'leaderboards', icon: Trophy },
+      { href: '/classes', labelKey: 'classes', icon: School },
     ],
   },
   {

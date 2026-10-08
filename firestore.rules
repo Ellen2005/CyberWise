@@ -190,6 +190,33 @@ service cloud.firestore {
     }
 
     // ============================================
+    // Classes (invite-code groups; lite teacher view over public profiles)
+    // ============================================
+    match /classes/{classId} {
+      allow get, list: if isSignedIn();
+      allow create: if isSignedIn()
+        && request.resource.data.keys().hasOnly(['name', 'code', 'ownerId', 'createdAt'])
+        && request.resource.data.ownerId == request.auth.uid;
+      allow update, delete: if isSignedIn() && resource.data.ownerId == request.auth.uid;
+
+      match /members/{memberId} {
+        allow get, list: if isSignedIn()
+          && (get(/databases/$(database)/documents/classes/$(classId)).data.ownerId == request.auth.uid
+            || request.auth.uid == memberId);
+        allow create: if isSignedIn() && request.auth.uid == memberId
+          && request.resource.data.keys().hasOnly(['displayName', 'joinedAt']);
+        allow update: if isSignedIn() && request.auth.uid == memberId;
+        allow delete: if isSignedIn()
+          && (get(/databases/$(database)/documents/classes/$(classId)).data.ownerId == request.auth.uid
+            || request.auth.uid == memberId);
+      }
+    }
+
+    match /users/{userId}/myClasses/{classId} {
+      allow get, list, create, update, delete: if isOwner(userId);
+    }
+
+    // ============================================
     // Community posts (public approved feed; owner sees own; admin moderates)
     // ============================================
     match /communityPosts/{postId} {

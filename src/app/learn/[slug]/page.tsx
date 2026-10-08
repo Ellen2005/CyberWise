@@ -11,6 +11,7 @@ import { ArrowLeft, Clock, Award } from 'lucide-react';
 import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
+import { ReadAloud } from '@/components/read-aloud';
 import { useState } from 'react';
 
 export default function LessonDetailPage() {
@@ -66,7 +67,14 @@ export default function LessonDetailPage() {
       </div>
 
       <Card>
-        <CardHeader><CardTitle className="font-headline text-lg">Lesson</CardTitle></CardHeader>
+        <CardHeader className="flex flex-row items-center justify-between">
+          <CardTitle className="font-headline text-lg">Lesson</CardTitle>
+          <ReadAloud
+            text={`${lesson.title}. ${lesson.content.map((b) => ('text' in b ? b.text : ('items' in b ? b.items.join('. ') : ''))).join(' ')}`}
+            lang="en"
+            label="Listen"
+          />
+        </CardHeader>
         <CardContent>
           <LessonContentBlocks blocks={lesson.content} />
           {!lessonDone ? (

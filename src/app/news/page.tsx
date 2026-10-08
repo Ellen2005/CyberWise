@@ -98,6 +98,19 @@ export default function NewsPage() {
       // --- Caching Logic End ---
       
       try {
+        // Prefer the scheduled shared cache (refreshed by cron), so readers
+        // never wait on AI and keyless readers still see fresh-ish news.
+        try {
+          const cached = await fetch('/api/news/cache').then((r) => r.json());
+          if (cached.items && cached.items.length > 0) {
+            setNewsItems(cached.items);
+            setLoading(false);
+            return;
+          }
+        } catch {
+          // Fall through to live generation.
+        }
+
         // The flow now returns an object with an optional 'error' property
         const cyberNews = await generateCyberNews();
 
@@ -147,7 +160,7 @@ export default function NewsPage() {
             Cybersecurity News Feed
           </h1>
           <p className="text-muted-foreground">
-            The latest AI-generated headlines from the world of cybersecurity. Refreshes every 5 minutes.
+            AI-generated headlines from the world of cybersecurity. Refreshed automatically every few hours.
           </p>
         </div>
       </div>
