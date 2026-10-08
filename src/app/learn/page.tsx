@@ -10,7 +10,7 @@ import { collection } from 'firebase/firestore';
 import { useMemo } from 'react';
 
 const LEVELS = [
-  { id: 1, name: 'Stay Safe Online', desc: 'Everyday habits that stop most attacks.', slugs: ['what-is-cybersecurity', 'password-security', 'two-factor-authentication'] },
+  { id: 1, name: 'Stay Safe Online', desc: 'Everyday habits that stop most attacks.', slugs: ['what-is-cybersecurity', 'password-security', 'two-factor-authentication', 'whatsapp-basics', 'sms-basics', 'email-basics'] },
   { id: 2, name: 'Recognize Threats', desc: 'Spot phishing, scams, and malware.', slugs: ['phishing-basics', 'malware-and-ransomware'] },
   { id: 3, name: 'Investigate', desc: 'Check senders, links, and networks like an analyst.', slugs: ['networks-101', 'everyday-smart-devices'] },
   { id: 4, name: 'Respond', desc: 'Secure accounts, preserve evidence, report. Practice in Get Help and the simulators.', slugs: [] as string[], links: [{ href: '/help/been-scammed', title: 'Response checklists', desc: 'Clicked, paid, hacked, harassed — what to do first.' }, { href: '/simulators/wwyd', title: 'What Would You Do?', desc: 'Decide, then learn safe vs risky.' }] },
