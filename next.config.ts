@@ -1,11 +1,8 @@
 import type {NextConfig} from 'next';
 
 const nextConfig: NextConfig = {
-  // TODO: remove once `npm ci` restores firebase .d.ts files (firestore/auth typings
-  // are currently missing from node_modules, causing TS7016). Build still bundles correctly.
-  typescript: {
-    ignoreBuildErrors: true,
-  },
+  // Type errors fail the build. Firebase 12 ships complete typings, so no
+  // suppression is needed (verified with `npm run typecheck`).
   images: {
     remotePatterns: [
       {
