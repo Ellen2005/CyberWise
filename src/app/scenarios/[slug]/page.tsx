@@ -18,6 +18,7 @@ import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/components/language-provider';
 import { ReadAloud } from '@/components/read-aloud';
+import { ShareResult } from '@/components/share-result';
 
 const ALL = [...scenarios, ...scenarios2];
 
@@ -183,7 +184,13 @@ export default function ScenarioPlayerPage() {
             {!saved ? (
               <Button onClick={finish} className="min-h-[44px] w-full sm:w-auto">{t.player.finish} (+{isSafe ? scenario.xpReward : choice?.verdict === 'risky' ? Math.round(scenario.xpReward / 2) : 0} {t.common.xp})</Button>
             ) : (
-              <div className="flex flex-col gap-2 sm:flex-row">
+              <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+                <ShareResult
+                  kind="scenario"
+                  title={scenario.title}
+                  score={!choice ? 0 : choice.verdict === 'safe' ? 100 : choice.verdict === 'risky' ? 50 : 0}
+                  path={`/scenarios/${scenario.slug}`}
+                />
                 <Button asChild variant="outline" className="min-h-[44px]"><Link href="/scenarios">{t.player.moreScenarios}</Link></Button>
                 <Button asChild className="min-h-[44px]"><Link href="/spot-the-scam">{t.player.trySpot}</Link></Button>
               </div>

@@ -106,6 +106,25 @@ export default function ClassDetailPage() {
         </Card>
       )}
 
+      {(members.some((m) => m.xp !== null)) && (
+        <Card className="border-primary/40">
+          <CardHeader><CardTitle className="font-headline">Class insights</CardTitle><CardDescription>Computed from public profiles only — private members are excluded, never exposed.</CardDescription></CardHeader>
+          <CardContent className="grid gap-3 text-sm sm:grid-cols-3">
+            {(() => {
+              const visible = members.filter((m) => m.xp !== null);
+              const avg = (f: (m: MemberStat) => number) => Math.round(visible.reduce((s, m) => s + f(m), 0) / Math.max(1, visible.length));
+              return (
+                <>
+                  <div><p className="text-2xl font-bold">{avg((m) => m.xp ?? 0)} XP</p><p className="text-muted-foreground">average XP</p></div>
+                  <div><p className="text-2xl font-bold">{avg((m) => m.streak ?? 0)} days</p><p className="text-muted-foreground">average streak</p></div>
+                  <div><p className="text-2xl font-bold">{visible.length}/{members.length}</p><p className="text-muted-foreground">profiles visible</p></div>
+                </>
+              );
+            })()}
+          </CardContent>
+        </Card>
+      )}
+
       <Card>
         <CardHeader>
           <CardTitle className="font-headline">Roster</CardTitle>

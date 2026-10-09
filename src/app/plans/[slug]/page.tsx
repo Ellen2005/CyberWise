@@ -13,6 +13,7 @@ import { collection } from 'firebase/firestore';
 import { recordCompletion } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/components/language-provider';
+import { PlanCertificate } from '@/components/plan-certificate';
 
 export default function PlanDetailPage() {
   const params = useParams<{ slug: string }>();
@@ -109,13 +110,23 @@ export default function PlanDetailPage() {
         })}
       </div>
       {complete && (
-        <Card className="border-green-500/40">
-          <CardHeader><CardTitle className="font-headline">{t.plans.planComplete}</CardTitle><CardDescription>{t.plans.completeDesc}</CardDescription></CardHeader>
-          <CardContent className="flex flex-col gap-2 sm:flex-row">
-            <Button asChild variant="outline" className="min-h-[44px]"><Link href="/plans">{t.plans.morePlans}</Link></Button>
-            <Button asChild className="min-h-[44px]"><Link href="/risk-check">{t.plans.retakeRisk}</Link></Button>
-          </CardContent>
-        </Card>
+        <>
+          {user && (
+            <PlanCertificate
+              userId={user.uid}
+              userName={user.displayName ?? 'WiseTap Learner'}
+              planId={plan.id}
+              planTitle={plan.title}
+            />
+          )}
+          <Card className="border-green-500/40">
+            <CardHeader><CardTitle className="font-headline">{t.plans.planComplete}</CardTitle><CardDescription>{t.plans.completeDesc}</CardDescription></CardHeader>
+            <CardContent className="flex flex-col gap-2 sm:flex-row">
+              <Button asChild variant="outline" className="min-h-[44px]"><Link href="/plans">{t.plans.morePlans}</Link></Button>
+              <Button asChild className="min-h-[44px]"><Link href="/risk-check">{t.plans.retakeRisk}</Link></Button>
+            </CardContent>
+          </Card>
+        </>
       )}
     </main>
   );

@@ -13,6 +13,7 @@ import { recordCompletion } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/components/language-provider';
+import { ShareResult } from '@/components/share-result';
 
 export default function SpotTheScamPage() {
   const [index, setIndex] = useState(0);
@@ -206,7 +207,8 @@ export default function SpotTheScamPage() {
               {falseHits > 0 && (
                 <p className="text-sm text-muted-foreground">{falseHits} {t.spot.falseHits}</p>
               )}
-              <div className="flex gap-2">
+              <div className="flex flex-wrap gap-2">
+                <ShareResult kind="spot" title={item.title} score={score} path="/spot-the-scam" />
                 <Button variant="outline" onClick={() => reset(index)} className="min-h-[44px]"><RotateCcw className="mr-2 h-4 w-4" />{t.spot.retry}</Button>
                 {index < spotItems.length - 1 && <Button onClick={() => reset(index + 1)} className="min-h-[44px]">{t.spot.nextMsg}</Button>}
               </div>

@@ -18,6 +18,7 @@ import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/components/language-provider';
+import { ShareResult } from '@/components/share-result';
 import { cn } from '@/lib/utils';
 
 type Phase = 'pick' | 'brief' | 'ringing' | 'live' | 'debrief';
@@ -351,7 +352,8 @@ export default function ScamCallPage() {
           ) : (
             <Card><CardContent className="flex items-center gap-2 p-6 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" />Evaluating your call…</CardContent></Card>
           )}
-          <div className="flex flex-col gap-2 sm:flex-row">
+          <div className="flex flex-col gap-2 sm:flex-row sm:flex-wrap">
+            <ShareResult kind="call" title={scenario?.title ?? 'Scam call'} score={score} path="/simulators/call" />
             <Button variant="outline" onClick={() => { setPhase('pick'); setScenario(null); setTranscript([]); setResult(null); }} className="min-h-[44px]">Try another call</Button>
             <Button asChild className="min-h-[44px]"><Link href="/help/been-scammed">Response checklists</Link></Button>
           </div>

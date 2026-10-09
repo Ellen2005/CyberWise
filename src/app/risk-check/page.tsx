@@ -12,6 +12,7 @@ import { useUser, useFirestore } from '@/firebase';
 import { collection, doc, setDoc, serverTimestamp } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/components/language-provider';
+import { ShareResult } from '@/components/share-result';
 
 type Dim = 'Account Security' | 'Scam Awareness' | 'Device Safety' | 'Privacy';
 type Opt = { text: string; score: number };
@@ -199,7 +200,10 @@ export default function RiskCheckPage() {
               <Button asChild variant="outline" className="min-h-[44px]"><Link href="/scenarios">{t.risk.practiceScenarios}</Link></Button>
             </CardContent>
           </Card>
-          <Button variant="outline" onClick={() => { setDone(false); }} className="min-h-[44px]">{t.risk.retake}</Button>
+          <div className="flex flex-col gap-2 sm:flex-row">
+            <ShareResult kind="risk" title="Cyber Risk Check" score={overall} path="/risk-check" />
+            <Button variant="outline" onClick={() => { setDone(false); }} className="min-h-[44px]">{t.risk.retake}</Button>
+          </div>
         </div>
       )}
     </main>
