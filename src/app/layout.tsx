@@ -25,6 +25,7 @@ import { LanguageProvider } from '@/components/language-provider';
 import { AppShellHeader } from '@/components/app-shell-header';
 import { AuthSessionSync } from '@/components/auth-session-sync';
 import { PwaRegister } from '@/components/pwa-register';
+import { OfflineBanner } from '@/components/offline-banner';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 const spaceGrotesk = Space_Grotesk({
@@ -114,6 +115,7 @@ export default function RootLayout({
             </Sidebar>
             <SidebarInset>
               <AppShellHeader />
+              <OfflineBanner />
               {children}
             </SidebarInset>
           </SidebarProvider>

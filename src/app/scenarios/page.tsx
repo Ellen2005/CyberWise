@@ -5,7 +5,16 @@ import Link from 'next/link';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Input } from '@/components/ui/input';
-import { MessagesSquare, CheckCircle2, Eye, Brain, ListChecks } from 'lucide-react';
+import { MessagesSquare, CheckCircle2, Eye, Brain, ListChecks, MessageCircle, Mail, Phone, Globe } from 'lucide-react';
+
+function channelIcon(channel: string) {
+  const c = channel.toLowerCase();
+  if (c.includes('whatsapp') || c.includes('sms') || c.includes('telegram')) return MessageCircle;
+  if (c.includes('mail')) return Mail;
+  if (c.includes('phone') || c.includes('call') || c.includes('appel')) return Phone;
+  if (c.includes('instagram') || c.includes('facebook') || c.includes('social')) return MessagesSquare;
+  return Globe;
+}
 import { scenarios } from '@/lib/content/scenarios';
 import { scenarios2 } from '@/lib/content/scenarios-2';
 import { localizeScenario } from '@/lib/content/localize';
@@ -94,12 +103,14 @@ export default function ScenariosPage() {
         </div>
       ) : (
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          {filtered.map((s) => (
+          {filtered.map((s) => {
+            const ChannelIcon = channelIcon(s.channel);
+            return (
             <Link key={s.id} href={`/scenarios/${s.slug}`} className="flex">
               <Card className="flex w-full flex-col transition-all hover:border-primary/80 hover:shadow-lg">
                 <CardHeader>
                   <div className="flex items-center justify-between gap-2">
-                    <Badge variant="secondary">{s.channel}</Badge>
+                    <Badge variant="secondary" className="flex items-center gap-1"><ChannelIcon className="h-3.5 w-3.5" />{s.channel}</Badge>
                     {done.has(s.id) && <CheckCircle2 className="h-5 w-5 text-green-500" aria-label={t.scenariosHub.completed} />}
                   </div>
                   <CardTitle className="font-headline text-xl">{s.title}</CardTitle>
@@ -108,7 +119,8 @@ export default function ScenariosPage() {
                 <CardContent className="text-sm text-muted-foreground">+{s.xpReward} XP</CardContent>
               </Card>
             </Link>
-          ))}
+            );
+          })}
         </div>
       )}
     </main>

@@ -19,6 +19,7 @@ import { cn } from '@/lib/utils';
 import { useLanguage } from '@/components/language-provider';
 import { ReadAloud } from '@/components/read-aloud';
 import { ShareResult } from '@/components/share-result';
+import { ScenarioMessage } from '@/components/scenario-message';
 
 const ALL = [...scenarios, ...scenarios2];
 
@@ -96,13 +97,13 @@ export default function ScenarioPlayerPage() {
             <ReadAloud text={`From ${scenario.sender}. ${scenario.message}`} lang={lang} label={lang === 'fr' ? 'Écouter' : 'Listen'} />
           </CardHeader>
           <CardContent className="space-y-3 text-sm">
-            <div className="rounded-md bg-muted/50 p-4">
-              <p className="font-medium">From: {scenario.sender}</p>
-              <p className="mt-2 whitespace-pre-wrap leading-relaxed">{scenario.message}</p>
-            </div>
-            {scenario.contextNotes?.map((n) => (
-              <p key={n} className="text-muted-foreground">Context: {n}</p>
-            ))}
+            <ScenarioMessage
+              sender={scenario.sender}
+              message={scenario.message}
+              channel={scenario.channel}
+              lang={lang}
+              contextNotes={scenario.contextNotes}
+            />
             <Button onClick={() => setStep(1)} className="min-h-[44px] w-full sm:w-auto">{t.player.seenCta}</Button>
           </CardContent>
         </Card>
@@ -146,7 +147,10 @@ export default function ScenarioPlayerPage() {
 
       {step === 3 && choice && (
         <Card className={cn(choice.verdict === 'safe' ? 'border-green-500/60' : 'border-destructive/60')}>
-          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><Zap className="h-5 w-5" />{STEPS[3]}</CardTitle></CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2 font-headline text-lg"><Zap className="h-5 w-5" />{STEPS[3]}</CardTitle>
+            <ReadAloud text={`${choice.consequenceTitle}. ${choice.consequence} ${choice.feedback}`} lang={lang} label={lang === 'fr' ? 'Écouter' : 'Listen'} />
+          </CardHeader>
           <CardContent className="space-y-3 text-sm">
             <Alert variant={isSafe ? 'default' : 'destructive'}>
               {isSafe ? <CheckCircle2 className="h-4 w-4 text-green-500" /> : <XCircle className="h-4 w-4" />}
@@ -161,7 +165,10 @@ export default function ScenarioPlayerPage() {
 
       {step === 4 && (
         <Card>
-          <CardHeader><CardTitle className="flex items-center gap-2 font-headline text-lg"><BookOpen className="h-5 w-5" />{STEPS[4]}</CardTitle></CardHeader>
+          <CardHeader className="flex flex-row items-center justify-between">
+            <CardTitle className="flex items-center gap-2 font-headline text-lg"><BookOpen className="h-5 w-5" />{STEPS[4]}</CardTitle>
+            <ReadAloud text={scenario.redFlags.map((f) => `${f.label}. ${f.explanation}`).join(' ')} lang={lang} label={lang === 'fr' ? 'Écouter' : 'Listen'} />
+          </CardHeader>
           <CardContent className="space-y-3">
             {scenario.redFlags.map((f) => (
               <Alert key={f.label}><AlertTitle>{f.label}</AlertTitle><AlertDescription>{f.explanation}</AlertDescription></Alert>
