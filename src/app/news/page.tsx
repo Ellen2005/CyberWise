@@ -5,20 +5,14 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Newspaper } from "lucide-react";
 import Image from "next/image";
 import { PlaceHolderImages } from "@/lib/placeholder-images";
-import { generateCyberNews, NewsItem } from "@/ai/flows/cybersecurity-news-generator";
+import { NewsItem } from "@/ai/flows/cybersecurity-news-generator";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertCircle } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import { NewsImpact } from "@/components/news-impact";
 
-type CachedNews = {
-  timestamp: number;
-  items: NewsItem[];
-};
-
-const CACHE_KEY = 'cyberwise_news_cache';
-const CACHE_DURATION = 5 * 60 * 1000; // 5 minutes
-
+// Illustrative static briefs, shown ONLY when live sources are unreachable.
+// Deliberately undated and unlabeled as news: honest fallback, not filler.
 const fallbackNews: NewsItem[] = [
     { title: "AI News Feed Failed to Load", source: "System Alert", date: "Just now", description: "There was an error fetching the latest news from the AI. This is often caused by an invalid API key or exceeding the service quota. Please check your .env file and Google AI plan. Showing static fallback news.", link: "#", imageId: "news1" },
     { title: "Major Tech Firm Releases Emergency Security Patch", source: "CyberSys", date: "1 hour ago", description: "A critical vulnerability affecting millions of users was discovered and patched today. Users are urged to update their software immediately.", link: "#", imageId: "news2" },
@@ -71,82 +65,51 @@ function NewsSkeleton() {
   );
 }
 
+type FeedSource = 'kev' | 'cache' | 'fallback';
+
 export default function NewsPage() {
-  const [newsItems, setNewsItems] = useState<NewsItem[]>([]);
+  const [newsItems, setNewsItems] = useState<(NewsItem & { verified?: boolean })[]>([]);
   const [loading, setLoading] = useState(true);
-  const [errorType, setErrorType] = useState<"api_key" | "quota" | null>(null);
+  const [source, setSource] = useState<FeedSource | null>(null);
+  const [errorType, setErrorType] = useState<"api_key" | "quota" | "unavailable" | null>(null);
 
   useEffect(() => {
     const fetchNews = async () => {
       setLoading(true);
       setErrorType(null);
 
-      // --- Caching Logic Start ---
+      // Source-grounded order: live CISA KEV feed first, then the scheduled
+      // shared cache, then clearly labeled static briefs. The AI generator is
+      // no longer used here: fabricated "recent news" has no place in a
+      // security-awareness feed.
       try {
-        const cachedData = sessionStorage.getItem(CACHE_KEY);
-        if (cachedData) {
-          const { timestamp, items }: CachedNews = JSON.parse(cachedData);
-          if (Date.now() - timestamp < CACHE_DURATION) {
-            setNewsItems(items);
-            setLoading(false);
-            return;
-          }
+        const kev = await fetch('/api/news/kev').then((r) => r.json());
+        if (kev.items && kev.items.length > 0) {
+          setNewsItems(kev.items);
+          setSource('kev');
+          setLoading(false);
+          return;
         }
-      } catch (e) {
-        console.error("Could not read news cache", e);
+      } catch {
+        // Fall through to the shared cache.
       }
-      // --- Caching Logic End ---
-      
+
       try {
-        // Prefer the scheduled shared cache (refreshed by cron), so readers
-        // never wait on AI and keyless readers still see fresh-ish news.
-        try {
-          const cached = await fetch('/api/news/cache').then((r) => r.json());
-          if (cached.items && cached.items.length > 0) {
-            setNewsItems(cached.items);
-            setLoading(false);
-            return;
-          }
-        } catch {
-          // Fall through to live generation.
+        const cached = await fetch('/api/news/cache').then((r) => r.json());
+        if (cached.items && cached.items.length > 0) {
+          setNewsItems(cached.items);
+          setSource('cache');
+          setLoading(false);
+          return;
         }
-
-        // The flow now returns an object with an optional 'error' property
-        const cyberNews = await generateCyberNews();
-
-        if (cyberNews.error) {
-          // If the error property exists, it means the AI call failed.
-          console.error("Failed to generate cyber news:", cyberNews.error);
-          setNewsItems(fallbackNews);
-          if (cyberNews.error.includes('quota') || cyberNews.error.includes('429')) {
-            setErrorType("quota");
-          } else {
-            setErrorType("api_key");
-          }
-        } else {
-          // Success case
-          setNewsItems(cyberNews.newsItems);
-
-          // --- Caching Logic Start ---
-          try {
-              const cache: CachedNews = {
-                  timestamp: Date.now(),
-                  items: cyberNews.newsItems,
-              };
-              sessionStorage.setItem(CACHE_KEY, JSON.stringify(cache));
-          } catch (e) {
-              console.error("Could not write to news cache", e);
-          }
-          // --- Caching Logic End ---
-        }
-      } catch (error: any) {
-        // This is a fallback for unexpected network/server errors
-        console.error("Unexpected transport error fetching news:", error);
-        setNewsItems(fallbackNews);
-        setErrorType("api_key");
-      } finally {
-        setLoading(false);
+      } catch {
+        // Fall through to static briefs.
       }
+
+      setNewsItems(fallbackNews);
+      setSource('fallback');
+      setErrorType('unavailable');
+      setLoading(false);
     };
     fetchNews();
   }, []);
@@ -160,23 +123,20 @@ export default function NewsPage() {
             Cybersecurity News Feed
           </h1>
           <p className="text-muted-foreground">
-            AI-generated headlines from the world of cybersecurity. Refreshed automatically every few hours.
+            Real exploited vulnerabilities from CISA, translated into plain language. No invented stories — ever.
           </p>
         </div>
       </div>
 
-       {errorType && (
-         <Alert variant="destructive">
-           <AlertCircle className="h-4 w-4" />
-           <AlertTitle>AI News Feed Failed to Load</AlertTitle>
-           <AlertDescription>
-             {errorType === 'quota'
-              ? "You have exceeded the free tier quota for the generative AI service. Please check your Google AI plan and billing details. Showing static fallback news instead."
-              : "There was an error fetching live news from the AI. This is often caused by an invalid or missing API key. Please check your .env file. Showing static fallback news instead."
-             }
-           </AlertDescription>
-         </Alert>
-       )}
+       {errorType === 'unavailable' && (
+          <Alert>
+            <AlertCircle className="h-4 w-4" />
+            <AlertTitle>Live feed unavailable</AlertTitle>
+            <AlertDescription>
+              Could not reach the CISA feed or the shared cache. Showing illustrative threat briefs instead — clearly marked, undated, and educational only.
+            </AlertDescription>
+          </Alert>
+        )}
 
       {loading ? (
         <NewsSkeleton />
@@ -209,7 +169,15 @@ export default function NewsPage() {
                     <NewsImpact title={item.title} description={item.description} />
                   </CardContent>
                   <CardFooter>
-                    <p className="text-sm text-primary">AI-generated summary. Full article not available.</p>
+                    <p className="text-sm text-muted-foreground">
+                      {source === 'kev' ? (
+                        <>Verified source: CISA Known Exploited Vulnerabilities. <a href={item.link} target="_blank" rel="noreferrer" className="text-primary underline">NVD entry</a></>
+                      ) : source === 'cache' ? (
+                        'From the shared cache. Verify details via the linked source.'
+                      ) : (
+                        'Illustrative brief for learning — not a real news report.'
+                      )}
+                    </p>
                   </CardFooter>
                 </div>
               </Card>

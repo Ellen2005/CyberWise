@@ -9,7 +9,9 @@ import { ShieldAlert } from 'lucide-react';
 import { scamScenarios } from '@/lib/content/scam-scenarios';
 import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
+import { completionToast } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
+import { scoreInvestigation, passedInvestigation } from '@/lib/learning/investigation-score';
 
 export default function ScamSimulatorPage() {
   const [index, setIndex] = useState(0);
@@ -23,15 +25,16 @@ export default function ScamSimulatorPage() {
   const toggle = (id: string) =>
     setPicked((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
 
+  // No separate verdict step here: spotting the flags IS the verdict.
+  const grading = scoreInvestigation(picked, s.redFlags.map((r) => r.id), true);
+
   const submit = async () => {
     setSubmitted(true);
-    const real = new Set(s.redFlags.map((r) => r.id));
-    const hits = picked.filter((id) => real.has(id)).length;
-    const good = hits >= 2;
+    const good = passedInvestigation(grading);
     if (user && firestore) {
       try {
         const r = await recordCompletion(firestore, user.uid, { contentType: 'quiz', contentId: s.id, xpAmount: good ? s.xpReward : 0, correct: good });
-        if (good) toast({ title: `+${r.xpEarned} XP`, description: 'Red flags spotted.' });
+        if (good) toast(completionToast(r, `+${r.xpEarned} XP`, 'Red flags spotted.'));
       } catch { toast({ variant: 'destructive', title: 'Could not save XP', description: 'Try again.' }); }
     } else if (good) {
       toast({ title: 'Well spotted!', description: 'Sign in to save XP.' });
@@ -71,8 +74,22 @@ export default function ScamSimulatorPage() {
             <Button disabled={picked.length === 0} onClick={submit} className="min-h-[44px]">Check my analysis</Button>
           ) : (
             <div className="space-y-3">
+              <p className="text-sm font-medium">
+                Score {Math.round(grading.score * 100)}% — {grading.found.length}/{s.redFlags.length} flags found
+                {grading.falsePositives.length > 0 && `, ${grading.falsePositives.length} wrong pick(s)`}
+              </p>
               {s.redFlags.map((r) => (
                 <Alert key={r.id}><AlertTitle>{r.label} {picked.includes(r.id) ? '— spotted' : '— missed'}</AlertTitle><AlertDescription>{r.explanation}</AlertDescription></Alert>
+              ))}
+              {grading.falsePositives.map((id) => (
+                <Alert key={id} variant="destructive">
+                  <AlertTitle>False positive</AlertTitle>
+                  <AlertDescription>
+                    {id === 'd1'
+                      ? 'Professional design is cheap to fake — scammers buy polish. Judge evidence, not looks.'
+                      : 'Fast replies prove a call center exists, not honesty. Speed is a pressure tactic.'}
+                  </AlertDescription>
+                </Alert>
               ))}
               <Alert><AlertTitle>Manipulation tactics</AlertTitle><AlertDescription>{s.tactics.join(' · ')}</AlertDescription></Alert>
               <Alert><AlertTitle>Never share</AlertTitle><AlertDescription>{s.neverShare.join(' · ')}</AlertDescription></Alert>

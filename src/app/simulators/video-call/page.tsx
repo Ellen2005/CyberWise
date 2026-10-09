@@ -13,6 +13,7 @@ import {
 import { videoCases } from '@/lib/content/video-cases';
 import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
+import { completionToast } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { speakText, stopSpeaking } from '@/lib/audio/speak';
 import { useLanguage } from '@/components/language-provider';
@@ -75,7 +76,7 @@ export default function VideoCallPage() {
         const r = await recordCompletion(firestore, user.uid, {
           contentType: 'quiz', contentId: `vc-${c.id}`, xpAmount: c.xpReward, correct: true,
         });
-        toast({ title: `+${r.xpEarned} XP`, description: 'Verification drills complete.' });
+        toast(completionToast(r, `+${r.xpEarned} XP`, 'Verification drills complete.'));
       } catch { /* silent */ }
     }
   };

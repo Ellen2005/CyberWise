@@ -14,6 +14,7 @@ import {
 } from 'lucide-react';
 import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
+import { completionToast } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
@@ -84,7 +85,7 @@ export default function AiImagesPage() {
         const r = await recordCompletion(firestore, user.uid, {
           contentType: 'quiz', contentId: 'ai-images-detective', xpAmount: 40, correct: true,
         });
-        toast({ title: `+${r.xpEarned} XP`, description: 'Sharp eyes.' });
+        toast(completionToast(r, `+${r.xpEarned} XP`, 'Sharp eyes.'));
       } catch { /* silent */ }
       finally { setSaving(false); }
     }

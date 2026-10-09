@@ -60,7 +60,11 @@ export default function PlanDetailPage() {
         xpAmount: plan.xpPerDay,
         correct: true,
       });
-      toast({ title: `Day ${day} done. +${r.xpEarned} XP`, description: done + 1 === 7 ? 'Plan complete. Excellent discipline.' : 'One step closer.' });
+      toast(
+        r.alreadyCompleted
+          ? { title: 'Already recorded', description: 'This day was completed before — XP was earned then.' }
+          : { title: `Day ${day} done. +${r.xpEarned} XP`, description: done + 1 === 7 ? 'Plan complete. Excellent discipline.' : 'One step closer.' }
+      );
     } catch {
       toast({ variant: 'destructive', title: 'Could not save', description: 'Try again.' });
     } finally {

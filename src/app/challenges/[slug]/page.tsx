@@ -67,15 +67,19 @@ export default function ChallengeDetailPage() {
           hintsUsed: hintsUnlocked.length,
           timeSpentSeconds: 0,
         });
-        toast({
-          title: `+${result.xpEarned} XP!`,
-          description:
-            result.newBadges.length > 0
-              ? `Badges unlocked: ${result.newBadges.map((b) => b).join(', ')}`
-              : result.leveledUp
-                ? `Level up! You reached level ${result.newLevel}.`
-                : 'Challenge completed! Great work.',
-        });
+        toast(
+          result.alreadyCompleted
+            ? { title: 'Already solved', description: 'Review complete — XP was earned on your first pass.' }
+            : {
+                title: `+${result.xpEarned} XP!`,
+                description:
+                  result.newBadges.length > 0
+                    ? `Badges unlocked: ${result.newBadges.map((b) => b).join(', ')}`
+                    : result.leveledUp
+                      ? `Level up! You reached level ${result.newLevel}.`
+                      : 'Challenge completed! Great work.',
+              }
+        );
       } catch (error) {
         console.error('Failed to record completion:', error);
         toast({

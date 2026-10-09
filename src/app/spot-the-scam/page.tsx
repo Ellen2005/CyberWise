@@ -10,6 +10,7 @@ import { ScanEye, Timer, CheckCircle2, XCircle, RotateCcw, ArrowLeft } from 'luc
 import { spotItems } from '@/lib/content/spot-items';
 import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
+import { completionToast } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/components/language-provider';
@@ -87,7 +88,7 @@ export default function SpotTheScamPage() {
           xpAmount: good ? item.xpReward : 0,
           correct: good,
         });
-        toast({ title: good ? `+${r.xpEarned} XP` : 'Checked', description: good ? 'Sharp eyes.' : 'Review the flags below and retry.' });
+        toast(good ? completionToast(r, `+${r.xpEarned} XP`, 'Sharp eyes.') : { title: 'Checked', description: 'Review the flags below and retry.' });
       } catch {
         toast({ variant: 'destructive', title: 'Could not save', description: 'Try again.' });
       }

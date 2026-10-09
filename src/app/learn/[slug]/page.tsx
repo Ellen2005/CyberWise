@@ -102,10 +102,14 @@ export default function LessonDetailPage() {
                   skillIds: lesson.skillIds,
                   correct: true,
                 });
-                toast({
-                  title: `+${r.xpEarned} XP!`,
-                  description: r.leveledUp ? `Level up — now level ${r.newLevel}.` : 'Quiz passed. Great work.',
-                });
+                toast(
+                  r.alreadyCompleted
+                    ? { title: 'Already recorded', description: 'Review complete — XP was earned on your first pass.' }
+                    : {
+                        title: `+${r.xpEarned} XP!`,
+                        description: r.leveledUp ? `Level up — now level ${r.newLevel}.` : 'Quiz passed. Great work.',
+                      }
+                );
               } catch {
                 toast({ variant: 'destructive', title: 'Could not save quiz XP', description: 'Try again.' });
               }

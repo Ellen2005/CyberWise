@@ -16,6 +16,7 @@ import type { CallTurn } from '@/lib/calls/evaluate';
 import { getScammerReply, judgeCallTranscript, type JudgeState } from './actions';
 import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
+import { completionToast } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/components/language-provider';
 import { ShareResult } from '@/components/share-result';
@@ -79,7 +80,7 @@ export default function ScamCallPage() {
         const r = await recordCompletion(firestore, user.uid, {
           contentType: 'quiz', contentId: `call-${scenario.id}`, xpAmount: scenario.xpReward, correct: true,
         });
-        toast({ title: `+${r.xpEarned} XP`, description: 'Correct instinct: unknown urgent caller, no engagement.' });
+        toast(completionToast(r, `+${r.xpEarned} XP`, 'Correct instinct: unknown urgent caller, no engagement.'));
       } catch { /* silent */ }
     }
     setPhase('debrief');
@@ -111,22 +112,37 @@ export default function ScamCallPage() {
     }
   };
 
+  const [judgeError, setJudgeError] = useState(false);
+
+  const runJudge = async (t: CallTurn[]): Promise<JudgeState | null> => {
+    if (!scenario) return null;
+    setJudgeError(false);
+    try {
+      const res = await judgeCallTranscript(scenario.id, t);
+      setResult(res);
+      return res;
+    } catch {
+      // Never leave the learner on a spinner: explain and offer retry.
+      setJudgeError(true);
+      return null;
+    }
+  };
+
   const finishCall = async (finalTranscript?: CallTurn[]) => {
     const t = finalTranscript ?? transcript;
     stopSpeaking();
     setPhase('debrief');
     if (!scenario) return;
-    const res = await judgeCallTranscript(scenario.id, t);
-    setResult(res);
+    const judged = await runJudge(t);
     if (!saved && user && firestore) {
       setSaved(true);
-      const good = (res.scores?.overall ?? 0) >= 60;
+      const good = (judged?.scores?.overall ?? 0) >= 60;
       try {
         const r = await recordCompletion(firestore, user.uid, {
           contentType: 'quiz', contentId: `call-${scenario.id}`,
           xpAmount: good ? scenario.xpReward : 0, correct: good,
         });
-        if (good) toast({ title: `+${r.xpEarned} XP`, description: 'Handled well under pressure.' });
+        if (good) toast(completionToast(r, `+${r.xpEarned} XP`, 'Handled well under pressure.'));
       } catch { /* silent */ }
     }
   };
@@ -341,6 +357,14 @@ export default function ScamCallPage() {
                 </Card>
               )}
             </>
+          ) : judgeError ? (
+            <Card className="border-destructive/60">
+              <CardContent className="space-y-3 p-6 text-sm">
+                <p className="font-medium">Evaluation failed — your transcript is safe, only the scoring broke.</p>
+                <p className="text-muted-foreground">This is usually a network or AI-key problem. Your answers above still show exactly what happened on the call.</p>
+                <Button onClick={() => runJudge(transcript)} className="min-h-[44px]">Retry evaluation</Button>
+              </CardContent>
+            </Card>
           ) : (
             <Card><CardContent className="flex items-center gap-2 p-6 text-muted-foreground"><Loader2 className="h-5 w-5 animate-spin" />Evaluating your call…</CardContent></Card>
           )}

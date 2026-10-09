@@ -14,6 +14,7 @@ import { scenarios2 } from '@/lib/content/scenarios-2';
 import { localizeScenario } from '@/lib/content/localize';
 import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
+import { completionToast } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 import { useLanguage } from '@/components/language-provider';
@@ -61,10 +62,14 @@ export default function ScenarioPlayerPage() {
           skillIds: ['skill-phishing-awareness'],
           correct: isSafe,
         });
-        toast({
-          title: xp > 0 ? `+${r.xpEarned} XP` : 'Scenario complete',
-          description: isSafe ? 'Safe decision.' : 'Review the red flags — retry to earn full XP.',
-        });
+        toast(
+          r.alreadyCompleted
+            ? { title: 'Already recorded', description: 'Review complete — XP was earned on your first pass.' }
+            : {
+                title: xp > 0 ? `+${r.xpEarned} XP` : 'Scenario complete',
+                description: isSafe ? 'Safe decision.' : 'Review the red flags — retry to earn full XP.',
+              }
+        );
       } catch {
         toast({ variant: 'destructive', title: 'Could not save progress', description: 'Try again.' });
       }

@@ -26,6 +26,8 @@ export interface AwardResult {
   rankName: string;
   streak: number;
   newBadges: string[];
+  /** True when this content was already completed: attempt recorded, no XP re-awarded. */
+  alreadyCompleted: boolean;
 }
 
 /**
@@ -123,6 +125,7 @@ export async function awardXp(
       rankName: result.xpResult.rank.name,
       streak: result.streak.streak,
       newBadges: result.xpResult.newBadges.map((b) => b.id),
+      alreadyCompleted: false,
     };
   } catch (error) {
     console.error('awardXp failed:', error);
@@ -158,6 +161,11 @@ export async function recordCompletion(
 
   const field = completedFieldMap[options.contentType];
 
+  // Idempotency: replays record the attempt but must not re-award XP.
+  const preSnap = await getDoc(userRef).catch(() => null);
+  const alreadyCompleted =
+    !!preSnap?.exists() && (((preSnap.data() as any)[field] as string[]) || []).includes(options.contentId);
+
   try {
     await runTransaction(firestore, async (tx: any) => {
       const snapshot = await tx.get(userRef);
@@ -182,16 +190,17 @@ export async function recordCompletion(
         correct: options.correct ?? true,
         hintsUsed: options.hintsUsed || 0,
         timeSpentSeconds: options.timeSpentSeconds || 0,
-        xpEarned: options.xpAmount || 0,
+        xpEarned: alreadyCompleted ? 0 : options.xpAmount || 0,
         submittedAt: serverTimestamp(),
       });
     });
 
-    if (options.xpAmount) {
-      return awardXp(firestore, userId, options.xpAmount, {
+    if (options.xpAmount && !alreadyCompleted) {
+      const awarded = await awardXp(firestore, userId, options.xpAmount, {
         skillIds: options.skillIds,
         reason: `${options.contentType}-completed:${options.contentId}`,
       });
+      return { ...awarded, alreadyCompleted: false };
     }
 
     // No XP — just return current state
@@ -204,11 +213,27 @@ export async function recordCompletion(
       rankName: data.rankName || rankFromXp(data.xp || 0).name,
       streak: data.streak || 0,
       newBadges: [],
+      alreadyCompleted,
     };
   } catch (error) {
     console.error('recordCompletion failed:', error);
     throw error;
   }
+}
+
+/**
+ * Toast copy for a completion result. Replays say so explicitly instead of
+ * flashing "+0 XP", which reads as a bug.
+ */
+export function completionToast(
+  r: AwardResult,
+  okTitle: string,
+  okDesc: string
+): { title: string; description: string } {
+  if (r.alreadyCompleted) {
+    return { title: 'Already recorded', description: 'Review complete — XP was earned on your first pass.' };
+  }
+  return { title: okTitle, description: okDesc };
 }
 
 /**

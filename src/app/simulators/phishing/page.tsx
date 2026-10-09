@@ -11,7 +11,9 @@ import { CheckCircle2, XCircle, ScanSearch, RotateCcw } from 'lucide-react';
 import { phishingScenarios } from '@/lib/content/phishing-scenarios';
 import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
+import { completionToast } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
+import { scoreInvestigation, passedInvestigation } from '@/lib/learning/investigation-score';
 import { cn } from '@/lib/utils';
 
 export default function PhishingInvestigationPage() {
@@ -25,7 +27,6 @@ export default function PhishingInvestigationPage() {
   const { toast } = useToast();
 
   const scenario = phishingScenarios[index];
-  const correctClueIds = new Set(scenario.clues.map((c) => c.id));
 
   const toggleClue = (id: string) =>
     setPickedClues((p) => (p.includes(id) ? p.filter((x) => x !== id) : [...p, id]));
@@ -33,10 +34,12 @@ export default function PhishingInvestigationPage() {
   const submit = async () => {
     setSubmitted(true);
     const verdictOk = (verdict === 'phishing') === scenario.isPhishing;
-    const found = pickedClues.filter((id) => correctClueIds.has(id)).length;
-    const recall = found / scenario.clues.length;
-    const score = (verdictOk ? 0.5 : 0) + recall * 0.5;
-    const passed = score >= 0.7;
+    const grading = scoreInvestigation(
+      pickedClues,
+      scenario.clues.map((c) => c.id),
+      verdictOk
+    );
+    const passed = passedInvestigation(grading);
     if (user && firestore) {
       try {
         // Record every investigation so recognition measurement stays honest.
@@ -47,7 +50,7 @@ export default function PhishingInvestigationPage() {
           skillIds: ['skill-phishing-awareness', 'skill-email-security'],
           correct: passed,
         });
-        if (passed) toast({ title: `+${r.xpEarned} XP`, description: 'Investigation complete.' });
+        if (passed) toast(completionToast(r, `+${r.xpEarned} XP`, 'Investigation complete.'));
       } catch {
         toast({ variant: 'destructive', title: 'Could not save XP', description: 'Try again.' });
       }
@@ -66,6 +69,11 @@ export default function PhishingInvestigationPage() {
   };
 
   const verdictOk = submitted && (verdict === 'phishing') === scenario.isPhishing;
+  const grading = scoreInvestigation(
+    pickedClues,
+    scenario.clues.map((c) => c.id),
+    (verdict === 'phishing') === scenario.isPhishing
+  );
 
   return (
     <main className="mx-auto flex w-full max-w-3xl flex-1 flex-col gap-6 p-4 md:p-8">
@@ -150,7 +158,10 @@ export default function PhishingInvestigationPage() {
                 {verdictOk ? <CheckCircle2 className="h-4 w-4 text-green-500" /> : <XCircle className="h-4 w-4" />}
                 <AlertTitle>{verdictOk ? 'Good verdict' : 'Verdict missed'} — {scenario.isPhishing ? 'this WAS phishing.' : 'this was LEGITIMATE.'}</AlertTitle>
                 <AlertDescription>
-                  You found {pickedClues.filter((id) => correctClueIds.has(id)).length}/{scenario.clues.length} real clues.
+                  Score {Math.round(grading.score * 100)}%:
+                  found {grading.found.length}/{scenario.clues.length} real clues
+                  {grading.falsePositives.length > 0 &&
+                    `, but ${grading.falsePositives.length} pick(s) were not clues — guessing costs points.`}
                   {action !== scenario.safeAction && ' Your chosen action was risky — see the safe action below.'}
                 </AlertDescription>
               </Alert>
@@ -158,6 +169,16 @@ export default function PhishingInvestigationPage() {
                 <Alert key={c.id}>
                   <AlertTitle>{c.label} {pickedClues.includes(c.id) ? '— you spotted it' : '— you missed it'}</AlertTitle>
                   <AlertDescription>{c.detail} Why it matters: {c.whyItMatters}</AlertDescription>
+                </Alert>
+              ))}
+              {['distractor-tone', 'distractor-logo'].filter((id) => pickedClues.includes(id)).map((id) => (
+                <Alert key={id} variant="destructive">
+                  <AlertTitle>False positive</AlertTitle>
+                  <AlertDescription>
+                    {id === 'distractor-tone'
+                      ? 'A friendly tone proves nothing — the politest messages in this lab are attacks. Judge evidence, not manners.'
+                      : 'Logos are copied in seconds. A logo is decoration, not authentication.'}
+                  </AlertDescription>
                 </Alert>
               ))}
               <Alert className="border-green-500/50">

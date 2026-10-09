@@ -8,6 +8,7 @@ import { HelpCircle } from 'lucide-react';
 import { wwydScenarios } from '@/lib/content/wwyd-scenarios';
 import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
+import { completionToast } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 
 export default function WWYDPage() {
@@ -28,7 +29,7 @@ export default function WWYDPage() {
       try {
         // Record every decision (safe or not) so progress measurement stays honest.
         const r = await recordCompletion(firestore, user.uid, { contentType: 'quiz', contentId: s.id, xpAmount: safe ? s.xpReward : 0, correct: safe });
-        if (safe) toast({ title: `+${r.xpEarned} XP`, description: 'Safe decision.' });
+        if (safe) toast(completionToast(r, `+${r.xpEarned} XP`, 'Safe decision.'));
       } catch { /* silent */ }
     }
   };

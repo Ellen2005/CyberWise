@@ -10,6 +10,7 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { ArrowLeft, CheckCircle2, XCircle } from 'lucide-react';
 import { useUser, useFirestore } from '@/firebase';
 import { recordCompletion } from '@/lib/gamification/service';
+import { completionToast } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { cn } from '@/lib/utils';
 
@@ -58,7 +59,7 @@ export default function StoryDetailPage() {
             xpAmount: perfect ? story.xpReward : Math.round(story.xpReward / 2),
             correct: perfect,
           });
-          toast({ title: `+${r.xpEarned} XP`, description: perfect ? 'Perfect choices!' : 'Story complete.' });
+          toast(completionToast(r, `+${r.xpEarned} XP`, perfect ? 'Perfect choices!' : 'Story complete.'));
         } catch {
           toast({ variant: 'destructive', title: 'Could not save progress', description: 'Try again.' });
         }
