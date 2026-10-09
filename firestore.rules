@@ -31,10 +31,12 @@ service cloud.firestore {
       allow get: if isOwner(userId) || isPublicProfile(userId);
       allow list: if isAdmin();
 
-      // Users can create/update their own profile, but only specific fields.
+      // Users can create their own profile, but NEVER their own role.
+      // Admin accounts are granted by editing `role` directly in the Firebase
+      // console (or another trusted server process). Client code must not set it.
       allow create: if isOwner(userId) &&
         request.resource.data.keys().hasOnly([
-          'displayName', 'email', 'photoURL', 'badges', 'role',
+          'displayName', 'email', 'photoURL', 'badges',
           'xp', 'level', 'rank', 'streak', 'createdAt', 'onboardingCompleted',
           'learningPath', 'skills', 'profileVisibility', 'careerGoal', 'learningGoal',
           'experienceLevel', 'interests', 'weeklyGoal', 'settings'
