@@ -102,7 +102,7 @@ export default function ScenariosPage() {
           {t.scenariosHub.noMatch}
         </div>
       ) : (
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <div className="grid animate-rise gap-4 md:grid-cols-2 lg:grid-cols-3">
           {filtered.map((s) => {
             const ChannelIcon = channelIcon(s.channel);
             return (

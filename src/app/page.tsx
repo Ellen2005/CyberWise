@@ -90,12 +90,12 @@ export default function Dashboard() {
   const onboardingDone = p?.onboardingCompleted ?? false;
 
   return (
-    <main className="flex flex-1 flex-col gap-6 p-4 md:p-8">
-      <div>
+    <main className="mx-auto flex w-full max-w-6xl flex-1 flex-col gap-6 p-4 md:p-8">
+      <div className="hero-gradient animate-rise rounded-2xl border p-6 md:p-8">
         <h1 className="font-headline text-3xl font-bold tracking-tight md:text-4xl">
           {user ? `${t.dashboard.welcomeBack}, ${user.displayName?.split(' ')[0] ?? 'learner'}` : t.dashboard.welcome}
         </h1>
-        <p className="text-muted-foreground">{t.dashboard.tagline}</p>
+        <p className="mt-1 text-muted-foreground">{t.dashboard.tagline}</p>
       </div>
 
       {user && (
@@ -213,7 +213,7 @@ export default function Dashboard() {
 
       <div>
         <h2 className="mb-3 font-headline text-xl font-semibold">{t.practice.title}</h2>
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="grid animate-rise gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {[
             { href: '/simulators/phishing', icon: <ScanSearch className="h-6 w-6 text-primary" />, t: t.practice.phishingT, d: t.practice.phishingD },
             { href: '/simulators/scam', icon: <ShieldAlert className="h-6 w-6 text-primary" />, t: t.practice.scamT, d: t.practice.scamD },

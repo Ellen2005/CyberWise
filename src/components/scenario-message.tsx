@@ -6,27 +6,25 @@ import { Badge } from '@/components/ui/badge';
 import { Play, Square, Siren } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { initials, hue, isUrgent, isVoice } from '@/lib/chat/format';
+import { speakText, stopSpeaking } from '@/lib/audio/speak';
 
 function VoiceBubble({ text, lang }: { text: string; lang: string }) {
   const [playing, setPlaying] = useState(false);
 
   const toggle = () => {
-    try {
-      if (!('speechSynthesis' in window)) return;
-      if (playing) {
-        window.speechSynthesis.cancel();
-        setPlaying(false);
-        return;
-      }
-      const u = new SpeechSynthesisUtterance(text.slice(0, 400));
-      u.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
-      u.rate = 0.95;
-      u.onend = () => setPlaying(false);
-      u.onerror = () => setPlaying(false);
-      window.speechSynthesis.cancel();
-      window.speechSynthesis.speak(u);
-      setPlaying(true);
-    } catch { /* audio unavailable */ }
+    if (playing) {
+      stopSpeaking();
+      setPlaying(false);
+      return;
+    }
+    const ok = speakText(text, {
+      lang,
+      persona: 'scammer',
+      onend: () => setPlaying(false),
+      onerror: () => setPlaying(false),
+    });
+    if (!ok) return;
+    setPlaying(true);
   };
 
   // Fake waveform bars — pure decoration, deterministic widths.

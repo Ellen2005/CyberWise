@@ -1,8 +1,9 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Volume2, Square } from 'lucide-react';
+import { speakText, stopSpeaking } from '@/lib/audio/speak';
 
 type Props = {
   text: string;
@@ -14,39 +15,27 @@ type Props = {
 export function ReadAloud({ text, lang, label = 'Listen' }: Props) {
   const [speaking, setSpeaking] = useState(false);
   const [supported, setSupported] = useState(false);
-  const utterRef = useRef<SpeechSynthesisUtterance | null>(null);
 
   useEffect(() => {
     setSupported(typeof window !== 'undefined' && 'speechSynthesis' in window);
-    return () => {
-      try {
-        window.speechSynthesis?.cancel();
-      } catch { /* noop */ }
-    };
+    return () => stopSpeaking();
   }, []);
 
   if (!supported) return null;
 
   const toggle = () => {
-    const synth = window.speechSynthesis;
     if (speaking) {
-      synth.cancel();
+      stopSpeaking();
       setSpeaking(false);
       return;
     }
-    const utter = new SpeechSynthesisUtterance(text.slice(0, 2000));
-    utter.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
-    utter.rate = 0.95;
-    const voices = synth.getVoices();
-    const match =
-      voices.find((v) => v.lang.toLowerCase().startsWith(lang === 'fr' ? 'fr' : 'en')) ?? null;
-    if (match) utter.voice = match;
-    utter.onend = () => setSpeaking(false);
-    utter.onerror = () => setSpeaking(false);
-    utterRef.current = utter;
-    synth.cancel();
-    synth.speak(utter);
-    setSpeaking(true);
+    const ok = speakText(text, {
+      lang,
+      persona: 'narrator',
+      onend: () => setSpeaking(false),
+      onerror: () => setSpeaking(false),
+    });
+    setSpeaking(ok);
   };
 
   return (

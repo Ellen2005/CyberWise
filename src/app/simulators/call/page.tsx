@@ -19,21 +19,13 @@ import { recordCompletion } from '@/lib/gamification/service';
 import { useToast } from '@/hooks/use-toast';
 import { useLanguage } from '@/components/language-provider';
 import { ShareResult } from '@/components/share-result';
+import { speakText, stopSpeaking } from '@/lib/audio/speak';
 import { cn } from '@/lib/utils';
 
 type Phase = 'pick' | 'brief' | 'ringing' | 'live' | 'debrief';
 
 function speak(text: string, lang: string) {
-  try {
-    if (!('speechSynthesis' in window)) return;
-    window.speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(text.slice(0, 400));
-    u.lang = lang === 'fr' ? 'fr-FR' : 'en-US';
-    u.rate = 0.95;
-    const v = window.speechSynthesis.getVoices().find((x) => x.lang.toLowerCase().startsWith(lang === 'fr' ? 'fr' : 'en'));
-    if (v) u.voice = v;
-    window.speechSynthesis.speak(u);
-  } catch { /* audio unavailable */ }
+  speakText(text, { lang, persona: 'scammer' });
 }
 
 export default function ScamCallPage() {
@@ -57,7 +49,7 @@ export default function ScamCallPage() {
   useEffect(() => () => {
     try {
       recogRef.current?.stop();
-      window.speechSynthesis?.cancel();
+      stopSpeaking();
     } catch { /* noop */ }
   }, []);
 
@@ -81,7 +73,7 @@ export default function ScamCallPage() {
   const decline = async () => {
     // Declining unknown calls is the textbook defense — reward it briefly.
     setDeclined(true);
-    try { window.speechSynthesis?.cancel(); } catch { /* noop */ }
+    stopSpeaking();
     if (user && firestore && scenario) {
       try {
         const r = await recordCompletion(firestore, user.uid, {
@@ -96,7 +88,7 @@ export default function ScamCallPage() {
   const sendUserLine = async (text: string) => {
     const clean = text.trim().slice(0, 500);
     if (!clean || busy || !scenario || phase !== 'live') return;
-    try { window.speechSynthesis?.cancel(); } catch { /* noop */ }
+    stopSpeaking();
     const next: CallTurn[] = [...transcript, { role: 'user', text: clean }];
     setTranscript(next);
     setInput('');
@@ -121,7 +113,7 @@ export default function ScamCallPage() {
 
   const finishCall = async (finalTranscript?: CallTurn[]) => {
     const t = finalTranscript ?? transcript;
-    try { window.speechSynthesis?.cancel(); } catch { /* noop */ }
+    stopSpeaking();
     setPhase('debrief');
     if (!scenario) return;
     const res = await judgeCallTranscript(scenario.id, t);
