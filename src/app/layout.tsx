@@ -40,6 +40,13 @@ export const metadata: Metadata = {
   },
   description: 'Learn it. Spot it. Stop it. WiseTap (a CyberWise learning project) teaches everyday digital safety through realistic scenarios and practical guidance.',
   manifest: '/manifest.webmanifest',
+  icons: {
+    icon: [
+      { url: '/icon.svg', type: 'image/svg+xml' },
+      { url: '/icon-192.png', sizes: '192x192', type: 'image/png' },
+    ],
+    apple: [{ url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
+  },
   appleWebApp: {
     capable: true,
     title: 'WiseTap',
